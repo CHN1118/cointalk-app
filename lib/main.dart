@@ -11,20 +11,27 @@ import 'package:wallet/router/index.dart';
 import 'package:wallet/translations/index.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); //*初始化
+  WidgetsBinding widgetsBinding =
+      WidgetsFlutterBinding.ensureInitialized(); //*初始化
   await GetStorage.init(); //*初始化本地存储
   Get.put(Controller()).setLanguage(); //*初始化语言
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  initialization(null);
   await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
   ]).then((_) => runApp(const MyApp()));
 }
 
+//启动图延时移除方法
+void initialization(BuildContext? context) async {
+  //延迟3秒
+  await Future.delayed(const Duration(seconds: 3));
+  FlutterNativeSplash.remove();
+}
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -68,7 +75,7 @@ class _MyAppState extends State<MyApp> {
                   fontWeight: FontWeight.w500,
                 ),
               )),
-          initialRoute: '/startup',
+          initialRoute: '/',
           routingCallback: (routing) {},
           getPages: AppPages.pages,
         );

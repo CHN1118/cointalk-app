@@ -21,6 +21,8 @@ dependencies:
   flutter_svg: ^2.0.7
   flutter_chat_ui: ^1.6.8
   lottie: ^2.4.0
+  badges: ^3.1.1
+  flutter_local_notifications: ^15.1.0+1
 
 dev_dependencies:
   flutter_test:
@@ -35,6 +37,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/svgs/
 
   fonts:
     - family: MiSans
@@ -48,24 +51,8 @@ flutter:
         - asset: assets/fonts/MiSans-Semibold.ttf
           weight: 600
 
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/logo.png"
-  min_sdk_android: 21 # android min sdk min:16, default 21
-
 flutter_native_splash:
   color: "#000000"
   image: assets/logo.png
-  # branding: assets/logo.png
-  color_dark: "#000000"
-  image_dark: assets/logo.png
-  # branding_dark: assets/logo.png
-
-  android_12:
-    image: assets/logo.png
-    icon_background_color: "#000000"
-    image_dark: assets/logo.png
-    icon_background_color_dark: "#000000"
-
-  web: false
+  android: false
+  ios: false

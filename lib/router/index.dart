@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:wallet/views/index.dart';
 import 'package:wallet/views/splash.dart';
 
 class AppPages {
@@ -11,10 +12,10 @@ class AppPages {
     //   name: '/intro',
     //   page: () => Intro(),
     // ),
-    // GetPage(
-    //   name: '/',
-    //   page: () => const HomePage(),
-    // ),
+    GetPage(
+      name: '/',
+      page: () => const Index(),
+    ),
     // GetPage(
     //   name: '/login',
     //   page: () => const Login(),
