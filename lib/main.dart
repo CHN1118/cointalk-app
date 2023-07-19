@@ -15,8 +15,8 @@ void main() async {
       WidgetsFlutterBinding.ensureInitialized(); //*初始化
   await GetStorage.init(); //*初始化本地存储
   Get.put(Controller()).setLanguage(); //*初始化语言
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  initialization(null);
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding); //*启动图
+  initialization(null); //*启动图延时移除
   await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
@@ -26,7 +26,7 @@ void main() async {
 //启动图延时移除方法
 void initialization(BuildContext? context) async {
   //延迟3秒
-  await Future.delayed(const Duration(seconds: 3));
+  await Future.delayed(const Duration(seconds: 3)); //延迟3秒
   FlutterNativeSplash.remove();
 }
 
@@ -43,6 +43,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     precacheImg().getImg(context); //预加载图片
     isFullScreen(context); //判断是否全屏
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return ScreenUtilInit(
       designSize: const Size(390, 844), //设计稿尺寸
       minTextAdapt: true, //字体缩放
@@ -59,22 +60,22 @@ class _MyAppState extends State<MyApp> {
               buttonTheme: const ButtonThemeData(
                 splashColor: Colors.transparent, // 按钮水波纹颜色
               ),
-              primaryColor: Colors.black, //主题色
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: Colors.black, //主题色
-                primary: Colors.black, //主题色
-              ),
+              primaryColor: Colors.black,
               useMaterial3: true, //使用Material3
               appBarTheme: const AppBarTheme(
                 backgroundColor: Colors.transparent,
                 surfaceTintColor: Colors.transparent,
-                foregroundColor: Colors.white,
+                foregroundColor: Colors.black,
                 titleTextStyle: TextStyle(
                   fontFamily: 'MiSans',
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
-              )),
+              ),
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.black, //主题色
+                primary: Colors.black, //主题色
+              ).copyWith(background: Colors.white)),
           initialRoute: '/',
           routingCallback: (routing) {},
           getPages: AppPages.pages,
