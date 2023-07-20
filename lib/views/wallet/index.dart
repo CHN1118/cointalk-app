@@ -46,7 +46,6 @@ class _WalletState extends State<Wallet> {
       fontSize: 12.sp,
       fontWeight: FontWeight.w500,
     );
-    String title = coinName[0];
     return GestureDetector(
       onTap: () =>
           FocusScope.of(context).requestFocus(FocusNode()), // 点击空白处隐藏键盘
@@ -165,9 +164,9 @@ class _WalletState extends State<Wallet> {
                     topRight: Radius.circular(20.w),
                   ),
                   child: LiquidPullToRefresh(
-                    height: 60.w,
+                    height: 50.w,
                     onRefresh: _handleRefresh,
-                    color: Colors.grey[100],
+                    color: Colors.grey.withOpacity(.05),
                     backgroundColor: AppTheme.themeColor,
                     springAnimationDurationInMilliseconds: 150,
                     showChildOpacityTransition: false,
@@ -518,11 +517,7 @@ class Item extends StatelessWidget {
                           padding: EdgeInsets.only(right: 1.w),
                           child: Text(
                             '\u0024',
-                            style: TextStyle(
-                              color: const Color(0xFF828895),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            style: textStyle,
                           ),
                         ),
                         Align(
