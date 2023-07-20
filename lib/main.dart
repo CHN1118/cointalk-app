@@ -25,7 +25,6 @@ void main() async {
 
 //启动图延时移除方法
 void initialization(BuildContext? context) async {
-  //延迟3秒
   await Future.delayed(const Duration(seconds: 3)); //延迟3秒
   FlutterNativeSplash.remove();
 }
@@ -68,15 +67,16 @@ class _MyAppState extends State<MyApp> {
                 foregroundColor: Colors.black,
                 titleTextStyle: TextStyle(
                   fontFamily: 'MiSans',
+                  color: Colors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
-              ),
+              ), 
               colorScheme: ColorScheme.fromSeed(
                 seedColor: Colors.black, //主题色
                 primary: Colors.black, //主题色
               ).copyWith(background: Colors.white)),
-          initialRoute: '/',
+          initialRoute: '/importwallet',
           routingCallback: (routing) {},
           getPages: AppPages.pages,
         );

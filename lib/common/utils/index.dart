@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
-
-final box = GetStorage();
+import 'package:wallet/database/index.dart';
 
 // 语言
 class Utils {
   getLanguage() {
-    var lang = box.read('Language');
+    var lang = DB.box.read('Language');
     if (lang == 'en_US') {
       return const Locale('en', 'US');
     } else if (lang == 'zh_CN') {
@@ -20,7 +18,7 @@ class Utils {
 // 判断是否登录
 String checkLoginStatus() {
   // 延迟一段时间模拟登录状态检查
-  if (GetStorage().read('token') == null) {
+  if (DB.box.read('token') == null) {
     return '/';
   } else {
     return '/startup';
@@ -47,15 +45,15 @@ double getStatusBarHeight(BuildContext context) {
 // 判断是否全屏
 bool isFullScreen(context) {
   final padding = MediaQuery.of(context).padding;
-  var isf = box.read('isFullScreen');
-  if (box.read('isFullScreen') != null) {
+  var isf = DB.box.read('isFullScreen');
+  if (DB.box.read('isFullScreen') != null) {
     return isf;
   } else {
     if (padding.bottom == 0) {
-      box.write('isFullScreen', false);
+      DB.box.write('isFullScreen', false);
       return false; // 非全屏模式
     } else {
-      box.write('isFullScreen', true);
+      DB.box.write('isFullScreen', true);
       return true; // 处于全屏模式
     }
   }
@@ -64,5 +62,5 @@ bool isFullScreen(context) {
 
 //销毁isFullScreen
 void removeFullScreen() {
-  box.remove('isFullScreen');
+  DB.box.remove('isFullScreen');
 }

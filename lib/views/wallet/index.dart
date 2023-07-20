@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/index.dart';
+import 'package:wallet/event/index.dart';
 
 List<String> coinName = ['USDT', 'BTC', 'USDC', 'ETH', 'BCH'];
 
@@ -40,6 +41,20 @@ class _WalletState extends State<Wallet> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    bus.on("login", (arg) {
+      print(arg);
+      print('登录成功');
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var textStyle = TextStyle(
       color: const Color(0xFF828895),
@@ -52,20 +67,16 @@ class _WalletState extends State<Wallet> {
       child: Scaffold(
         body: Stack(
           children: [
+            //* double背景
             SvgPicture.asset(
               width: 390.w,
               height: 844.h,
               'assets/svgs/appbar_bgc.svg',
               fit: BoxFit.cover,
             ),
-            SvgPicture.asset(
-              width: 390.w,
-              height: 844.h,
-              'assets/svgs/appbar_bgc.svg',
-              fit: BoxFit.cover,
-            ),
+            //* 头部按钮
             SizedBox(
-              height: getStatusBarHeight(context),
+              height: 366.h,
               width: double.infinity,
               child: Align(
                 alignment: Alignment.bottomCenter,
@@ -138,8 +149,9 @@ class _WalletState extends State<Wallet> {
                 ),
               ),
             ),
+            //* 主体部分
             Positioned(
-              top: getStatusBarHeight(context),
+              top: 366.h,
               left: 0,
               bottom: 0,
               right: 0,
@@ -235,15 +247,21 @@ class _WalletState extends State<Wallet> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              bottom: 6.w, right: 4.w),
-                                          child: Text(
-                                            isEye ? '' : '\u0024',
-                                            style: TextStyle(
-                                              color: const Color(0xFF212121),
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w700,
+                                        SizedBox(
+                                          height: 36.w,
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsets.only(right: 4.w),
+                                            child: Center(
+                                              child: Text(
+                                                isEye ? '' : '\u0024',
+                                                style: TextStyle(
+                                                  color:
+                                                      const Color(0xFF212121),
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -278,45 +296,49 @@ class _WalletState extends State<Wallet> {
                                         ),
                                       ],
                                     ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(right: 4.w),
-                                          child: Text(
-                                            isEye ? '' : '\u2248',
-                                            style: TextStyle(
-                                              color: const Color(0xFF686C77),
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
+                                    SizedBox(
+                                      height: 16.w,
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                EdgeInsets.only(right: 4.w),
+                                            child: Text(
+                                              isEye ? '' : '\u2248',
+                                              style: TextStyle(
+                                                color: const Color(0xFF686C77),
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            isEye
-                                                ? maskString(
-                                                    balance1.toString(), '*')
-                                                : oCcy1.format(balance1),
-                                            style: TextStyle(
-                                              color: const Color(0xFF686C77),
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              isEye
+                                                  ? maskString(
+                                                      balance1.toString(), '*')
+                                                  : oCcy1.format(balance1),
+                                              style: TextStyle(
+                                                color: const Color(0xFF686C77),
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 4.w),
-                                          child: Text(
-                                            isEye ? '' : 'BTC',
-                                            style: TextStyle(
-                                              color: const Color(0xFF686C77),
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 4.w),
+                                            child: Text(
+                                              isEye ? '' : 'BTC',
+                                              style: TextStyle(
+                                                color: const Color(0xFF686C77),
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),

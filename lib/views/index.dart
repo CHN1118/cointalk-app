@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/event/index.dart';
 import 'package:wallet/views/wallet/index.dart';
 
 class Index extends StatefulWidget {
@@ -15,15 +17,27 @@ class _IndexState extends State<Index> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    Wallet(),
+    const Wallet(),
     const Center(child: Text("消息")),
     const Center(child: Text("浏览器")),
-    const Center(child: Text("我的")),
+    Center(
+        child: InkWell(
+      onTap: () {
+        bus.emit("login", "登录");
+      },
+      child: const Text("我的"),
+    )),
   ];
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    bus.off("login");
+    super.dispose();
   }
 
   @override
@@ -122,7 +136,7 @@ class _IndexState extends State<Index> {
         currentIndex: _currentIndex,
         selectedLabelStyle:
             TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
-        selectedItemColor: const Color(0xff2260b6),
+        selectedItemColor: AppTheme.themeColor,
         unselectedItemColor: const Color(0xfF808291),
         unselectedLabelStyle: TextStyle(
             color: const Color(0xfF808291),
