@@ -197,11 +197,30 @@ class ICreatPswState extends State<CreatPsw> {
                   children: [
                     Container(
                       height: 52.w,
-                      padding: EdgeInsets.only(left: 15.w, right: 15.w),
                       decoration: BoxDecoration(
                         color: AppTheme.themeColor2.withOpacity(.5),
                         borderRadius: BorderRadius.circular(4.w),
                       ),
+                    ),
+                    if (_setPswtext.text != '' &&
+                        _confirmPswtext.text != '' &&
+                        _setPswtext.text != _confirmPswtext.text)
+                      Positioned(
+                        bottom: 2.w,
+                        left: 15.w,
+                        child: SizedBox(
+                          width: 100.w,
+                          child: Text('密码不一致',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.red)),
+                        ),
+                      ),
+                    Container(
+                      height: 52.w,
+                      padding: EdgeInsets.only(left: 15.w, right: 15.w),
                       child: Center(
                         child: TextFormField(
                           controller: _confirmPswtext,
@@ -255,23 +274,6 @@ class ICreatPswState extends State<CreatPsw> {
                               ),
                             ),
                           )),
-                    if (_setPswtext.text != '' &&
-                        _confirmPswtext.text != '' &&
-                        _setPswtext.text != _confirmPswtext.text)
-                      Positioned(
-                        bottom: 5.w,
-                        left: 15.w,
-                        child: SizedBox(
-                          height: 12.w,
-                          width: 100.w,
-                          child: Text('密码不一致',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.red)),
-                        ),
-                      )
                   ],
                 ),
                 SizedBox(height: 17.w),
