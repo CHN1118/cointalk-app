@@ -20,7 +20,7 @@ class AppTheme {
   static const Color deactivatedText = Color(0xFF767676);
   static const Color dismissibleBackground = Color(0xFF364A54);
   static const Color spacer = Color(0xFFF2F2F2);
-  static const Color themeColor = Color(0xFF0C666B);
+  static const Color themeColor = Color(0xFF45AAAF);
   static const Color themeColor2 = Color(0xFFEDEFF5);
   static const String fontName = 'MiSans';
 

@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,12 +25,22 @@ class IimportwalletState extends State<Importwallet> {
   detectionBio() async {
     var Bio = Biometric();
     DB.box.write('isEBV', false); //是否开启生物识别
-    bool isSupported = await Bio.isDeviceSupported(); //是否支持生物识别
-    DB.box.write('isSupported', isSupported);
-    if (!isSupported) return;
-    String availableBiometrics =
-        await Bio.getAvailableBiometrics(); //获取可用的生物识别技术
-    DB.box.write('availableBiometrics', availableBiometrics);
+    try {
+      bool isSupported = await Bio.isDeviceSupported(); //是否支持生物识别
+      print(isSupported);
+      DB.box.write('isSupported', isSupported);
+      if (!isSupported) return;
+    } catch (e) {
+      print(e);
+      return;
+    }
+    try {
+      String availableBiometrics =
+          await Bio.getAvailableBiometrics(); //获取可用的生物识别技术
+      DB.box.write('availableBiometrics', availableBiometrics);
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -38,7 +48,7 @@ class IimportwalletState extends State<Importwallet> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        padding: EdgeInsets.only(bottom: 60.h),
+        padding: EdgeInsets.only(bottom: 74.h),
         width: 390.w,
         height: 844.h,
         child: Column(
