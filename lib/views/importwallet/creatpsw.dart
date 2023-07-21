@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field, non_constant_identifier_names, avoid_print
+// ignore_for_file: unused_field, non_constant_identifier_names, avoid_print, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +6,6 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:password_strength/password_strength.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/biometricauthentication.dart';
@@ -19,7 +18,7 @@ class CreatPsw extends StatefulWidget {
   State<CreatPsw> createState() => ICreatPswState();
 }
 
-class ICreatPswState extends State<CreatPsw> {
+class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
   final TextEditingController _setPswtext = TextEditingController();
   final FocusNode _setPswFocus = FocusNode();
   final TextEditingController _confirmPswtext = TextEditingController();
@@ -40,15 +39,17 @@ class ICreatPswState extends State<CreatPsw> {
 
   @override
   void initState() {
-    print(isSupported);
-    print(availableBiometrics);
+    print('是否支持生物识别$isSupported');
+    print('生物识别的类型$availableBiometrics');
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _setPswFocus.addListener(() {
       isFocus1 = _setPswFocus.hasFocus;
       setState(() {});
     });
     _confirmPswFocus.addListener(() {
       isFocus = _confirmPswFocus.hasFocus;
+      isEye = true;
       setState(() {});
     });
   }
@@ -59,7 +60,20 @@ class ICreatPswState extends State<CreatPsw> {
     _setPswFocus.dispose();
     _confirmPswtext.dispose();
     _confirmPswFocus.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    // 监听键盘隐藏事件
+    final bool isKeyboardOpen =
+        WidgetsBinding.instance.window.viewInsets.bottom != 0;
+    if (!isKeyboardOpen) {
+      isEye = true;
+      setState(() {});
+    }
   }
 
   @override
