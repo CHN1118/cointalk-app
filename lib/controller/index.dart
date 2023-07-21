@@ -1,16 +1,13 @@
 import 'dart:ui';
-
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
-final box = GetStorage(); //*初始化本地存储
+import 'package:wallet/database/index.dart';
 
 class Controller extends GetxController {
   bool isLogin = false;
   var language = '中文'.obs;
 
   setLanguage() {
-    var lang = box.read('Language');
+    var lang = DB.box.read('Language');
     if (lang == 'en_US') {
       language.value = 'English';
     } else if (lang == 'zh_CN') {
@@ -21,17 +18,17 @@ class Controller extends GetxController {
   }
 
   changeLanguage() {
-    var lang = box.read('Language');
+    var lang = DB.box.read('Language');
     if (lang == 'en_US') {
-      box.write('Language', 'zh_CN');
+      DB.box.write('Language', 'zh_CN');
       const locale = Locale('zh', 'CN');
       Get.updateLocale(locale);
     } else if (lang == 'zh_CN') {
-      box.write('Language', 'en_US');
+      DB.box.write('Language', 'en_US');
       const locale = Locale('en', 'US');
       Get.updateLocale(locale);
     } else {
-      box.write('Language', 'zh_CN');
+      DB.box.write('Language', 'zh_CN');
       const locale = Locale('zh', 'CN');
       Get.updateLocale(locale);
     }

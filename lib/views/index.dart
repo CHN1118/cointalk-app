@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/event/index.dart';
 import 'package:wallet/views/browser/index.dart';
 import 'package:wallet/views/wallet/index.dart';
 
@@ -25,6 +27,12 @@ class _IndexState extends State<Index> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    bus.off("login");
+    super.dispose();
   }
 
   @override
@@ -123,7 +131,7 @@ class _IndexState extends State<Index> {
         currentIndex: _currentIndex,
         selectedLabelStyle:
             TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
-        selectedItemColor: const Color(0xff2260b6),
+        selectedItemColor: AppTheme.themeColor,
         unselectedItemColor: const Color(0xfF808291),
         unselectedLabelStyle: TextStyle(
             color: const Color(0xfF808291),
