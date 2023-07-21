@@ -4,6 +4,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/event/index.dart';
+import 'package:wallet/views/browser/index.dart';
 import 'package:wallet/views/wallet/index.dart';
 
 class Index extends StatefulWidget {
@@ -19,14 +20,8 @@ class _IndexState extends State<Index> {
   final List<Widget> _pages = [
     const Wallet(),
     const Center(child: Text("消息")),
-    const Center(child: Text("浏览器")),
-    Center(
-        child: InkWell(
-      onTap: () {
-        bus.emit("login", "登录");
-      },
-      child: const Text("我的"),
-    )),
+    const Browser(),
+    const Center(child: Text("我的")),
   ];
 
   @override
