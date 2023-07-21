@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false, //debug标签
           translations: Messages(), //翻译
-          locale: Utils().getLanguage(), //语言
+          locale: utils.getLanguage(), //语言
           fallbackLocale: const Locale('en', 'US'), //默认语言
           builder: EasyLoading.init(),
           theme: ThemeData(

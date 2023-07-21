@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/biometricauthentication.dart';
 import 'package:wallet/database/index.dart';
-import 'package:wallet/views/importwallet/creatpsw.dart';
+import 'package:wallet/widgets/importwallet/creatpsw.dart';
 
 class Importwallet extends StatefulWidget {
   const Importwallet({super.key});
@@ -23,11 +23,10 @@ class IimportwalletState extends State<Importwallet> {
   }
 
   detectionBio() async {
-    var Bio = Biometric();
-    DB.box.write('isEBV', false); //是否开启生物识别
+    await DB.box.write('isEBV', false); //清除是否开启生物识别
+    await DB.box.write('login_psw', null); //清除登录密码
     try {
       bool isSupported = await Bio.isDeviceSupported(); //是否支持生物识别
-      print(isSupported);
       DB.box.write('isSupported', isSupported);
       if (!isSupported) return;
     } catch (e) {

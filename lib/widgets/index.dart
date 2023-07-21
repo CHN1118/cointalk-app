@@ -4,8 +4,8 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/event/index.dart';
-import 'package:wallet/views/browser/index.dart';
-import 'package:wallet/views/wallet/index.dart';
+import 'package:wallet/widgets/browser/index.dart';
+import 'package:wallet/widgets/wallet/index.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});

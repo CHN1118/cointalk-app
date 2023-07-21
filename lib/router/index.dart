@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
-import 'package:wallet/views/importwallet/index.dart';
-import 'package:wallet/views/index.dart';
-import 'package:wallet/views/splash.dart';
+import 'package:wallet/widgets/importwallet/index.dart';
+import 'package:wallet/widgets/importwallet/walletname.dart';
+import 'package:wallet/widgets/index.dart';
+import 'package:wallet/widgets/splash.dart';
 
 class AppPages {
   static List<GetPage> pages = [
@@ -17,5 +18,9 @@ class AppPages {
       name: '/startup',
       page: () => Splash(),
     ),
+    GetPage(
+        name: '/walletname',
+        page: () => Walletname(),
+        transition: Transition.topLevel),
   ];
 }
