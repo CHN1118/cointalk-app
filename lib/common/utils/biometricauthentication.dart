@@ -29,6 +29,7 @@ class Biometric {
       availableBiometrics = <BiometricType>[];
       print(e);
     }
+    print('支持的生物验证$availableBiometrics');
     return availableBiometrics[0].toString().split('.').last;
   }
 
