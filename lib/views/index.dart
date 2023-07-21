@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wallet/views/browser/index.dart';
 import 'package:wallet/views/wallet/index.dart';
 
 class Index extends StatefulWidget {
@@ -15,9 +16,9 @@ class _IndexState extends State<Index> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    Wallet(),
+    const Wallet(),
     const Center(child: Text("消息")),
-    const Center(child: Text("浏览器")),
+    const Browser(),
     const Center(child: Text("我的")),
   ];
 

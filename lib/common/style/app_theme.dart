@@ -22,6 +22,7 @@ class AppTheme {
   static const Color spacer = Color(0xFFF2F2F2);
   static const Color themeColor = Color(0xFF0563B6);
   static const Color themeColor2 = Color(0xFFEDEFF5);
+  static Color browserColor = const Color(0xff000000).withOpacity(0.5);
   static const String fontName = 'MiSans';
 
   static const TextTheme textTheme = TextTheme(
