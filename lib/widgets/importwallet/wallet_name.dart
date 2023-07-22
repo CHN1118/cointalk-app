@@ -1,8 +1,12 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/components/custom_dialog.dart';
+import 'package:wallet/database/index.dart';
 
 class Walletname extends StatefulWidget {
   const Walletname({super.key});
@@ -14,8 +18,6 @@ class Walletname extends StatefulWidget {
 class WwalletnameState extends State<Walletname> {
   final TextEditingController _walletNametext = TextEditingController();
   final FocusNode _walletNameFocus = FocusNode();
-
-  bool isFocus = false; //是否聚焦
 
   @override
   void initState() {
@@ -50,7 +52,7 @@ class WwalletnameState extends State<Walletname> {
                 Text('设置钱包名称',
                     style: TextStyle(
                         fontSize: 20.sp, fontWeight: FontWeight.w900)),
-                SizedBox(height: 33.w),
+                SizedBox(height: 33.h),
                 //*设置钱包名称
                 Stack(
                   children: [
@@ -73,25 +75,24 @@ class WwalletnameState extends State<Walletname> {
                                 value.replaceAll(' ', ''); // 去除空格
                             if (trimmedText != value) {
                               final int cursorPosition =
-                                  _walletNametext.selection.baseOffset - 1;
+                                  _walletNametext.selection.baseOffset -
+                                      1; // 获取当前光标位置
                               final TextSelection newSelection =
                                   TextSelection.collapsed(
-                                      offset: cursorPosition);
+                                      offset: cursorPosition); // 生成新的光标位置
                               setState(() {
                                 _walletNametext.value = TextEditingValue(
                                   text: trimmedText,
                                   selection: newSelection,
-                                );
+                                ); // 更新内容
                               });
                             }
                             setState(() {});
                           },
                           onFieldSubmitted: (value) {
                             FocusScope.of(context).requestFocus(FocusNode());
-                            isFocus = true;
                             setState(() {});
                           },
-                          maxLength: 18, // 最大长度为18位
                           cursorHeight: 18.w, // 设置光标高度
                           cursorWidth: 2.0, // 设置光标宽度
                           style: TextStyle(
@@ -103,33 +104,30 @@ class WwalletnameState extends State<Walletname> {
                             contentPadding:
                                 EdgeInsets.symmetric(vertical: 12), // 设置内容内边距
                           ),
-                          buildCounter: (BuildContext context,
-                                  {int? currentLength,
-                                  int? maxLength,
-                                  bool? isFocused}) =>
-                              null,
                         ),
                       ),
                     ),
                   ],
                 ),
                 const Expanded(child: SizedBox()),
-                InkWell(
-                  onTap: Next,
-                  child: Container(
-                    width: 325.w,
-                    height: 44.w,
-                    decoration: BoxDecoration(
-                      color: AppTheme.themeColor,
-                      borderRadius: BorderRadius.circular(4.w),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '生成助记词',
-                        style: TextStyle(
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
+                Center(
+                  child: InkWell(
+                    onTap: Next,
+                    child: Container(
+                      width: 325.w,
+                      height: 44.w,
+                      decoration: BoxDecoration(
+                        color: AppTheme.themeColor,
+                        borderRadius: BorderRadius.circular(4.w),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '生成助记词',
+                          style: TextStyle(
+                              fontSize: 17.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
                       ),
                     ),
                   ),
@@ -142,5 +140,20 @@ class WwalletnameState extends State<Walletname> {
     );
   }
 
-  void Next() {}
+  Next() async {
+    //! 开启加载
+    await EasyLoading.show(status: '加载中...');
+    //* 请输入钱包名称
+    if (_walletNametext.text == '') {
+      EasyLoading.dismiss();
+      Cdog.show(context, '请输入钱包名称');
+      return;
+    }
+    //* 符合条件
+    if (_walletNametext.text != '') {
+      EasyLoading.dismiss();
+      await DB.box.write('wallet_name', _walletNametext.text);
+      Get.offAllNamed('/mnemonic');
+    }
+  }
 }

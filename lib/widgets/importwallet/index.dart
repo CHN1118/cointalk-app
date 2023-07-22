@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/biometricauthentication.dart';
 import 'package:wallet/database/index.dart';
-import 'package:wallet/widgets/importwallet/creatpsw.dart';
+import 'package:wallet/widgets/importwallet/creat_psw.dart';
 
 class Importwallet extends StatefulWidget {
   const Importwallet({super.key});
@@ -25,6 +25,7 @@ class IimportwalletState extends State<Importwallet> {
   detectionBio() async {
     await DB.box.write('isEBV', false); //清除是否开启生物识别
     await DB.box.write('login_psw', null); //清除登录密码
+    await DB.box.write('wallet_name', null); //清除钱包名称
     try {
       bool isSupported = await Bio.isDeviceSupported(); //是否支持生物识别
       DB.box.write('isSupported', isSupported);
@@ -51,8 +52,6 @@ class IimportwalletState extends State<Importwallet> {
         width: 390.w,
         height: 844.h,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: Center(
@@ -63,6 +62,7 @@ class IimportwalletState extends State<Importwallet> {
                 ),
               ),
             ),
+            //* 创建钱包
             InkWell(
               onTap: () {
                 Get.to(() => const CreatPsw());
@@ -85,9 +85,12 @@ class IimportwalletState extends State<Importwallet> {
                 ),
               ),
             ),
-            SizedBox(height: 22.w),
+            SizedBox(height: 22.h),
+            //* 导入钱包
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.to(() => const CreatPsw());
+              },
               child: Container(
                 width: 325.w,
                 height: 44.w,

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,7 +7,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:wallet/common/style/app_theme.dart';
-import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/event/index.dart';
 
 List<String> coinName = ['USDT', 'BTC', 'USDC', 'ETH', 'BCH'];

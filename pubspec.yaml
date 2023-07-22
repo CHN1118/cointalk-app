@@ -31,11 +31,15 @@ dependencies:
   animated_toggle_switch: ^0.7.0        #* 开关
   local_auth: ^2.1.6                    #* 生物识别
   modal_bottom_sheet: ^2.1.2            #* 底部弹窗
+  fluttertoast: ^8.2.2                   #* toast
   password_strength: ^0.2.0             #* 密码强度
   loading_animation_widget: ^1.2.0+4    #* 加载动画
   flutter_easyloading: ^3.0.5            #* 加载动画
   flutter_animated_dialog: ^2.0.1        #* 弹窗
   bip39: ^1.0.6                         #* 生成助记词
+  bip32: ^2.0.0                         #* 生成私钥
+  json_rpc_2: ^3.0.2                    #* json rpc
+  web3dart: ^2.4.1                      #* web3
 
 dev_dependencies:
   flutter_test:

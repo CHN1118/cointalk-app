@@ -103,18 +103,18 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                 Text('创建登录密码',
                     style: TextStyle(
                         fontSize: 20.sp, fontWeight: FontWeight.w900)),
-                SizedBox(height: 15.w),
+                SizedBox(height: 15.h),
                 Opacity(
                   opacity: 0.5,
                   child: Text('此密码仅用于本设备上解锁xxapp',
                       style: TextStyle(
                           fontSize: 15.sp, fontWeight: FontWeight.w400)),
                 ),
-                SizedBox(height: 27.w),
+                SizedBox(height: 27.h),
                 Text('设置密码',
                     style: TextStyle(
                         fontSize: 15.sp, fontWeight: FontWeight.w400)),
-                SizedBox(height: 10.w),
+                SizedBox(height: 10.h),
                 //*设置密码
                 Stack(
                   children: [
@@ -213,11 +213,11 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                           ))
                   ],
                 ),
-                SizedBox(height: 8.w),
+                SizedBox(height: 8.h),
                 Text('确认密码',
                     style: TextStyle(
                         fontSize: 15.sp, fontWeight: FontWeight.w400)),
-                SizedBox(height: 10.w),
+                SizedBox(height: 10.h),
                 //*确认密码
                 Stack(
                   children: [
@@ -317,7 +317,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                           )),
                   ],
                 ),
-                SizedBox(height: 17.w),
+                SizedBox(height: 17.h),
                 //*开启生物识别
                 if (isSupported && availableBiometrics != '')
                   SizedBox(
@@ -365,22 +365,24 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                   ),
                 const Expanded(child: SizedBox()),
                 //*下一步
-                InkWell(
-                  onTap: Next,
-                  child: Container(
-                    width: 325.w,
-                    height: 44.w,
-                    decoration: BoxDecoration(
-                      color: AppTheme.themeColor,
-                      borderRadius: BorderRadius.circular(4.w),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '确认',
-                        style: TextStyle(
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
+                Center(
+                  child: InkWell(
+                    onTap: Next,
+                    child: Container(
+                      width: 325.w,
+                      height: 44.w,
+                      decoration: BoxDecoration(
+                        color: AppTheme.themeColor,
+                        borderRadius: BorderRadius.circular(4.w),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '确认',
+                          style: TextStyle(
+                              fontSize: 17.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
                       ),
                     ),
                   ),

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:wallet/widgets/importwallet/index.dart';
-import 'package:wallet/widgets/importwallet/walletname.dart';
+import 'package:wallet/widgets/importwallet/mnemonic.dart';
+import 'package:wallet/widgets/importwallet/wallet_name.dart';
 import 'package:wallet/widgets/index.dart';
 import 'package:wallet/widgets/splash.dart';
 
@@ -20,7 +21,11 @@ class AppPages {
     ),
     GetPage(
         name: '/walletname',
-        page: () => Walletname(),
+        page: () => const Walletname(),
+        transition: Transition.topLevel),
+    GetPage(
+        name: '/mnemonic',
+        page: () => const Mnemonic(),
         transition: Transition.topLevel),
   ];
 }
