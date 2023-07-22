@@ -44,5 +44,5 @@ class EventBus {
   }
 }
 
-//定义一个top-level（全局）变量，页面引入该文件后可以直接使用bus
+//* bus 是全局的，可以在任意位置使用 事件总线的实例
 var bus = EventBus();

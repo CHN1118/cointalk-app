@@ -1,14 +1,14 @@
-// ignore_for_file: unused_field, non_constant_identifier_names, avoid_print, deprecated_member_use
+// ignore_for_file: unused_field, non_constant_identifier_names, avoid_print, deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:password_strength/password_strength.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/biometricauthentication.dart';
+import 'package:wallet/components/custom_dialog.dart';
 import 'package:wallet/database/index.dart';
 
 class CreatPsw extends StatefulWidget {
@@ -28,8 +28,8 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
 
   bool isEBV = DB.box.read('isEBV'); //是否开启生物识别
   bool isEye = true; //是否显示密码
-  bool isFocus = false; //是否显示密码
-  bool isFocus1 = false; //是否显示密码
+  bool isFocus = false; //是否聚焦
+  bool isFocus1 = false; //是否聚焦
   bool isSupported = DB.box.read('isSupported'); //是否支持生物识别
 
   String availableBiometrics =
@@ -39,8 +39,6 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    print('是否支持生物识别$isSupported');
-    print('生物识别的类型$availableBiometrics');
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _setPswFocus.addListener(() {
@@ -105,18 +103,18 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                 Text('创建登录密码',
                     style: TextStyle(
                         fontSize: 20.sp, fontWeight: FontWeight.w900)),
-                SizedBox(height: 15.w),
+                SizedBox(height: 15.h),
                 Opacity(
                   opacity: 0.5,
                   child: Text('此密码仅用于本设备上解锁xxapp',
                       style: TextStyle(
                           fontSize: 15.sp, fontWeight: FontWeight.w400)),
                 ),
-                SizedBox(height: 27.w),
+                SizedBox(height: 27.h),
                 Text('设置密码',
                     style: TextStyle(
                         fontSize: 15.sp, fontWeight: FontWeight.w400)),
-                SizedBox(height: 10.w),
+                SizedBox(height: 10.h),
                 //*设置密码
                 Stack(
                   children: [
@@ -140,7 +138,21 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                           },
                           onChanged: (String value) {
                             strength = estimatePasswordStrength(value);
-                            print(strength);
+                            String trimmedText =
+                                value.replaceAll(' ', ''); // 去除空格
+                            if (trimmedText != value) {
+                              final int cursorPosition =
+                                  _setPswtext.selection.baseOffset - 1;
+                              final TextSelection newSelection =
+                                  TextSelection.collapsed(
+                                      offset: cursorPosition);
+                              setState(() {
+                                _setPswtext.value = TextEditingValue(
+                                  text: trimmedText,
+                                  selection: newSelection,
+                                );
+                              });
+                            }
                             setState(() {});
                           },
                           cursorHeight: 18.w, // 设置光标高度
@@ -201,11 +213,11 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                           ))
                   ],
                 ),
-                SizedBox(height: 8.w),
+                SizedBox(height: 8.h),
                 Text('确认密码',
                     style: TextStyle(
                         fontSize: 15.sp, fontWeight: FontWeight.w400)),
-                SizedBox(height: 10.w),
+                SizedBox(height: 10.h),
                 //*确认密码
                 Stack(
                   children: [
@@ -241,6 +253,21 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                           focusNode: _confirmPswFocus,
                           obscureText: isEye,
                           onChanged: (value) {
+                            String trimmedText =
+                                value.replaceAll(' ', ''); // 去除空格
+                            if (trimmedText != value) {
+                              final int cursorPosition =
+                                  _confirmPswtext.selection.baseOffset - 1;
+                              final TextSelection newSelection =
+                                  TextSelection.collapsed(
+                                      offset: cursorPosition);
+                              setState(() {
+                                _confirmPswtext.value = TextEditingValue(
+                                  text: trimmedText,
+                                  selection: newSelection,
+                                );
+                              });
+                            }
                             setState(() {});
                           },
                           onFieldSubmitted: (value) {
@@ -290,7 +317,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                           )),
                   ],
                 ),
-                SizedBox(height: 17.w),
+                SizedBox(height: 17.h),
                 //*开启生物识别
                 if (isSupported && availableBiometrics != '')
                   SizedBox(
@@ -338,22 +365,24 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                   ),
                 const Expanded(child: SizedBox()),
                 //*下一步
-                InkWell(
-                  onTap: Next,
-                  child: Container(
-                    width: 325.w,
-                    height: 44.w,
-                    decoration: BoxDecoration(
-                      color: AppTheme.themeColor,
-                      borderRadius: BorderRadius.circular(4.w),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '设置钱包名称',
-                        style: TextStyle(
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
+                Center(
+                  child: InkWell(
+                    onTap: Next,
+                    child: Container(
+                      width: 325.w,
+                      height: 44.w,
+                      decoration: BoxDecoration(
+                        color: AppTheme.themeColor,
+                        borderRadius: BorderRadius.circular(4.w),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '确认',
+                          style: TextStyle(
+                              fontSize: 17.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
                       ),
                     ),
                   ),
@@ -368,48 +397,49 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
 
   setFiceID() async {
     if (isEBV) {
-      isEBV = false;
+      isEBV = false; //关闭生物识别
       DB.box.write('isEBV', isEBV);
       setState(() {});
       return;
     }
-    HapticFeedback.heavyImpact();
-    bool isYes = await Bio.authenticate();
-    print(isYes);
-    if (!isYes) return;
-    isEBV = true;
-    DB.box.write('isEBV', isEBV);
+    HapticFeedback.heavyImpact(); //震动
+    bool isYes = await Bio.authenticate(); //生物识别
+    print('生物识别结果：$isYes');
+    if (!isYes) return; //生物识别失败
+    isEBV = true; //开启生物识别
     setState(() {});
   }
 
-  Next() {
-    showAnimatedDialog(
-      context: context,
-      barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(.2),
-      builder: (BuildContext context) {
-        return Center(
-          child: Container(
-            width: 100.w,
-            height: 50.w,
-            color: Colors.pink,
-          ),
-        );
-      },
-      animationType: DialogTransitionType.fade,
-      curve: Curves.fastOutSlowIn,
-      duration: const Duration(milliseconds: 250),
-    );
+  Next() async {
+    //! 开启加载
+    await EasyLoading.show(status: '加载中...');
+    //* 未输入密码
+    if (_setPswtext.text == '' && _confirmPswtext.text == '') {
+      EasyLoading.dismiss();
+      Cdog.show(context, '请输入密码');
+      return;
+    }
+    //* 两次密码不一致
+    if (_setPswtext.text != _confirmPswtext.text) {
+      EasyLoading.dismiss();
+      Cdog.show(context, '两次密码不一致');
+      return;
+    }
+    //* 密码强度不够
+    if (strength < 0.3) {
+      EasyLoading.dismiss();
+      Cdog.show(context, '密码强度不够');
+      return;
+    }
+    //* 完全符合要求
     if (_setPswtext.text == _confirmPswtext.text &&
         _setPswtext.text != '' &&
         _confirmPswtext.text != '' &&
         strength > 0.3) {
-      EasyLoading.show(status: '加载中...');
-      Future.delayed(const Duration(seconds: 1), () {
-        EasyLoading.dismiss();
-      });
-      // DB.box.write('token', _setPswtext.text);
+      EasyLoading.dismiss();
+      await DB.box.write('login_psw', _setPswtext.text);
+      await DB.box.write('isEBV', isEBV);
+      Get.offAllNamed('/walletname');
     }
-    // Get.to(() => const CreatPsw());
   }
 }

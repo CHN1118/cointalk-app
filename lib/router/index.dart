@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
-import 'package:wallet/views/importwallet/index.dart';
-import 'package:wallet/views/index.dart';
-import 'package:wallet/views/splash.dart';
+import 'package:wallet/widgets/importwallet/index.dart';
+import 'package:wallet/widgets/importwallet/mnemonic.dart';
+import 'package:wallet/widgets/importwallet/wallet_name.dart';
+import 'package:wallet/widgets/index.dart';
+import 'package:wallet/widgets/splash.dart';
 
 class AppPages {
   static List<GetPage> pages = [
@@ -17,5 +19,13 @@ class AppPages {
       name: '/startup',
       page: () => Splash(),
     ),
+    GetPage(
+        name: '/walletname',
+        page: () => const Walletname(),
+        transition: Transition.topLevel),
+    GetPage(
+        name: '/mnemonic',
+        page: () => const Mnemonic(),
+        transition: Transition.topLevel),
   ];
 }

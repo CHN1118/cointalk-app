@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field, avoid_print
+// ignore_for_file: unused_field, avoid_print, non_constant_identifier_names
 
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
@@ -17,6 +17,7 @@ class Biometric {
       isSupported = false;
       print(e);
     }
+    print('是否支持生物识别：$isSupported');
     return isSupported;
   }
 
@@ -29,7 +30,7 @@ class Biometric {
       availableBiometrics = <BiometricType>[];
       print(e);
     }
-    print('支持的生物验证$availableBiometrics');
+    print('支持的生物验证：$availableBiometrics');
     return availableBiometrics[0].toString().split('.').last;
   }
 
@@ -51,7 +52,6 @@ class Biometric {
     }
 
     _authorized = authenticated ? 'Authorized' : 'Not Authorized';
-    print(_authorized);
     return authenticated;
   }
 
@@ -64,3 +64,6 @@ class Biometric {
   // 获取认证结果
   String get authorized => _authorized;
 }
+
+//* Bio 是全局的，可以在任意位置使用  是生物识别的实例
+var Bio = Biometric();

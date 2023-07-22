@@ -15,6 +15,8 @@ class Utils {
   }
 }
 
+
+
 // 判断是否登录
 String checkLoginStatus() {
   // 延迟一段时间模拟登录状态检查
@@ -64,3 +66,6 @@ bool isFullScreen(context) {
 void removeFullScreen() {
   DB.box.remove('isFullScreen');
 }
+
+//* Bio 是全局的，可以在任意位置使用  是生物识别的实例
+var utils = Utils();
