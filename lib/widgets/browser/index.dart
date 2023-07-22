@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/widgets/browser/share.dart';
-
 
 class Browser extends StatefulWidget {
   const Browser({super.key});
@@ -12,14 +12,16 @@ class Browser extends StatefulWidget {
   State<Browser> createState() => _BrowserState();
 }
 
-//收藏弹框
-void showSnackBar(BuildContext context, String message) {
-  final snackBar = SnackBar(
-    content: Text(message), // 显示的内容
-    duration: const Duration(seconds: 1), // Snackbar 显示时间
-  );
-
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+// ignore: non_constant_identifier_names
+Future<bool?> showSnackBar({String? msg = '助记词顺序错误'}) {
+  return Fluttertoast.showToast(
+      msg: msg!,
+      toastLength: Toast.LENGTH_SHORT, // 消息框持续的时间
+      gravity: ToastGravity.TOP, // 消息框弹出的位置
+      timeInSecForIosWeb: 1, // ios
+      backgroundColor: const Color(0xffF2F8F5).withOpacity(1),
+      textColor: const Color(0xff000000),
+      fontSize: 14.sp);
 }
 
 class _BrowserState extends State<Browser> {
@@ -385,8 +387,7 @@ class _BrowserState extends State<Browser> {
                                                       setState(() {
                                                         isCollect = !isCollect;
                                                         showSnackBar(
-                                                            context,
-                                                            isCollect
+                                                            msg: isCollect
                                                                 ? '收藏成功'
                                                                 : '取消收藏');
                                                       });
@@ -499,7 +500,7 @@ class _SearchResultsState extends State<SearchResults> {
                                   setState(() {
                                     isCollect1 = !isCollect1;
                                     showSnackBar(
-                                        context, isCollect1 ? '收藏成功' : '取消收藏');
+                                        msg: isCollect1 ? '收藏成功' : '取消收藏');
                                   });
                                 })
                         ],
@@ -884,8 +885,7 @@ class ExplorePageState extends State<ExplorePage> {
                                                 setState(() {
                                                   isCollect = !isCollect;
                                                   showSnackBar(
-                                                      context,
-                                                      isCollect
+                                                      msg: isCollect
                                                           ? '收藏成功'
                                                           : '取消收藏');
                                                 });
@@ -1013,8 +1013,7 @@ class FavoritesPageState extends State<FavoritesPage> {
                                               setState(() {
                                                 isCollect = !isCollect;
                                                 showSnackBar(
-                                                    context,
-                                                    isCollect
+                                                    msg: isCollect
                                                         ? '收藏成功'
                                                         : '取消收藏');
                                               });

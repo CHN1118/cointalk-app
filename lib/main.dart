@@ -86,6 +86,7 @@ class _MyAppState extends State<MyApp> {
                 primary: Colors.black, //主题色
               ).copyWith(background: Colors.white)),
           initialRoute: '/',
+          // importwallet
           routingCallback: (routing) {},
           getPages: AppPages.pages,
         );
