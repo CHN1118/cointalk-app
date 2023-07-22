@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet/common/style/app_theme.dart';
-import 'package:wallet/views/browser/share.dart';
+import 'package:wallet/widgets/browser/share.dart';
+
 
 class Browser extends StatefulWidget {
   const Browser({super.key});
