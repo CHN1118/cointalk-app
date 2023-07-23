@@ -13,7 +13,7 @@ class Browser extends StatefulWidget {
 }
 
 // ignore: non_constant_identifier_names
-Future<bool?> showSnackBar({String? msg = '助记词顺序错误'}) {
+Future<bool?> showSnackBar({String? msg}) {
   return Fluttertoast.showToast(
       msg: msg!,
       toastLength: Toast.LENGTH_SHORT, // 消息框持续的时间

@@ -1,6 +1,7 @@
 // Share
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet/common/style/app_theme.dart';
 
 class SharePage extends StatefulWidget {
@@ -14,9 +15,6 @@ class SharePageState extends State<SharePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showBottomSheet(context); // 在页面加载完成后调用弹框函数
-    });
   }
 
 //~分享弹框
@@ -171,7 +169,59 @@ class SharePageState extends State<SharePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      // appBar: AppBar(),
+      body: Container(
+          margin: EdgeInsets.only(top: 64.h),
+          padding: EdgeInsets.only(left: 22.w, right: 22.w),
+          child: Row(
+            //对齐方式
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                  width: 89.w,
+                  height: 30.w,
+                  padding: EdgeInsets.only(left: 15.w, right: 15.w),
+                  decoration: BoxDecoration(
+                      color: const Color(0xff45AAAF).withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(25.w)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _showBottomSheet(context);
+                        },
+                        child: SvgPicture.asset(
+                          'assets/svgs/point.svg',
+                          width: 20.w,
+                          height: 20.w,
+                          // ignore: deprecated_member_use
+                          color: const Color(0xff292D32).withOpacity(0.3),
+                        ),
+                      ),
+                      Text(
+                        '｜',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          color: const Color(0xff292D32).withOpacity(0.3),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: SvgPicture.asset(
+                          'assets/svgs/del2.svg',
+                          width: 13.w,
+                          height: 17.w,
+                          // ignore: deprecated_member_use
+                          color: const Color(0xff292D32).withOpacity(0.3),
+                        ),
+                      ),
+                    ],
+                  )),
+            ],
+          )),
     );
   }
 }
