@@ -10,9 +10,11 @@ import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/biometricauthentication.dart';
 import 'package:wallet/components/custom_dialog.dart';
 import 'package:wallet/database/index.dart';
+import 'package:wallet/widgets/importwallet/importwallet.dart';
 
 class CreatPsw extends StatefulWidget {
-  const CreatPsw({super.key});
+  CreatPsw({super.key, this.title = '创建登录密码'});
+  String title;
 
   @override
   State<CreatPsw> createState() => ICreatPswState();
@@ -100,7 +102,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('创建登录密码',
+                Text(widget.title,
                     style: TextStyle(
                         fontSize: 20.sp, fontWeight: FontWeight.w900)),
                 SizedBox(height: 15.h),
@@ -437,9 +439,14 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
         _confirmPswtext.text != '' &&
         strength > 0.3) {
       EasyLoading.dismiss();
-      await DB.box.write('login_psw', _setPswtext.text);
+      await DB.box.write('walletPassword', _setPswtext.text);
       await DB.box.write('isEBV', isEBV);
-      Get.offAllNamed('/walletname');
+      print(widget.title);
+      if (widget.title == '创建钱包密码') {
+        Get.offAll(() => const ImportW());
+      } else {
+        Get.offAllNamed('/walletname');
+      }
     }
   }
 }

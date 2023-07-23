@@ -7,18 +7,16 @@ class Controller extends GetxController {
   var language = '中文'.obs;
 
   setLanguage() {
-    var lang = DB.box.read('Language');
+    var lang = DB.box.read('Language') ?? 'zh_CN';
     if (lang == 'en_US') {
       language.value = 'English';
     } else if (lang == 'zh_CN') {
-      language.value = '中文';
-    } else if (lang == null) {
       language.value = '中文';
     }
   }
 
   changeLanguage() {
-    var lang = DB.box.read('Language');
+    var lang = DB.box.read('Language') ?? 'zh_CN';
     if (lang == 'en_US') {
       DB.box.write('Language', 'zh_CN');
       const locale = Locale('zh', 'CN');
@@ -27,11 +25,10 @@ class Controller extends GetxController {
       DB.box.write('Language', 'en_US');
       const locale = Locale('en', 'US');
       Get.updateLocale(locale);
-    } else {
-      DB.box.write('Language', 'zh_CN');
-      const locale = Locale('zh', 'CN');
-      Get.updateLocale(locale);
     }
     setLanguage();
   }
 }
+
+//*全局控制器
+Controller C = Get.find();

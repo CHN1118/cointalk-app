@@ -17,7 +17,7 @@ class AppPages {
     ),
     GetPage(
       name: '/startup',
-      page: () => Splash(),
+      page: () => const Splash(),
     ),
     GetPage(
         name: '/walletname',

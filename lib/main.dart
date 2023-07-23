@@ -17,6 +17,7 @@ void main() async {
       WidgetsFlutterBinding.ensureInitialized(); //*初始化
   await GetStorage.init(); //*初始化本地存储
   Get.put(Controller()).setLanguage(); //*初始化语言
+  C = Get.find(); //*获取控制器
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding); //*启动图
   initialization(null); //*启动图延时移除
   await SystemChrome.setPreferredOrientations(<DeviceOrientation>[

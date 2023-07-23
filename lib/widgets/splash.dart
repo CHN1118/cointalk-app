@@ -4,8 +4,7 @@ import 'package:get/get.dart';
 import 'package:wallet/controller/index.dart';
 
 class Splash extends StatelessWidget {
-  Splash({super.key});
-  final Controller c = Get.find(); //*获取控制器
+  const Splash({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class Splash extends StatelessWidget {
         child: Center(
             child: InkWell(
                 onTap: () {
-                  c.changeLanguage();
+                  C!.changeLanguage();
                 },
                 child: Text('login_nation'.tr,
                     style: const TextStyle(color: Colors.black)))),

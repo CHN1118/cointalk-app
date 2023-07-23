@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/common/utils/dapp.dart';
+import 'package:wallet/database/index.dart';
 
 class BackupMnemonic extends StatefulWidget {
   const BackupMnemonic({super.key});
@@ -354,10 +356,13 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
         fontSize: 14.0.sp);
   }
 
-  void Next() {
+  Future<void> Next() async {
     if (!isShow) {
       return;
     }
-    ErrorShow(msg: '验证成功');
+    String walletName = DB.box.read('walletName');
+    String walletPassword = DB.box.read('walletPassword');
+    await dapp.importMnemonic(mnemonic, walletName, walletPassword);
+    // Clipboard.setData(ClipboardData(text: 'dd'));
   }
 }

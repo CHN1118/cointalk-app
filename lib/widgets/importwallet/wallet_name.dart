@@ -152,7 +152,7 @@ class WwalletnameState extends State<Walletname> {
     //* 符合条件
     if (_walletNametext.text != '') {
       EasyLoading.dismiss();
-      await DB.box.write('wallet_name', _walletNametext.text);
+      await DB.box.write('walletName', _walletNametext.text);
       Get.offAllNamed('/mnemonic');
     }
   }
