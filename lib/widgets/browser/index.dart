@@ -12,6 +12,7 @@ class Browser extends StatefulWidget {
   State<Browser> createState() => _BrowserState();
 }
 
+//~收藏弹框
 // ignore: non_constant_identifier_names
 Future<bool?> showSnackBar({String? msg}) {
   return Fluttertoast.showToast(
@@ -806,7 +807,7 @@ class ExplorePageState extends State<ExplorePage> {
                     )
                   ],
                 )),
-            explorePageList.length == 0
+            explorePageList.isEmpty
                 ? Positioned(
                     top: 86.h,
                     left: 0,
@@ -942,7 +943,8 @@ class FavoritesPageState extends State<FavoritesPage> {
   List FavoritesList = [];
   @override
   Widget build(BuildContext context) {
-    return FavoritesList.length == 0
+    // FavoritesList.length == 0
+    return FavoritesList.isEmpty
         ? Stack(
             children: [
               Positioned(

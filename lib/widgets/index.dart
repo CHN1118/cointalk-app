@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/browser/index.dart';
+import 'package:wallet/widgets/mine/index.dart';
 import 'package:wallet/widgets/wallet/index.dart';
 
 class Index extends StatefulWidget {
@@ -21,7 +22,7 @@ class _IndexState extends State<Index> {
     const Wallet(),
     const Center(child: Text("消息")),
     const Browser(),
-    const Center(child: Text("我的")),
+    const Mymine(),
   ];
 
   @override

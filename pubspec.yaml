@@ -40,6 +40,7 @@ dependencies:
   bip32: ^2.0.0                         #* 生成私钥
   json_rpc_2: ^3.0.2                    #* json rpc
   web3dart: ^2.4.1                      #* web3
+  flutter_slidable: ^3.0.0               #* 滑动删除
 
 dev_dependencies:
   flutter_test:
