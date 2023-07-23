@@ -43,6 +43,7 @@ dependencies:
   hex: ^0.2.0                           #* hex
   qr_flutter: ^4.0.0                     #* 二维码
   mobile_scanner: ^3.3.0                #* 扫码
+  flutter_slidable: ^3.0.0               #* 滑动删除
 
 dev_dependencies:
   flutter_test:
