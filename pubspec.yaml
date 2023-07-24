@@ -44,6 +44,12 @@ dependencies:
   qr_flutter: ^4.0.0                     #* 二维码
   mobile_scanner: ^3.3.0                #* 扫码
   flutter_slidable: ^3.0.0               #* 滑动删除
+  image_picker: ^1.0.1                  #* 图片选择
+  camera: ^0.10.5+2                     #* 相机
+  path_provider: ^2.0.15                #* 文件路径
+  path: ^1.8.3                          #* 文件路径
+  video_player: ^2.7.0
+
 
 dev_dependencies:
   flutter_test:

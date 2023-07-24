@@ -122,8 +122,9 @@ class _BrowserState extends State<Browser> {
                               end: Alignment.bottomRight,
                             ),
                             borderRadius: BorderRadius.circular(25.w)),
+                        //搜索框
                         child: TextField(
-                          controller: _textEditingController,
+                          controller: _textEditingController, // 设置控制器
                           cursorColor: Colors.green, //设置光标颜色
                           strutStyle: StrutStyle.fromTextStyle(
                               TextStyle(fontSize: 25.0.w, height: 0.8.w)),
@@ -164,7 +165,7 @@ class _BrowserState extends State<Browser> {
                             setState(() {
                               _searchText = value;
                               if (_searchText.isNotEmpty) {
-                                addToHistory(_searchText);
+                                addToHistory(_searchText); // 将搜索内容添加到历史记录列表
                               }
                             });
                             _handleSearchSubmit();
