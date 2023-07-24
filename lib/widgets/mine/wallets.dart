@@ -171,7 +171,7 @@ class _WalletManState extends State<WalletMan> {
                                   child: Slidable(
                                     key: Key(items[index].text),
                                     endActionPane: ActionPane(
-                                      extentRatio: 0.26, // 控制滑动项widget的大小
+                                      extentRatio: 0.35, // 控制滑动项widget的大小
                                       motion: const ScrollMotion(), //滑动动画
                                       dragDismissible: false, //是否可以通过拖动将操作取消
                                       children: [
@@ -435,6 +435,7 @@ class _WalletManState extends State<WalletMan> {
                           setState(() {
                             //删除items的数据
                             items.removeAt(index);
+                            showSnackBar(msg: '删除成功');
                             Navigator.pop(context); // 关闭底部弹框
                           });
                         },
