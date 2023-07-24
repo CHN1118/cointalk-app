@@ -18,7 +18,7 @@ dependencies:
   flutter_screenutil: ^5.8.4             #* 屏幕适配
   get_storage: ^2.1.1                   #* 本地存储
   get: ^4.6.5                           #* 状态管理
-  intl: ^0.18.1                         #* 时间格式化
+  intl: ^0.18.0                         #* 时间格式化
   flutter_svg: ^2.0.7                    #* svg
   flutter_chat_ui: ^1.6.8                #* 聊天界面
   lottie: ^2.4.0                        #* lottie动画
@@ -44,6 +44,7 @@ dependencies:
   qr_flutter: ^4.0.0                     #* 二维码
   mobile_scanner: ^3.3.0                #* 扫码
   flutter_slidable: ^3.0.0               #* 滑动删除
+  flutter_localization: ^0.1.13          #* 多语言
 
 dev_dependencies:
   flutter_test:

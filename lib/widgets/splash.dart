@@ -15,7 +15,7 @@ class Splash extends StatelessWidget {
         child: Center(
             child: InkWell(
                 onTap: () {
-                  C!.changeLanguage();
+                  C.changeLanguage();
                 },
                 child: Text('login_nation'.tr,
                     style: const TextStyle(color: Colors.black)))),
