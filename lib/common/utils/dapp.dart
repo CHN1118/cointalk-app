@@ -1,17 +1,20 @@
 // ignore_for_file: deprecated_member_use, avoid_print, prefer_interpolation_to_compose_strings
 
+import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:bip32/bip32.dart' as bip32;
+import 'package:wallet/database/index.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:hex/hex.dart';
 
 class Dapp {
   // 导入助记词
-  Future<void> importMnemonic(
-      String mnemonic, String walletname, String password) async {
+  Future<Map<String, dynamic>> importMnemonic(
+      String mnemonic, String walletname, String password,
+      {bool active = false}) async {
     // ... （之前的代码生成助记词的部分）
 
     // 生成钱包名称（用于标识钱包）
@@ -46,7 +49,37 @@ class Dapp {
     print('私钥: $privateKey');
     print('地址: $mAddress');
     print('Keystore: $keystore');
+    return {
+      'walletname': walletName, // 钱包名称
+      'mnemonic': mnemonic, // 助记词
+      'seed': seed, // 种子值
+      'privatekey': privateKey, // 私钥
+      'address': mAddress, // 地址
+      'keystore': keystore, // Keystore
+      'active': active, // 是否激活
+    };
   }
 }
 
 var dapp = Dapp();
+
+// 存储钱包信息的构造函数
+class StoreWalletInformation {
+  // 添加钱包信息
+  addWalletInfo(Map<String, dynamic> walletInformation) {
+    // 获取钱包信息数组
+    var walletList = DB.box.read('WalletList') ?? [];
+    // 判断钱包信息数组是已经存在该钱包
+    var isExist = false;
+    for (var i = 0; i < walletList.length; i++) {
+      if (walletList[i]['address'] == walletInformation['address']) {
+        isExist = true;
+      }
+    }
+    // 添加钱包信息
+    walletList.add(walletInformation);
+    // 更新钱包信息数组
+    DB.box.write('WalletList', walletList);
+  }
+}
+
