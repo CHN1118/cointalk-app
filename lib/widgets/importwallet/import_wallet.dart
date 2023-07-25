@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/common/utils/dapp.dart';
+import 'package:wallet/database/index.dart';
 
 class ImportW extends StatefulWidget {
   const ImportW({super.key});
@@ -15,8 +17,6 @@ class ImportW extends StatefulWidget {
 }
 
 class WImportWState extends State<ImportW> {
-  String mnemonic = ''; //助记词
-  List<String> mnemonicArr = List.generate(12, (index) => '');
   final TextEditingController wallet_text = TextEditingController();
   final FocusNode wallet_focus = FocusNode();
   bool isFocus = false; //是否聚焦
@@ -170,56 +170,6 @@ class WImportWState extends State<ImportW> {
                           ),
                   ),
                 ),
-                // Wrap(
-                //   spacing: 12.h,
-                //   runSpacing: 12.h,
-                //   children: mnemonicArr.asMap().entries.map((entry) {
-                //     int index = entry.key;
-                //     String item = entry.value;
-                //     return GestureDetector(
-                //       onLongPress: () {
-                //         pasteFromClipboard();
-                //       },
-                //       child: Container(
-                //         width: (MediaQuery.of(context).size.width / 2) -
-                //             6.h -
-                //             26.w,
-                //         height: 40.w,
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(4.w),
-                //           border: Border.all(
-                //               color: AppTheme.themeColor, width: 1.w),
-                //         ),
-                //         child: Stack(
-                //           children: [
-                //             SizedBox(
-                //               width: 40.w,
-                //               height: 40.w,
-                //               child: Padding(
-                //                 padding: EdgeInsets.only(left: 5.w, top: 5.w),
-                //                 child: Text(
-                //                   '${index + 1}',
-                //                   style: TextStyle(
-                //                       fontSize: 12.sp,
-                //                       fontWeight: FontWeight.w700,
-                //                       color: AppTheme.themeColor),
-                //                 ),
-                //               ),
-                //             ),
-                //             Center(
-                //               child: Text(
-                //                 item,
-                //                 style: TextStyle(
-                //                     fontSize: 16.sp,
-                //                     fontWeight: FontWeight.w800),
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       ),
-                //     );
-                //   }).toList(),
-                // ),
                 const Expanded(child: SizedBox()),
                 InkWell(
                   onTap: Next,
@@ -253,25 +203,7 @@ class WImportWState extends State<ImportW> {
         ),
       ),
     );
-  }
-
-  // // 从系统剪贴板中获取内容，并处理粘贴操作
-  // void pasteFromClipboard() async {
-  //   ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
-  //   if (data != null && data.text != null) {
-  //     // 这里可以处理粘贴的文本内容，比如将其显示在界面上
-  //     if (checkFor12Words(data.text!)) {
-  //       mnemonic = data.text!;
-  //       mnemonicArr = mnemonic
-  //           .split(RegExp(r'\s+'))
-  //           .where((word) => word.isNotEmpty)
-  //           .toList();
-  //     } else {
-  //       ErrorShow(msg: '助记词有误');
-  //     }
-  //     setState(() {});
-  //   }
-  // }
+  } 
 
   //* 检查剪贴板中的内容是否为12个助记词
   bool checkFor12Words(String clipboardContent) {
@@ -319,7 +251,14 @@ class WImportWState extends State<ImportW> {
       if (wallet_text.text == '') {
         ErrorShow(msg: '请输入密钥');
       } else {
-        if (wallet_text.text.length == 64) {
+        print('5e7d9d40baa5a6cc7d28771cdf8c39f30ad32e3a3bae230339aca43fc34502e2'
+            .length);
+        if (wallet_text.text.length == 64 ||
+            wallet_text.text.substring(0, 2) == '0x') {
+          String mprivate = wallet_text.text;
+          String password = DB.box.read('walletPassword');
+          String walletname = DB.box.read('walletName') ?? '';
+          dapp.importPrivate(mprivate, walletname, password);
         } else {
           ErrorShow(msg: '密钥有误');
         }

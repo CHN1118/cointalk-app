@@ -62,9 +62,6 @@ class IimportwalletState extends State<Importwallet> {
             //* 创建钱包
             InkWell(
               onTap: () async {
-                await DB.box.write('isEBV', false); //清除是否开启生物识别
-                await DB.box.write('walletPassword', null); //清除登录密码
-                await DB.box.write('walletName', null); //清除钱包名称
                 Get.to(() => CreatPsw());
               },
               child: Container(
@@ -95,9 +92,6 @@ class IimportwalletState extends State<Importwallet> {
             //* 导入钱包
             InkWell(
               onTap: () async {
-                await DB.box.write('isEBV', false); //清除是否开启生物识别
-                await DB.box.write('walletPassword', null); //清除登录密码
-                await DB.box.write('walletName', null); //清除钱包名称
                 Get.to(() => CreatPsw(
                       title: '创建钱包密码',
                     ));

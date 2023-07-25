@@ -1,17 +1,16 @@
 // ignore_for_file: deprecated_member_use, avoid_print, prefer_interpolation_to_compose_strings
-
-import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:wallet/database/index.dart';
+import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:hex/hex.dart';
 
 class Dapp {
-  // 导入助记词
+  // 助记词 生成钱包
   Future<Map<String, dynamic>> importMnemonic(
       String mnemonic, String walletname, String password,
       {bool active = false}) async {
@@ -28,7 +27,7 @@ class Dapp {
 
     // 从根私钥派生指定路径的子私钥
     var child = root.derivePath("m/44'/60'/0'/0/0");
-    String privateKey = '0x' + HEX.encode(child.privateKey as Uint8List);
+    String privateKey = HEX.encode(child.privateKey as Uint8List);
 
     // 生成凭证（Credentials）
     EthPrivateKey credentials = EthPrivateKey.fromHex(privateKey);
@@ -59,7 +58,35 @@ class Dapp {
       'active': active, // 是否激活
     };
   }
+
+  // keystore 生成钱包
+  Future<void> importKetystore(
+      String keystore, String walletname, String password) async {
+    Wallet wallet = Wallet.fromJson(keystore, password);
+    EthereumAddress address = await wallet.privateKey.extractAddress();
+    String mAddress = address.hexEip55;
+    String privateKey = bytesToHex(wallet.privateKey.privateKey);
+    print("地址   ====   " + mAddress);
+    print('解析keystore====     ' + keystore);
+    print("私钥====     " + privateKey);
+  }
+
+  //导入私钥 生成钱包
+  Future<void> importPrivate(
+      String mprivate, String walletname, String password) async {
+    EthPrivateKey credentials = EthPrivateKey.fromHex(mprivate);
+    EthereumAddress address = await credentials.extractAddress();
+    String mAddress = address.hexEip55;
+    var random = Random.secure();
+    Wallet wallet = Wallet.createNew(credentials, password, random);
+    String keystore = wallet.toJson();
+    print('私钥====     ' + mprivate);
+    print("地址   ====   " + mAddress);
+    print("keystore====     " + keystore);
+  }
 }
+
+class Pbkdf2Parameters {}
 
 var dapp = Dapp();
 
@@ -82,4 +109,3 @@ class StoreWalletInformation {
     DB.box.write('WalletList', walletList);
   }
 }
-
