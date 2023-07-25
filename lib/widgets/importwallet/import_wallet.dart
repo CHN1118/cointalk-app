@@ -203,7 +203,7 @@ class WImportWState extends State<ImportW> {
         ),
       ),
     );
-  } 
+  }
 
   //* 检查剪贴板中的内容是否为12个助记词
   bool checkFor12Words(String clipboardContent) {
@@ -238,6 +238,8 @@ class WImportWState extends State<ImportW> {
   }
 
   void Next() {
+    dapp.importKetystore(wallet_text.text, '123456', 'Chn1023.');
+    return;
     if (isWalletShow) {
       if (wallet_text.text == '') {
         ErrorShow(msg: '请输入助记词');

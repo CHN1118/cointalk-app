@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:bip32/bip32.dart' as bip32;
+import 'package:wallet/common/utils/log.dart';
 import 'package:wallet/database/index.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
@@ -11,7 +12,7 @@ import 'package:hex/hex.dart';
 
 class Dapp {
   // 助记词 生成钱包
-  Future<Map<String, dynamic>> importMnemonic(
+  Future<dynamic> importMnemonic(
       String mnemonic, String walletname, String password,
       {bool active = false}) async {
     // ... （之前的代码生成助记词的部分）
@@ -51,8 +52,6 @@ class Dapp {
     return {
       'walletname': walletName, // 钱包名称
       'mnemonic': mnemonic, // 助记词
-      'seed': seed, // 种子值
-      'privatekey': privateKey, // 私钥
       'address': mAddress, // 地址
       'keystore': keystore, // Keystore
       'active': active, // 是否激活
@@ -60,15 +59,30 @@ class Dapp {
   }
 
   // keystore 生成钱包
-  Future<void> importKetystore(
-      String keystore, String walletname, String password) async {
-    Wallet wallet = Wallet.fromJson(keystore, password);
-    EthereumAddress address = await wallet.privateKey.extractAddress();
-    String mAddress = address.hexEip55;
-    String privateKey = bytesToHex(wallet.privateKey.privateKey);
-    print("地址   ====   " + mAddress);
-    print('解析keystore====     ' + keystore);
-    print("私钥====     " + privateKey);
+  Future<dynamic> importKetystore(
+      String keystore, String walletname, String password,
+      {bool active = false}) async {
+    try {
+      Wallet wallet = Wallet.fromJson(keystore, password);
+      EthereumAddress address = await wallet.privateKey.extractAddress();
+      String mAddress = address.hexEip55;
+      String privateKey = bytesToHex(wallet.privateKey.privateKey);
+      LLogger.i("\n地址          ====>   " +
+          mAddress +
+          "\n私钥          ====>   " +
+          privateKey +
+          "\nkeystore     ====>   " +
+          keystore);
+      return {
+        'walletname': walletname, // 钱包名称
+        'address': mAddress, // 地址
+        'keystore': keystore, // Keystore
+        'active': active, // 是否激活
+      };
+    } catch (e) {
+      LLogger.e('导入KeyStroe: ========> 您提供了错误的密码或文件已损坏 !!!');
+      return null;
+    }
   }
 
   //导入私钥 生成钱包
