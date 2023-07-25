@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
               primaryColor: Colors.white,
               useMaterial3: true, //使用Material3
               appBarTheme: AppBarTheme(
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.white.withOpacity(0),
                 surfaceTintColor: Colors.transparent,
                 foregroundColor: Colors.black,
                 titleTextStyle: TextStyle(
