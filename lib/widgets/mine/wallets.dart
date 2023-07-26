@@ -81,6 +81,7 @@ class _WalletManState extends State<WalletMan> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true, // 标题居中
         title: Text('钱包管理', style: TextStyle(fontSize: 20.sp)),
       ),
       body: SizedBox(

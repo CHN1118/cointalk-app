@@ -169,7 +169,6 @@ class SharePageState extends State<SharePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(),
       body: Container(
           margin: EdgeInsets.only(top: 64.h),
           padding: EdgeInsets.only(left: 22.w, right: 22.w),

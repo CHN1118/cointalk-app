@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/browser/index.dart';
+import 'package:wallet/widgets/message/index.dart';
 import 'package:wallet/widgets/mine/index.dart';
 import 'package:wallet/widgets/wallet/index.dart';
 
@@ -20,7 +21,7 @@ class _IndexState extends State<Index> {
 
   final List<Widget> _pages = [
     const Wallet(),
-    const Center(child: Text("消息")),
+    const MessagePage(),
     const Browser(),
     const Mymine(),
   ];

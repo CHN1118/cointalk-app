@@ -24,6 +24,8 @@ class AppTheme {
   static const Color themeColor2 = Color(0xFFEDEFF5);
   static const Color purseTheme = Color(0xffF2F8F5);
   static Color browserColor = const Color(0xff000000).withOpacity(0.5);
+  static Gradient redBtn =
+      const LinearGradient(colors: [Color(0xFF9FDADE), Color(0xFF92ADDF)]);
   static const String fontName = 'MiSans';
 
   static const TextTheme textTheme = TextTheme(

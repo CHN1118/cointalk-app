@@ -48,7 +48,8 @@ dependencies:
   camera: ^0.10.5+2                     #* 相机
   path_provider: ^2.0.15                #* 文件路径
   path: ^1.8.3                          #* 文件路径
-  video_player: ^2.7.0
+  video_player: ^2.7.0                  #* 视频播放
+  dropdown_button2: ^2.3.6              #* 下拉框
 
 
 dev_dependencies:
