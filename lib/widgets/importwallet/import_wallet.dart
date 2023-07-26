@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/dapp.dart';
+import 'package:wallet/common/utils/log.dart';
 import 'package:wallet/database/index.dart';
 
 class ImportW extends StatefulWidget {
@@ -100,7 +101,7 @@ class WImportWState extends State<ImportW> {
                             height: 26.w,
                             child: Center(
                               child: Text(
-                                isWalletShow ? '密钥' : '助记词',
+                                isWalletShow ? '私钥' : '助记词',
                                 style: TextStyle(
                                     fontSize: 17.sp,
                                     fontWeight: FontWeight.w400,
@@ -125,7 +126,7 @@ class WImportWState extends State<ImportW> {
                               ),
                               child: Center(
                                 child: Text(
-                                  isWalletShow ? '助记词' : '密钥',
+                                  isWalletShow ? '助记词' : '私钥',
                                   style: TextStyle(
                                       fontSize: 17.sp,
                                       fontWeight: FontWeight.w400,
@@ -188,7 +189,7 @@ class WImportWState extends State<ImportW> {
                     ),
                     child: Center(
                       child: Text(
-                        isWalletShow ? '提交助记词' : '提交密钥',
+                        isWalletShow ? '提交助记词' : '提交私钥',
                         style: TextStyle(
                             fontSize: 17.sp,
                             fontWeight: FontWeight.w600,
@@ -213,8 +214,7 @@ class WImportWState extends State<ImportW> {
         .where((word) => word.isNotEmpty)
         .toList();
 
-    print(words);
-    print(words.length);
+    LLogger.e('助记词有误: $words');
     // 判断是否有且只有12个助记词
     if (words.length == 12) {
       // 在这里可以进一步验证助记词是否在助记词词库中
@@ -238,8 +238,6 @@ class WImportWState extends State<ImportW> {
   }
 
   void Next() {
-    dapp.importKetystore(wallet_text.text, '123456', 'Chn1023.');
-    return;
     if (isWalletShow) {
       if (wallet_text.text == '') {
         ErrorShow(msg: '请输入助记词');
@@ -251,18 +249,17 @@ class WImportWState extends State<ImportW> {
       }
     } else {
       if (wallet_text.text == '') {
-        ErrorShow(msg: '请输入密钥');
+        ErrorShow(msg: '请输入私钥');
       } else {
-        print('5e7d9d40baa5a6cc7d28771cdf8c39f30ad32e3a3bae230339aca43fc34502e2'
-            .length);
         if (wallet_text.text.length == 64 ||
-            wallet_text.text.substring(0, 2) == '0x') {
+            (wallet_text.text.length == 66 &&
+                wallet_text.text.substring(0, 2) == '0x')) {
           String mprivate = wallet_text.text;
-          String password = DB.box.read('walletPassword');
+          String password = Get.arguments['password'] ?? '';
           String walletname = DB.box.read('walletName') ?? '';
           dapp.importPrivate(mprivate, walletname, password);
         } else {
-          ErrorShow(msg: '密钥有误');
+          ErrorShow(msg: '私钥有误');
         }
       }
     }

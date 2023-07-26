@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/biometricauthentication.dart';
@@ -51,12 +52,21 @@ class IimportwalletState extends State<Importwallet> {
         child: Column(
           children: [
             Expanded(
-              child: Center(
-                child: Text(
-                  "LinkWallet",
-                  style:
-                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w900),
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/svgs/logo.svg',
+                    width: 208.947.w,
+                    height: 206.4.w,
+                  ),
+                  SizedBox(height: 78.h),
+                  Text(
+                    "欢迎",
+                    style:
+                        TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),
+                  ),
+                ],
               ),
             ),
             //* 创建钱包

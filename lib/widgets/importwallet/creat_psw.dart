@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:password_strength/password_strength.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/biometricauthentication.dart';
+import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/components/custom_dialog.dart';
 import 'package:wallet/database/index.dart';
 import 'package:wallet/widgets/importwallet/import_wallet.dart';
@@ -464,8 +465,6 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
         _setPswtext.text != '' &&
         _confirmPswtext.text != '' &&
         strength > 0.3) {
-      // await DB.box.write('walletPassword', _setPswtext.text);
-      // await DB.box.write('isEBV', isEBV);
       final Map<String, dynamic> arguments = {
         'walletPassword': _setPswtext.text,
         'isEBV': isEBV

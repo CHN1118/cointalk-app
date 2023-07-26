@@ -18,7 +18,7 @@ class BackupMnemonic extends StatefulWidget {
 }
 
 class WBackupMnemonicState extends State<BackupMnemonic> {
-  String mnemonic = Get.arguments;
+  String mnemonic = Get.arguments['mnemonic'];
   List<Map<dynamic, dynamic>> mnemonicArr = [];
   List<Map<dynamic, dynamic>> nullMnemonicArr = [];
   List<int> shuffledList = List.generate(12, (index) => index);
@@ -367,9 +367,11 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
     if (!isShow) {
       return;
     }
-    String walletName = DB.box.read('walletName');
-    String walletPassword = DB.box.read('walletPassword');
-    await dapp.importMnemonic(mnemonic, walletName, walletPassword);
-    // Clipboard.setData(ClipboardData(text: 'dd'));
+    String walletName = Get.arguments['walletName']; // 钱包名称
+    String walletPassword = Get.arguments['walletPassword']; // 钱包密码
+    bool isEBV = Get.arguments['isEBV'];
+    var walletInfo =
+        await dapp.importMnemonic(mnemonic, walletName, walletPassword, isEBV);
+    swi.addWalletInfo(walletInfo);
   }
 }
