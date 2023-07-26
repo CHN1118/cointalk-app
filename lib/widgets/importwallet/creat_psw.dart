@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field, non_constant_identifier_names, avoid_print, deprecated_member_use, use_build_context_synchronously
+// ignore_for_file: unused_field, non_constant_identifier_names, avoid_print, deprecated_member_use, use_build_context_synchronously, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +10,7 @@ import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/biometricauthentication.dart';
 import 'package:wallet/components/custom_dialog.dart';
 import 'package:wallet/database/index.dart';
-import 'package:wallet/widgets/importwallet/importwallet.dart';
+import 'package:wallet/widgets/importwallet/import_wallet.dart';
 
 class CreatPsw extends StatefulWidget {
   CreatPsw({super.key, this.title = '创建登录密码'});
@@ -120,12 +120,18 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                 //*设置密码
                 Stack(
                   children: [
-                    Container(
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 150),
                       height: 52.w,
                       padding: EdgeInsets.only(left: 15.w, right: 15.w),
                       decoration: BoxDecoration(
                         color: AppTheme.themeColor2.withOpacity(.5),
                         borderRadius: BorderRadius.circular(4.w),
+                        border: Border.all(
+                            color: isFocus1
+                                ? AppTheme.themeColor
+                                : Colors.transparent,
+                            width: 1.w),
                       ),
                       child: Center(
                         child: TextFormField(
@@ -197,7 +203,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black),
                                 ),
-                                SizedBox(height: 5.w),
+                                SizedBox(height: 5.h),
                                 Container(
                                   height: 8.w,
                                   width: 60.w,
@@ -223,11 +229,17 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                 //*确认密码
                 Stack(
                   children: [
-                    Container(
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 150),
                       height: 52.w,
                       decoration: BoxDecoration(
                         color: AppTheme.themeColor2.withOpacity(.5),
                         borderRadius: BorderRadius.circular(4.w),
+                        border: Border.all(
+                            color: isFocus
+                                ? AppTheme.themeColor
+                                : Colors.transparent,
+                            width: 1.w),
                       ),
                     ),
                     if (_setPswtext.text != '' &&
@@ -343,6 +355,13 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                                     ? AppTheme.themeColor.withOpacity(.8)
                                     : Colors.grey,
                                 borderRadius: BorderRadius.circular(11.w),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(.1),
+                                    blurRadius: 10.0,
+                                    spreadRadius: 1.0,
+                                  ),
+                                ],
                               ),
                               child: Row(
                                 children: [
@@ -376,6 +395,12 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                       decoration: BoxDecoration(
                         color: AppTheme.themeColor,
                         borderRadius: BorderRadius.circular(4.w),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 1,
+                          ),
+                        ],
                       ),
                       child: Center(
                         child: Text(
@@ -398,13 +423,14 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
   }
 
   setFiceID() async {
+    HapticFeedback.heavyImpact(); //震动
+    FocusScope.of(context).requestFocus(FocusNode());
     if (isEBV) {
       isEBV = false; //关闭生物识别
       DB.box.write('isEBV', isEBV);
       setState(() {});
       return;
     }
-    HapticFeedback.heavyImpact(); //震动
     bool isYes = await Bio.authenticate(); //生物识别
     print('生物识别结果：$isYes');
     if (!isYes) return; //生物识别失败
@@ -414,22 +440,22 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
 
   Next() async {
     //! 开启加载
-    await EasyLoading.show(status: '加载中...');
+    await EasyLoading.show();
     //* 未输入密码
     if (_setPswtext.text == '' && _confirmPswtext.text == '') {
-      EasyLoading.dismiss();
+      await EasyLoading.dismiss();
       Cdog.show(context, '请输入密码');
       return;
     }
     //* 两次密码不一致
     if (_setPswtext.text != _confirmPswtext.text) {
-      EasyLoading.dismiss();
+      await EasyLoading.dismiss();
       Cdog.show(context, '两次密码不一致');
       return;
     }
     //* 密码强度不够
     if (strength < 0.3) {
-      EasyLoading.dismiss();
+      await EasyLoading.dismiss();
       Cdog.show(context, '密码强度不够');
       return;
     }
@@ -438,14 +464,20 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
         _setPswtext.text != '' &&
         _confirmPswtext.text != '' &&
         strength > 0.3) {
-      EasyLoading.dismiss();
-      await DB.box.write('walletPassword', _setPswtext.text);
-      await DB.box.write('isEBV', isEBV);
-      print(widget.title);
+      // await DB.box.write('walletPassword', _setPswtext.text);
+      // await DB.box.write('isEBV', isEBV);
+      final Map<String, dynamic> arguments = {
+        'walletPassword': _setPswtext.text,
+        'isEBV': isEBV
+      };
+      await EasyLoading.dismiss();
       if (widget.title == '创建钱包密码') {
-        Get.offAll(() => const ImportW());
+        Get.to(() => const ImportW(), arguments: arguments);
       } else {
-        Get.offAllNamed('/walletname');
+        Get.toNamed(
+          '/walletname',
+          arguments: arguments,
+        );
       }
     }
   }

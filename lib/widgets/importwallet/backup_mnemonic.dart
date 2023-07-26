@@ -165,7 +165,7 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
                         addItem(item);
                       },
                       child: Opacity(
-                        opacity: mnemonicArr[item]['isClick'] ? 0.3 : 1,
+                        opacity: mnemonicArr[item]['isClick'] ? 0.2 : 1,
                         child: Container(
                           padding: EdgeInsets.fromLTRB(15.h, 10.h, 15.h, 10.h),
                           decoration: BoxDecoration(
@@ -195,6 +195,13 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
                       decoration: BoxDecoration(
                         color: AppTheme.themeColor,
                         borderRadius: BorderRadius.circular(4.w),
+                        boxShadow: [
+                          if (isShow)
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 1,
+                            ),
+                        ],
                       ),
                       child: Center(
                         child: Text(
@@ -351,7 +358,7 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red.withOpacity(0.8),
+        backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 14.0.sp);
   }

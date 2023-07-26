@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:logger/logger.dart';
 
 class Log {
@@ -24,3 +26,5 @@ class Log {
     printer: LogfmtPrinter(),
   );
 }
+
+Logger LLogger = Logger();

@@ -18,7 +18,7 @@ dependencies:
   flutter_screenutil: ^5.8.4             #* 屏幕适配
   get_storage: ^2.1.1                   #* 本地存储
   get: ^4.6.5                           #* 状态管理
-  intl: ^0.18.1                         #* 时间格式化
+  intl: ^0.18.0                         #* 时间格式化
   flutter_svg: ^2.0.7                    #* svg
   flutter_chat_ui: ^1.6.8                #* 聊天界面
   lottie: ^2.4.0                        #* lottie动画
@@ -39,7 +39,7 @@ dependencies:
   bip39: ^1.0.6                         #* 生成助记词
   bip32: ^2.0.0                         #* 生成私钥
   json_rpc_2: ^3.0.2                    #* json rpc
-  web3dart: ^2.4.1                      #* web3
+  web3dart: ^2.5.3                      #* web3
   hex: ^0.2.0                           #* hex
   qr_flutter: ^4.0.0                     #* 二维码
   mobile_scanner: ^3.3.0                #* 扫码
@@ -50,7 +50,7 @@ dependencies:
   path: ^1.8.3                          #* 文件路径
   video_player: ^2.7.0                  #* 视频播放
   dropdown_button2: ^2.3.6              #* 下拉框
-
+  flutter_localization: ^0.1.13          #* 多语言
 
 dev_dependencies:
   flutter_test:

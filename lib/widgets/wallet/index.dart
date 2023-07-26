@@ -344,7 +344,7 @@ class _WalletState extends State<Wallet> {
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 24.w),
+                              SizedBox(height: 24.h),
                               SizedBox(
                                 height: 36.w,
                                 child: Row(
@@ -386,7 +386,7 @@ class _WalletState extends State<Wallet> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 8.w),
+                        SizedBox(height: 8.h),
                         Padding(
                           padding: EdgeInsets.only(left: 20.w),
                           child: InkWell(
@@ -442,7 +442,7 @@ class _WalletState extends State<Wallet> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 8.w),
+                        SizedBox(height: 8.h),
                         for (var i in coinName)
                           Item(
                             title: i,

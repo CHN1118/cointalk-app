@@ -23,9 +23,6 @@ class IimportwalletState extends State<Importwallet> {
   }
 
   detectionBio() async {
-    await DB.box.write('isEBV', false); //清除是否开启生物识别
-    await DB.box.write('walletPassword', null); //清除登录密码
-    await DB.box.write('walletName', null); //清除钱包名称
     try {
       bool isSupported = await Bio.isDeviceSupported(); //是否支持生物识别
       DB.box.write('isSupported', isSupported);
@@ -64,7 +61,7 @@ class IimportwalletState extends State<Importwallet> {
             ),
             //* 创建钱包
             InkWell(
-              onTap: () {
+              onTap: () async {
                 Get.to(() => CreatPsw());
               },
               child: Container(
@@ -73,6 +70,12 @@ class IimportwalletState extends State<Importwallet> {
                 decoration: BoxDecoration(
                   color: AppTheme.themeColor,
                   borderRadius: BorderRadius.circular(4.w),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 1,
+                    ),
+                  ],
                 ),
                 child: Center(
                   child: Text(
@@ -88,7 +91,7 @@ class IimportwalletState extends State<Importwallet> {
             SizedBox(height: 22.h),
             //* 导入钱包
             InkWell(
-              onTap: () {
+              onTap: () async {
                 Get.to(() => CreatPsw(
                       title: '创建钱包密码',
                     ));
@@ -97,8 +100,16 @@ class IimportwalletState extends State<Importwallet> {
                 width: 325.w,
                 height: 44.w,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4.w),
-                    border: Border.all(color: AppTheme.themeColor, width: 1.w)),
+                  borderRadius: BorderRadius.circular(4.w),
+                  border: Border.all(color: AppTheme.themeColor, width: 1.w),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 1,
+                    ),
+                  ],
+                ),
                 child: Center(
                   child: Text(
                     '导入钱包',

@@ -28,6 +28,21 @@ class Controller extends GetxController {
     }
     setLanguage();
   }
+
+  // *钱包信息数组 (Wallet Information Array)
+  var walletList = [].obs;
+
+  // *当前钱包信息 (Current Wallet Information)
+  var currentWallet = {}.obs;
+
+  // *获取钱包信息 (Get Wallet Information)
+  getWalletList() {
+    var list = DB.box.read('WalletList') ?? [];
+    walletList.value = list;
+    if (list.length > 0) {
+      currentWallet.value = list[0];
+    }
+  }
 }
 
 //*全局控制器

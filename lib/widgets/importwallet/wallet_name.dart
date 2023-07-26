@@ -18,10 +18,15 @@ class Walletname extends StatefulWidget {
 class WwalletnameState extends State<Walletname> {
   final TextEditingController _walletNametext = TextEditingController();
   final FocusNode _walletNameFocus = FocusNode();
-
+  bool isFocus = false; //是否聚焦
   @override
   void initState() {
     super.initState();
+    _walletNameFocus.addListener(() {
+      setState(() {
+        isFocus = _walletNameFocus.hasFocus;
+      });
+    });
   }
 
   @override
@@ -39,7 +44,13 @@ class WwalletnameState extends State<Walletname> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(),
+        appBar: AppBar(
+          leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(Icons.arrow_back)),
+        ),
         body: Container(
           padding: EdgeInsets.only(bottom: 60.h),
           width: 390.w,
@@ -56,11 +67,17 @@ class WwalletnameState extends State<Walletname> {
                 //*设置钱包名称
                 Stack(
                   children: [
-                    Container(
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 150),
                       height: 52.w,
                       decoration: BoxDecoration(
                         color: AppTheme.themeColor2.withOpacity(.5),
                         borderRadius: BorderRadius.circular(4.w),
+                        border: Border.all(
+                            color: isFocus
+                                ? AppTheme.themeColor
+                                : Colors.transparent,
+                            width: 1.w),
                       ),
                     ),
                     Container(
@@ -119,6 +136,12 @@ class WwalletnameState extends State<Walletname> {
                       decoration: BoxDecoration(
                         color: AppTheme.themeColor,
                         borderRadius: BorderRadius.circular(4.w),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 1,
+                          ),
+                        ],
                       ),
                       child: Center(
                         child: Text(
@@ -142,17 +165,18 @@ class WwalletnameState extends State<Walletname> {
 
   Next() async {
     //! 开启加载
-    await EasyLoading.show(status: '加载中...');
+    await EasyLoading.show();
     //* 请输入钱包名称
     if (_walletNametext.text == '') {
-      EasyLoading.dismiss();
+      await Future.delayed(const Duration(milliseconds: 500));
+      await EasyLoading.dismiss();
       Cdog.show(context, '请输入钱包名称');
       return;
-    }
-    //* 符合条件
-    if (_walletNametext.text != '') {
-      EasyLoading.dismiss();
+    } else {
+      //* 符合条件
+      await Future.delayed(const Duration(milliseconds: 500));
       await DB.box.write('walletName', _walletNametext.text);
+      await EasyLoading.dismiss();
       Get.offAllNamed('/mnemonic');
     }
   }

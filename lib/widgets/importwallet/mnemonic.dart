@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
@@ -127,6 +128,12 @@ class MMnemonicState extends State<Mnemonic> {
                       decoration: BoxDecoration(
                         color: AppTheme.themeColor,
                         borderRadius: BorderRadius.circular(4.w),
+                        boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 1,
+                        ),
+                      ],
                       ),
                       child: Center(
                         child: Text(
@@ -148,7 +155,11 @@ class MMnemonicState extends State<Mnemonic> {
     );
   }
 
-  void Next() {
+  Future<void> Next() async {
+    //! 开启加载
+    await EasyLoading.show();
+    await Future.delayed(const Duration(milliseconds: 500));
+    await EasyLoading.dismiss();
     Get.to(() => const BackupMnemonic(),
         arguments: mnemonic, transition: Transition.topLevel);
   }
