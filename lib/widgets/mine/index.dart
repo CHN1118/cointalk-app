@@ -13,8 +13,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-// ignore: depend_on_referenced_packages
-import 'package:mime/mime.dart';
 import 'package:video_player/video_player.dart';
 
 //&我的
@@ -573,6 +571,7 @@ class _EditorPageState extends State<EditorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true, // 标题居中
         actions: [
           InkWell(
             onTap: () {
@@ -609,6 +608,7 @@ class _EditorPageState extends State<EditorPage> {
           ),
         ),
       ),
+      //&输入框
       body: Container(
         padding: EdgeInsets.only(bottom: 7.w),
         margin: EdgeInsets.only(top: 55.h, left: 21.w, right: 21.w),

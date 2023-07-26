@@ -122,7 +122,7 @@ class _BrowserState extends State<Browser> {
                               end: Alignment.bottomRight,
                             ),
                             borderRadius: BorderRadius.circular(25.w)),
-                        //搜索框
+                        //^搜索框
                         child: TextField(
                           controller: _textEditingController, // 设置控制器
                           cursorColor: Colors.green, //设置光标颜色
@@ -180,6 +180,7 @@ class _BrowserState extends State<Browser> {
                       ),
                     ),
                     if (_focussearchNode.hasFocus || _searchText.isNotEmpty)
+                      //^ 取消按钮
                       Container(
                         width: 35.h,
                         height: 23.w,
@@ -755,7 +756,7 @@ class ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.of(context).size.width, //设置宽度 适配
         color: Colors.white,
         child: Stack(
           children: [
