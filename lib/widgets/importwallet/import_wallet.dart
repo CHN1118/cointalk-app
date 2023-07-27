@@ -1,14 +1,17 @@
-// ignore_for_file: non_constant_identifier_names, avoid_print
+// ignore_for_file: non_constant_identifier_names, avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/common/utils/log.dart';
+import 'package:wallet/components/op_click.dart';
 import 'package:wallet/database/index.dart';
+import 'package:wallet/widgets/importwallet/success.dart';
 
 class ImportW extends StatefulWidget {
   const ImportW({super.key});
@@ -21,7 +24,13 @@ class WImportWState extends State<ImportW> {
   final TextEditingController wallet_text = TextEditingController();
   final FocusNode wallet_focus = FocusNode();
   bool isFocus = false; //是否聚焦
+  bool isFocus1 = false; //是否聚焦
   bool isWalletShow = true; //是否显示助记词
+  String password = Get.arguments['walletPassword'];
+  bool isEBV = Get.arguments['isEBV'];
+  final TextEditingController _walletNametext = TextEditingController();
+  final FocusNode _walletNameFocus = FocusNode();
+  var walletList = DB.box.read('WalletList') ?? [];
 
   @override
   void initState() {
@@ -29,6 +38,11 @@ class WImportWState extends State<ImportW> {
     wallet_focus.addListener(() {
       setState(() {
         isFocus = wallet_focus.hasFocus;
+      });
+    });
+    _walletNameFocus.addListener(() {
+      setState(() {
+        isFocus1 = _walletNameFocus.hasFocus;
       });
     });
   }
@@ -57,7 +71,7 @@ class WImportWState extends State<ImportW> {
               child: const Icon(Icons.arrow_back)),
         ),
         body: Container(
-          padding: EdgeInsets.only(bottom: 60.h),
+          padding: EdgeInsets.only(bottom: 75.h),
           width: 390.w,
           height: 844.h,
           child: Padding(
@@ -144,7 +158,7 @@ class WImportWState extends State<ImportW> {
                 Text(isWalletShow ? '请输入助记词' : '请在离线环境使用冷钱包',
                     style: TextStyle(
                         fontSize: 17.sp, fontWeight: FontWeight.w400)),
-                SizedBox(height: 10.h),
+                SizedBox(height: 18.h),
                 TextField(
                   controller: wallet_text,
                   focusNode: wallet_focus,
@@ -171,8 +185,75 @@ class WImportWState extends State<ImportW> {
                           ),
                   ),
                 ),
+                SizedBox(height: 18.h),
+                Text('钱包名称',
+                    style: TextStyle(
+                        fontSize: 17.sp, fontWeight: FontWeight.w400)),
+                SizedBox(height: 18.h),
+                Stack(
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 150),
+                      height: 52.w,
+                      decoration: BoxDecoration(
+                        color: AppTheme.themeColor2.withOpacity(.5),
+                        borderRadius: BorderRadius.circular(4.w),
+                        border: Border.all(
+                            color: isFocus1
+                                ? AppTheme.themeColor
+                                : Colors.transparent,
+                            width: 1.w),
+                      ),
+                    ),
+                    Container(
+                      height: 52.w,
+                      padding: EdgeInsets.only(left: 15.w, right: 15.w),
+                      child: Center(
+                        child: TextFormField(
+                          controller: _walletNametext,
+                          focusNode: _walletNameFocus,
+                          onChanged: (value) {
+                            String trimmedText =
+                                value.replaceAll(' ', ''); // 去除空格
+                            if (trimmedText != value) {
+                              final int cursorPosition =
+                                  _walletNametext.selection.baseOffset -
+                                      1; // 获取当前光标位置
+                              final TextSelection newSelection =
+                                  TextSelection.collapsed(
+                                      offset: cursorPosition); // 生成新的光标位置
+                              setState(() {
+                                _walletNametext.value = TextEditingValue(
+                                  text: trimmedText,
+                                  selection: newSelection,
+                                ); // 更新内容
+                              });
+                            }
+                            setState(() {});
+                          },
+                          onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            setState(() {});
+                          },
+                          cursorHeight: 18.w, // 设置光标高度
+                          cursorWidth: 2.0, // 设置光标宽度
+                          style: TextStyle(
+                              fontSize: 17.sp, fontWeight: FontWeight.w500),
+                          decoration: InputDecoration(
+                            hintText: '账户${walletList.length + 1}',
+                            border: InputBorder.none, // 移除边框
+                            hintStyle:
+                                const TextStyle(color: Colors.grey), // 设置提示文本颜色
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 12), // 设置内容内边距
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 const Expanded(child: SizedBox()),
-                InkWell(
+                OpClick(
                   onTap: Next,
                   child: Container(
                     width: 325.w,
@@ -214,13 +295,13 @@ class WImportWState extends State<ImportW> {
         .where((word) => word.isNotEmpty)
         .toList();
 
-    LLogger.e('助记词有误: $words');
     // 判断是否有且只有12个助记词
     if (words.length == 12) {
       // 在这里可以进一步验证助记词是否在助记词词库中
       // 你可以根据你的实际助记词词库来实现验证逻辑
       return true;
     } else {
+      LLogger.e('助记词有误: $words');
       return false;
     }
   }
@@ -237,28 +318,49 @@ class WImportWState extends State<ImportW> {
         fontSize: 14.0.sp);
   }
 
-  void Next() {
+  Future<void> Next() async {
+    //! 开启加载
+    await EasyLoading.show();
+    String walletName = _walletNametext.text == ''
+        ? '账户${walletList.length + 1}'
+        : _walletNametext.text;
     if (isWalletShow) {
       if (wallet_text.text == '') {
+        await EasyLoading.dismiss();
         ErrorShow(msg: '请输入助记词');
       } else {
         if (checkFor12Words(wallet_text.text)) {
+          await EasyLoading.dismiss();
+          var walletInfo = await dapp.importMnemonic(
+              wallet_text.text, walletName, password, isEBV,
+              active: true);
+          var res = await swi.addWalletInfo(context, walletInfo);
+          if (res != null) {
+            Get.offAll(() => const Success(), transition: Transition.topLevel);
+          }
         } else {
+          await EasyLoading.dismiss();
           ErrorShow(msg: '助记词有误');
         }
       }
     } else {
       if (wallet_text.text == '') {
+        await EasyLoading.dismiss();
         ErrorShow(msg: '请输入私钥');
       } else {
         if (wallet_text.text.length == 64 ||
             (wallet_text.text.length == 66 &&
                 wallet_text.text.substring(0, 2) == '0x')) {
-          String mprivate = wallet_text.text;
-          String password = Get.arguments['password'] ?? '';
-          String walletname = DB.box.read('walletName') ?? '';
-          dapp.importPrivate(mprivate, walletname, password);
+          await EasyLoading.dismiss();
+          var walletInfo = await dapp.importPrivate(
+              wallet_text.text, walletName, password, isEBV,
+              active: true);
+          var res = await swi.addWalletInfo(context, walletInfo);
+          // if (res != null) {
+          //   Get.offAll(() => const Success(), transition: Transition.topLevel);
+          // }
         } else {
+          await EasyLoading.dismiss();
           ErrorShow(msg: '私钥有误');
         }
       }

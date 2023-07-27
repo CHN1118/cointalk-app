@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, avoid_print, avoid_function_literals_in_foreach_calls
+// ignore_for_file: non_constant_identifier_names, avoid_print, avoid_function_literals_in_foreach_calls, use_build_context_synchronously
 
 import 'dart:async';
 
@@ -8,7 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/dapp.dart';
-import 'package:wallet/database/index.dart';
 
 class BackupMnemonic extends StatefulWidget {
   const BackupMnemonic({super.key});
@@ -64,7 +63,7 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
               child: const Icon(Icons.arrow_back)),
         ),
         body: Container(
-          padding: EdgeInsets.only(bottom: 60.h),
+          padding: EdgeInsets.only(bottom: 75.h),
           width: 390.w,
           height: 844.h,
           child: Padding(
@@ -370,8 +369,9 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
     String walletName = Get.arguments['walletName']; // 钱包名称
     String walletPassword = Get.arguments['walletPassword']; // 钱包密码
     bool isEBV = Get.arguments['isEBV'];
-    var walletInfo =
-        await dapp.importMnemonic(mnemonic, walletName, walletPassword, isEBV);
-    swi.addWalletInfo(walletInfo);
+    var walletInfo = await dapp.importMnemonic(
+        mnemonic, walletName, walletPassword, isEBV,
+        active: true);
+    await swi.addWalletInfo(context, walletInfo);
   }
 }

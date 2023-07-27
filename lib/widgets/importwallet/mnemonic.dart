@@ -47,7 +47,7 @@ class MMnemonicState extends State<Mnemonic> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(),
         body: Container(
-          padding: EdgeInsets.only(bottom: 60.h),
+          padding: EdgeInsets.only(bottom: 75.h),
           width: 390.w,
           height: 844.h,
           child: Padding(

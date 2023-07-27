@@ -1,19 +1,35 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: must_be_immutable, camel_case_types, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/components/op_click.dart';
 
 class CDialog {
-  show(BuildContext context, String title) {
-    showAnimatedDialog(
+  Future show(
+    BuildContext context,
+    String title, {
+    bool isCancel = false,
+    Function? cancel,
+    Function? confirm,
+  }) async {
+    await showAnimatedDialog(
       context: context,
       barrierDismissible: true,
       barrierColor: Colors.black.withOpacity(0.1),
       builder: (BuildContext context) {
         return Custom_Dialog(
           title: title,
+          isCancel: isCancel,
+          cancel: () {
+            cancel != null ? cancel() : '';
+          },
+          confirm: () {
+            confirm != null ? confirm() : '';
+          },
         );
       },
       animationType: DialogTransitionType.fade,
@@ -23,14 +39,25 @@ class CDialog {
   }
 }
 
-class Custom_Dialog extends StatelessWidget {
+class Custom_Dialog extends StatefulWidget {
   String title;
+  Function cancel;
+  Function confirm;
+  bool isCancel;
 
   Custom_Dialog({
+    Key? key,
     this.title = '提示内容',
-    super.key,
-  });
+    required this.cancel,
+    required this.confirm,
+    required this.isCancel,
+  }) : super(key: key);
 
+  @override
+  State<Custom_Dialog> createState() => _Custom_DialogState();
+}
+
+class _Custom_DialogState extends State<Custom_Dialog> {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -53,7 +80,7 @@ class Custom_Dialog extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                child: Text(title,
+                child: Text(widget.title,
                     style: TextStyle(
                         fontSize: 17.sp,
                         fontWeight: FontWeight.w600,
@@ -64,18 +91,53 @@ class Custom_Dialog extends StatelessWidget {
               height: 1.w,
               color: Colors.black.withOpacity(.1),
             ),
-            InkWell(
-              onTap: () => Navigator.of(context).pop(),
-              child: SizedBox(
-                height: 40.w,
-                child: Center(
-                  child: Text('确定',
-                      style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppTheme.themeColor)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                if (widget.isCancel)
+                  Expanded(
+                    child: OpClick(
+                      onTap: () {
+                        widget.cancel();
+                        setState(() {});
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        color: Colors.pink.withOpacity(0),
+                        width: double.infinity,
+                        height: 40.w,
+                        child: Center(
+                          child: Text('取消',
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppTheme.themeColor)),
+                        ),
+                      ),
+                    ),
+                  ),
+                Expanded(
+                  child: OpClick(
+                    onTap: () {
+                      widget.confirm();
+                      setState(() {});
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      color: Colors.pink.withOpacity(0),
+                      width: double.infinity,
+                      height: 40.w,
+                      child: Center(
+                        child: Text('确定',
+                            style: TextStyle(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w400,
+                                color: AppTheme.themeColor)),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ],
         ),

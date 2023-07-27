@@ -8,8 +8,8 @@ import 'package:get/get.dart';
 import 'package:password_strength/password_strength.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/biometricauthentication.dart';
-import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/components/custom_dialog.dart';
+import 'package:wallet/components/op_click.dart';
 import 'package:wallet/database/index.dart';
 import 'package:wallet/widgets/importwallet/import_wallet.dart';
 
@@ -95,7 +95,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
               child: const Icon(Icons.arrow_back)),
         ),
         body: Container(
-          padding: EdgeInsets.only(bottom: 60.h),
+          padding: EdgeInsets.only(bottom: 75.h),
           width: 390.w,
           height: 844.h,
           child: Padding(
@@ -388,7 +388,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                 const Expanded(child: SizedBox()),
                 //*下一步
                 Center(
-                  child: InkWell(
+                  child: OpClick(
                     onTap: Next,
                     child: Container(
                       width: 325.w,

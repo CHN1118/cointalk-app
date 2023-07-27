@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/biometricauthentication.dart';
+import 'package:wallet/components/op_click.dart';
 import 'package:wallet/database/index.dart';
 import 'package:wallet/widgets/importwallet/creat_psw.dart';
 
@@ -46,7 +47,7 @@ class IimportwalletState extends State<Importwallet> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        padding: EdgeInsets.only(bottom: 74.h),
+        padding: EdgeInsets.only(bottom: 60.h),
         width: 390.w,
         height: 844.h,
         child: Column(
@@ -70,7 +71,7 @@ class IimportwalletState extends State<Importwallet> {
               ),
             ),
             //* 创建钱包
-            InkWell(
+            OpClick(
               onTap: () async {
                 Get.to(() => CreatPsw());
               },
@@ -100,7 +101,7 @@ class IimportwalletState extends State<Importwallet> {
             ),
             SizedBox(height: 22.h),
             //* 导入钱包
-            InkWell(
+            OpClick(
               onTap: () async {
                 Get.to(() => CreatPsw(
                       title: '创建钱包密码',

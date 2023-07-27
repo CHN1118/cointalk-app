@@ -10,6 +10,8 @@
     <key>Privacy - Photo Library Additions Usage Description</key>
     <string>请描述你的应用为什么需要访问相册</string>
 	<key>NSCameraUsageDescription</key>
+	<key>NSPasteboardUsageDescription</key>
+	<string>需要访问粘贴板以实现内容分享功能。</string>
     <string>Explanation on why the camera access is needed.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Explanation on why the microphone access is needed.</string>
