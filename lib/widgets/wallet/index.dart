@@ -126,6 +126,26 @@ class _WalletState extends State<Wallet> {
                   fit: BoxFit.cover,
                 ),
               ),
+              if (!isColdWallet)
+                Positioned(
+                  top: 84.w,
+                  left: 25.w,
+                  child: OpClick(
+                    onTap: () {
+                      _walletShowBottomSheet(context);
+                    },
+                    child: SizedBox(
+                      width: 25.w,
+                      height: 14.w,
+                      child: SvgPicture.asset(
+                        'assets/svgs/menu.svg',
+                        fit: BoxFit.cover,
+                        width: 25.w,
+                        height: 14.w,
+                      ),
+                    ),
+                  ),
+                ),
               //* 头部按钮
               Positioned(
                 child: SizedBox(
@@ -160,10 +180,11 @@ class _WalletState extends State<Wallet> {
                           child: Stack(
                             children: [
                               AnimatedAlign(
-                                duration: const Duration(milliseconds: 100),
+                                duration: const Duration(
+                                    milliseconds: 100), //动画时长500毫秒
                                 alignment: isColdWallet
                                     ? Alignment.centerRight
-                                    : Alignment.centerLeft,
+                                    : Alignment.centerLeft, //从左边滑出
                                 child: SizedBox(
                                   width: 78.w,
                                   height: 26.w,
@@ -494,8 +515,9 @@ class _WalletState extends State<Wallet> {
                                               children: [
                                                 OpClick(
                                                   onTap: () {
-                                                    _walletShowBottomSheet(
-                                                        context);
+                                                    copyToClipboard(
+                                                        text:
+                                                            '0xs12ehfkddjfh21fd4aj');
                                                   },
                                                   child: Container(
                                                     width: 168.w,
@@ -529,27 +551,18 @@ class _WalletState extends State<Wallet> {
                                                                 color: const Color(
                                                                     0xff292D32)),
                                                           ),
-                                                          OpClick(
-                                                            onTap: () {
-                                                              copyToClipboard(
-                                                                  text:
-                                                                      '0xs12ehfkddjfh21fd4aj');
-                                                            },
-                                                            child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      left:
-                                                                          6.w),
-                                                              child: SvgPicture
-                                                                  .asset(
-                                                                'assets/svgs/copy.svg',
-                                                                height: 16.w,
-                                                                width: 16.w,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                                color: const Color(
-                                                                    0xffEDEFF5),
-                                                              ),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 6.w),
+                                                            child: SvgPicture
+                                                                .asset(
+                                                              'assets/svgs/copy.svg',
+                                                              height: 16.w,
+                                                              width: 16.w,
+                                                              fit: BoxFit.cover,
+                                                              color: const Color(
+                                                                  0xffEDEFF5),
                                                             ),
                                                           )
                                                         ]),
@@ -2012,8 +2025,8 @@ void _walletShowBottomSheet(
                   child: Column(
                     children: [
                       Padding(
-                        padding:
-                            EdgeInsets.only(left: 14.w, right: 13.w, top: 17.w),
+                        padding: EdgeInsets.only(
+                            left: 14.w, right: 24.w, top: 17.w, bottom: 30.w),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
