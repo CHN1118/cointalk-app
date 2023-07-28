@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/components/op_click.dart';
 
@@ -210,7 +211,7 @@ class _BrowserState extends State<Browser> {
                 ),
               ),
               //^ 历史记录
-              if (_focussearchNode.hasFocus)
+              if (_focussearchNode.hasFocus && _searchText.isEmpty)
                 HistoricalRecord(historyList: historyList),
               //^ 搜索结果
               if (_searchText.isNotEmpty) const SearchResults(),
@@ -331,12 +332,8 @@ class _BrowserState extends State<Browser> {
                                       for (int i = 0; i < 10; i++)
                                         GestureDetector(
                                           onTap: () {
-                                            //跳转到SharePage页面
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const SharePage()));
+                                            //跳转到 SharePage 页面
+                                            Get.to(() => const SharePage());
                                           },
                                           child: Container(
                                             margin:
@@ -554,7 +551,7 @@ class _HistoricalRecordState extends State<HistoricalRecord> {
             padding: EdgeInsets.only(left: 15.w, right: 21.w),
             child: ListView.builder(
                 padding: EdgeInsets.only(top: 0.w),
-                itemCount: widget.historyList.length, // 设置列表项数为historyList的长度
+                itemCount: 1, // 设置列表项数为historyList的长度
                 itemBuilder: (context, index) {
                   return Container(
                       margin: EdgeInsets.only(bottom: 14.w),
@@ -607,16 +604,17 @@ class _HistoricalRecordState extends State<HistoricalRecord> {
                                     ),
                                   ])),
                           // for (int i = 0; i < 10; i++)
-                          CustomListItem(
-                            svgPath: 'assets/svgs/del2.svg',
-                            title: widget.historyList[index],
-                            onTapIncident: () {
-                              deleteItem(index); // 点击删除按钮时调用删除函数
-                            },
-                            width: 17,
-                            height: 14,
-                            color1: 0xffDCDCDC,
-                          )
+                          for (int i = 0; i < widget.historyList.length; i++)
+                            CustomListItem(
+                              svgPath: 'assets/svgs/del2.svg',
+                              title: widget.historyList[i],
+                              onTapIncident: () {
+                                deleteItem(i); // 点击删除按钮时调用删除函数
+                              },
+                              width: 17,
+                              height: 14,
+                              color1: 0xffDCDCDC,
+                            )
                         ],
                       ));
                 }),
@@ -669,8 +667,7 @@ class _CustomListItemState extends State<CustomListItem> {
         return GestureDetector(
           onTap: () {
             //跳转到SharePage页面
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const SharePage()));
+            Get.to(() => const SharePage());
           },
           child: Row(
             children: [

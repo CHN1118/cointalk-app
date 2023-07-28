@@ -3,10 +3,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:wallet/components/op_click.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/database/index.dart';
 import 'package:wallet/widgets/browser/index.dart';
@@ -61,104 +61,96 @@ class _MymineState extends State<Mymine> {
                       //跳转到钱包管理 WalletMan
                       Get.to(() => WalletMan());
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(right: 18.w),
-                              child: SvgPicture.asset(
-                                'assets/svgs/24gf-wallet.svg', // 设置SVG图标的路径
-                                width: 25.w,
-                                // height: 22.w,
-                                // ignore: deprecated_member_use
-                                color: const Color(0xff7F8391),
+                    child: Container(
+                      height: 50.w,
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(right: 18.w),
+                                child: SvgPicture.asset(
+                                  'assets/svgs/24gf-wallet.svg', // 设置SVG图标的路径
+                                  width: 25.w,
+                                  // height: 22.w,
+                                  // ignore: deprecated_member_use
+                                  color: const Color(0xff7F8391),
+                                ),
                               ),
-                            ),
-                            Text(
-                              '钱包管理',
-                              style: TextStyle(
-                                  fontSize: 18.sp,
-                                  color: const Color(0xff000000)),
-                            ),
-                          ],
-                        ),
-                        SvgPicture.asset(
-                          'assets/svgs/arrow_right.svg', // 设置SVG图标的路径
-                          width: 18.w,
-                          // height: 22.w,
-                          // ignore: deprecated_member_use
-                          color: const Color(0xff7F8391),
-                        ),
-                      ],
+                              Text(
+                                '钱包管理',
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    color: const Color(0xff000000)),
+                              ),
+                            ],
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 18.sp,
+                            color: const Color(0xff7F8391),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                      margin: EdgeInsets.only(top: 16.h, bottom: 11.h),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            width: 1.w,
-                            color: const Color(0xffE5E5E5),
-                          ),
-                        ),
-                      )),
+                  Divider(
+                    height: 1.w,
+                    color: const Color(0xffE5E5E5),
+                  ),
                   OpClick(
                     onTap: () {
                       //跳转到个人资料 PersonalData
                       setState(() {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const PersonalData()));
+                       
+                        Get.to(() => const PersonalData()); 
                       });
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(right: 18.w),
-                              child: SvgPicture.asset(
-                                'assets/svgs/my-mine.svg', // 设置SVG图标的路径
-                                width: 24.w,
-                                // height: 22.w,
-                                // ignore: deprecated_member_use
-                                color: const Color(0xff7F8391),
+                    child: Container(
+                      color: Colors.transparent,
+                      height: 50.w,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(right: 18.w),
+                                child: SvgPicture.asset(
+                                  'assets/svgs/my-mine.svg', // 设置SVG图标的路径
+                                  width: 24.w,
+                                  // height: 22.w,
+                                  // ignore: deprecated_member_use
+                                  color: const Color(0xff7F8391),
+                                ),
                               ),
-                            ),
-                            Text(
-                              '个人资料',
-                              style: TextStyle(
-                                  fontSize: 18.sp,
-                                  color: const Color(0xff000000)),
-                            ),
-                          ],
-                        ),
-                        SvgPicture.asset(
-                          'assets/svgs/arrow_right.svg', // 设置SVG图标的路径
-                          width: 18.w,
-                          // height: 22.w,
-                          // ignore: deprecated_member_use
-                          color: const Color(0xff7F8391),
-                        ),
-                      ],
+                              Text(
+                                '个人资料',
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    color: const Color(0xff000000)),
+                              ),
+                            ],
+                          ),
+                          SvgPicture.asset(
+                            'assets/svgs/arrow_right.svg', // 设置SVG图标的路径
+                            width: 18.w,
+                            // height: 22.w,
+                            // ignore: deprecated_member_use
+                            color: const Color(0xff7F8391),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                      margin: EdgeInsets.only(top: 16.h),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            width: 1.w,
-                            color: const Color(0xffE5E5E5),
-                          ),
-                        ),
-                      )),
+                  Divider(
+                    height: 1.w,
+                    color: const Color(0xffE5E5E5),
+                  ),
                 ],
               )),
         ],

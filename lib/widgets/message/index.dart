@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/widgets/message/chat/chat_transfer.dart';
@@ -239,11 +240,8 @@ class _MessagePageState extends State<MessagePage> {
                               GestureDetector(
                                 onTap: () {
                                   //跳转到  ChatPage 页面
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ChatTransfer()));
+
+                                  Get.to(const ChatTransfer());
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,

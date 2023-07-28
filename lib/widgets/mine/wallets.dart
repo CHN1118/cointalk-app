@@ -435,7 +435,8 @@ class _WalletBodyState extends State<WalletBody> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(left: 25.w, right: 28.w),
+                    padding:
+                        EdgeInsets.only(left: 25.w, right: 28.w, bottom: 20.w),
                     height: 48.w,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
