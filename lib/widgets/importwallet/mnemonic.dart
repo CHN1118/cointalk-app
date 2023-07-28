@@ -47,7 +47,7 @@ class MMnemonicState extends State<Mnemonic> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(),
         body: Container(
-          padding: EdgeInsets.only(bottom: 60.h),
+          padding: EdgeInsets.only(bottom: 75.h),
           width: 390.w,
           height: 844.h,
           child: Padding(
@@ -129,11 +129,11 @@ class MMnemonicState extends State<Mnemonic> {
                         color: AppTheme.themeColor,
                         borderRadius: BorderRadius.circular(4.w),
                         boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 1,
-                        ),
-                      ],
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 1,
+                          ),
+                        ],
                       ),
                       child: Center(
                         child: Text(
@@ -159,8 +159,17 @@ class MMnemonicState extends State<Mnemonic> {
     //! 开启加载
     await EasyLoading.show();
     await Future.delayed(const Duration(milliseconds: 500));
+    String walletName = Get.arguments['walletName']; // 钱包名称
+    String walletPassword = Get.arguments['walletPassword']; // 钱包密码
+    bool isEBV = Get.arguments['isEBV'];
     await EasyLoading.dismiss();
     Get.to(() => const BackupMnemonic(),
-        arguments: mnemonic, transition: Transition.topLevel);
+        arguments: {
+          'mnemonic': mnemonic,
+          'walletName': walletName,
+          'walletPassword': walletPassword,
+          'isEBV': isEBV,
+        },
+        transition: Transition.topLevel);
   }
 }

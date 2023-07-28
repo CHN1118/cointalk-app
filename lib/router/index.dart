@@ -8,9 +8,7 @@ import 'package:wallet/widgets/splash.dart';
 class AppPages {
   static List<GetPage> pages = [
     GetPage(
-      name: '/',
-      page: () => const Index(),
-    ),
+        name: '/', page: () => const Index(), transition: Transition.topLevel),
     GetPage(
       name: '/importwallet',
       page: () => const Importwallet(),

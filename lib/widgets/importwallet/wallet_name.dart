@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/components/custom_dialog.dart';
-import 'package:wallet/database/index.dart';
 
 class Walletname extends StatefulWidget {
   const Walletname({super.key});
@@ -52,7 +51,7 @@ class WwalletnameState extends State<Walletname> {
               child: const Icon(Icons.arrow_back)),
         ),
         body: Container(
-          padding: EdgeInsets.only(bottom: 60.h),
+          padding: EdgeInsets.only(bottom: 75.h),
           width: 390.w,
           height: 844.h,
           child: Padding(
@@ -175,9 +174,15 @@ class WwalletnameState extends State<Walletname> {
     } else {
       //* 符合条件
       await Future.delayed(const Duration(milliseconds: 500));
-      await DB.box.write('walletName', _walletNametext.text);
       await EasyLoading.dismiss();
-      Get.offAllNamed('/mnemonic');
+      String walletName = _walletNametext.text; // 钱包名称
+      String walletPassword = Get.arguments['walletPassword']; // 钱包密码
+      bool isEBV = Get.arguments['isEBV']; // 是否是生物识别验证
+      Get.offAllNamed('/mnemonic', arguments: {
+        'walletName': walletName,
+        'walletPassword': walletPassword,
+        'isEBV': isEBV,
+      });
     }
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, avoid_print, avoid_function_literals_in_foreach_calls
+// ignore_for_file: non_constant_identifier_names, avoid_print, avoid_function_literals_in_foreach_calls, use_build_context_synchronously
 
 import 'dart:async';
 
@@ -8,7 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/dapp.dart';
-import 'package:wallet/database/index.dart';
 
 class BackupMnemonic extends StatefulWidget {
   const BackupMnemonic({super.key});
@@ -18,7 +17,7 @@ class BackupMnemonic extends StatefulWidget {
 }
 
 class WBackupMnemonicState extends State<BackupMnemonic> {
-  String mnemonic = Get.arguments;
+  String mnemonic = Get.arguments['mnemonic'];
   List<Map<dynamic, dynamic>> mnemonicArr = [];
   List<Map<dynamic, dynamic>> nullMnemonicArr = [];
   List<int> shuffledList = List.generate(12, (index) => index);
@@ -64,7 +63,7 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
               child: const Icon(Icons.arrow_back)),
         ),
         body: Container(
-          padding: EdgeInsets.only(bottom: 60.h),
+          padding: EdgeInsets.only(bottom: 75.h),
           width: 390.w,
           height: 844.h,
           child: Padding(
@@ -367,9 +366,12 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
     if (!isShow) {
       return;
     }
-    String walletName = DB.box.read('walletName');
-    String walletPassword = DB.box.read('walletPassword');
-    await dapp.importMnemonic(mnemonic, walletName, walletPassword);
-    // Clipboard.setData(ClipboardData(text: 'dd'));
+    String walletName = Get.arguments['walletName']; // 钱包名称
+    String walletPassword = Get.arguments['walletPassword']; // 钱包密码
+    bool isEBV = Get.arguments['isEBV'];
+    var walletInfo = await dapp.importMnemonic(
+        mnemonic, walletName, walletPassword, isEBV,
+        active: true);
+    await swi.addWalletInfo(context, walletInfo);
   }
 }

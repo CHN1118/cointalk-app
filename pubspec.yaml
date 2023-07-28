@@ -52,6 +52,8 @@ dependencies:
   dropdown_button2: ^2.3.6              #* 下拉框
   flutter_localization: ^0.1.13          #* 多语言
   step_progress_indicator: ^1.0.2       #* 进度条
+  flutter_secure_storage: ^8.0.0         #* 安全存储
+  encrypt: ^5.0.1                       #* 加密
 
 dev_dependencies:
   flutter_test:
