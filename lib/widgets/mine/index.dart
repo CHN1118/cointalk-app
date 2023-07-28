@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/database/index.dart';
 import 'package:wallet/widgets/browser/index.dart';
@@ -57,8 +58,7 @@ class _MymineState extends State<Mymine> {
                   InkWell(
                     onTap: () {
                       //跳转到钱包管理 WalletMan
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => WalletMan()));
+                      Get.to(() => WalletMan());
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
