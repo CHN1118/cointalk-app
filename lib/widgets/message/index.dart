@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/widgets/message/chat/chat_transfer.dart';
 
 class MessagePage extends StatefulWidget {
@@ -222,91 +223,112 @@ class _MessagePageState extends State<MessagePage> {
                         color: const Color(0xffF3F5F9),
                       ),
                       //* 朋友的名片
-                      for (var i = 0; i < 10; i++)
-                        GestureDetector(
-                          onTap: () {
-                            //跳转到  ChatPage 页面
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ChatTransfer()));
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 72.h,
-                            color: Colors.white,
-                            padding: EdgeInsetsDirectional.symmetric(
-                                horizontal: 20.w), // 设置左右边距为20
-                            child: Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                    width: 40.w,
-                                    height: 40.w,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(4.w),
-                                      child: const Image(
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(
-                                            'https://wx2.sinaimg.cn/mw690/007TYxG2ly1hbwxeuuambj328k3m0u12.jpg',
-                                          )),
-                                    )),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width - 84.w,
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        width: 1.w,
-                                        color: const Color(0xffeaeaea),
-                                      ),
-                                    ),
-                                  ),
+                      Container(
+                        color: Colors.white,
+                        constraints: BoxConstraints(
+                          minHeight: 844.h -
+                              getStatusBarHeight(context) -
+                              72.h -
+                              15.h -
+                              34.h, // 设置最小高度为200像素
+                        ),
+                        child: Column(
+                          children: [
+                            for (var i = 0; i < 1; i++)
+                              GestureDetector(
+                                onTap: () {
+                                  //跳转到  ChatPage 页面
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ChatTransfer()));
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 72.h,
+                                  color: Colors.white,
+                                  padding: EdgeInsetsDirectional.symmetric(
+                                      horizontal: 20.w), // 设置左右边距为20
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
+                                      SizedBox(
+                                          width: 40.w,
+                                          height: 40.w,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(4.w),
+                                            child: const Image(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                  'https://wx2.sinaimg.cn/mw690/007TYxG2ly1hbwxeuuambj328k3m0u12.jpg',
+                                                )),
+                                          )),
                                       Container(
-                                        padding: EdgeInsets.only(left: 12.w),
-                                        child: Column(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                84.w,
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              width: 1.w,
+                                              color: const Color(0xffeaeaea),
+                                            ),
+                                          ),
+                                        ),
+                                        child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              '小王子最帅',
-                                              style: TextStyle(
-                                                fontSize: 16.sp,
-                                                color: const Color(0xff333333),
+                                            Container(
+                                              padding:
+                                                  EdgeInsets.only(left: 12.w),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    '小王子最帅',
+                                                    style: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      color: const Color(
+                                                          0xff333333),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 5.w),
+                                                    child: const Text(
+                                                      '保存朋友的名片，转账更方便',
+                                                      style: TextStyle(
+                                                          color: Color(
+                                                              0xff828895)),
+                                                    ),
+                                                  )
+                                                ],
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(top: 5.w),
-                                              child: const Text(
-                                                '保存朋友的名片，转账更方便',
-                                                style: TextStyle(
-                                                    color: Color(0xff828895)),
-                                              ),
-                                            )
+                                                margin: EdgeInsets.only(
+                                                    bottom: 28.w),
+                                                child: const Text(
+                                                  '23/03/12',
+                                                  style: TextStyle(
+                                                      color: Color(0xff828895)),
+                                                )),
                                           ],
                                         ),
-                                      ),
-                                      Container(
-                                          margin: EdgeInsets.only(bottom: 28.w),
-                                          child: const Text(
-                                            '23/03/12',
-                                            style: TextStyle(
-                                                color: Color(0xff828895)),
-                                          )),
+                                      )
                                     ],
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
+                                ),
+                              ),
+                          ],
                         ),
+                      ),
                     ],
                   );
                 }),

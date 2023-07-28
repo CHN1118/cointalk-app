@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wallet/common/style/app_theme.dart';
+
 import 'package:wallet/widgets/browser/share.dart';
 
 class Browser extends StatefulWidget {
@@ -27,6 +28,7 @@ Future<bool?> showSnackBar({String? msg}) {
 
 class _BrowserState extends State<Browser> {
   bool isCollect = false; //是否收藏
+
   bool isRecommendedPage = true; // 是否为推荐
   bool isExplorePage = false; // 是否为探索
   bool isFavoritesPage = false; // 是否为收藏
@@ -219,7 +221,7 @@ class _BrowserState extends State<Browser> {
                     children: [
                       Container(
                           width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.only(top: 135.w),
+                          margin: EdgeInsets.only(top: 129.w),
                           color: Colors.white,
                           padding: EdgeInsets.only(left: 15.w, right: 21.w),
                           child: Column(
@@ -268,62 +270,63 @@ class _BrowserState extends State<Browser> {
                               ),
                             ],
                           )),
-                      //^ 推荐：图片和立即体验
-                      if (isRecommendedPage)
-                        Positioned(
-                            top: 200.h,
-                            left: 0,
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              color: Colors.white,
-                              // padding: EdgeInsets.only(left: 13.w, right: 14.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Center(
-                                    child: SizedBox(
-                                      width: 348.w,
-                                      height: 149.h,
-                                      child: const Image(
-                                          image: AssetImage(
-                                              'assets/images/Shopping_Online.png')),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                        top: 23.h, bottom: 15.h, left: 18.w),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10.w)),
-                                    child: Text(
-                                      '立即体验',
-                                      style: TextStyle(
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )),
+
                       //^ 推荐：立即体验的列表
                       if (isRecommendedPage)
                         Positioned(
-                            top: 405.h,
+                            top: 170.h,
                             left: 0,
                             bottom: 0,
                             right: 0,
                             child: Container(
                               width: MediaQuery.of(context).size.width,
                               color: Colors.white,
-                              padding: EdgeInsets.only(left: 15.w, right: 12.w),
+                              padding: EdgeInsets.only(
+                                  left: 15.w, right: 12.w, top: 10.w),
                               child: ListView.builder(
                                 padding: EdgeInsets.only(top: 10.w),
                                 itemCount: 1, // 列表项数
                                 itemBuilder: (context, index) {
                                   return Column(
                                     children: [
+                                      //^ 推荐：图片和立即体验
+
+                                      Container(
+                                        color: Colors.white,
+                                        // padding: EdgeInsets.only(left: 13.w, right: 14.w),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Center(
+                                              child: SizedBox(
+                                                width: 348.w,
+                                                height: 149.h,
+                                                child: const Image(
+                                                    image: AssetImage(
+                                                        'assets/images/Shopping_Online.png')),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                top: 23.h,
+                                                bottom: 15.h,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.w)),
+                                              child: Text(
+                                                '立即体验',
+                                                style: TextStyle(
+                                                    fontSize: 18.sp,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                       for (int i = 0; i < 10; i++)
                                         GestureDetector(
                                           onTap: () {
@@ -451,37 +454,7 @@ class _SearchResultsState extends State<SearchResults> {
     return Stack(
       children: [
         Positioned(
-            top: 135.h,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            child: Container(
-                color: Colors.white,
-                padding: EdgeInsets.only(left: 15.w, right: 21.w),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: 23.h, bottom: 15.h, left: 5.w),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.w)),
-                            child: Text(
-                              '搜索结果',
-                              style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ]))),
-        Positioned(
-          top: 200.h,
+          top: 135.h,
           left: 0,
           bottom: 0,
           right: 0,
@@ -495,6 +468,32 @@ class _SearchResultsState extends State<SearchResults> {
                       margin: EdgeInsets.only(bottom: 14.w),
                       child: Column(
                         children: [
+                          Container(
+                              color: Colors.white,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom: 15.h, left: 5.w),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.w)),
+                                          child: Text(
+                                            '搜索结果',
+                                            style: TextStyle(
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ])),
                           for (int i = 0; i < 10; i++)
                             CustomListItem(
                                 svgPath: 'assets/svgs/xingxing.svg',
@@ -546,68 +545,66 @@ class _HistoricalRecordState extends State<HistoricalRecord> {
     return Stack(
       children: [
         Positioned(
-            top: 135.h,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            child: Container(
-                color: Colors.white,
-                padding: EdgeInsets.only(left: 15.w, right: 21.w),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: 23.h, bottom: 15.h, left: 5.w),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.w)),
-                            child: Text(
-                              '历史记录',
-                              style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              clearList(); // 点击清空按钮时调用清空函数
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                  top: 23.h, bottom: 15.h, left: 5.w),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.w)),
-                              child: SvgPicture.asset(
-                                'assets/svgs/a-12Fshanchu.svg', // 设置SVG图标的路径
-                                width: 24.w,
-                                height: 24.w,
-                                // ignore: deprecated_member_use
-                                color: AppTheme.browserColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ]))),
-        Positioned(
-          top: 200.h,
+          top: 125.h,
           left: 0,
           bottom: 0,
           right: 0,
           child: Container(
             padding: EdgeInsets.only(left: 15.w, right: 21.w),
             child: ListView.builder(
-                padding: EdgeInsets.only(top: 10.w),
+                padding: EdgeInsets.only(top: 0.w),
                 itemCount: widget.historyList.length, // 设置列表项数为historyList的长度
                 itemBuilder: (context, index) {
                   return Container(
                       margin: EdgeInsets.only(bottom: 14.w),
                       child: Column(
                         children: [
+                          Container(
+                              color: Colors.white,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.w)),
+                                          child: Text(
+                                            '历史记录',
+                                            style: TextStyle(
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            clearList(); // 点击清空按钮时调用清空函数
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                                top: 23.h,
+                                                bottom: 15.h,
+                                                left: 5.w),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        10.w)),
+                                            child: SvgPicture.asset(
+                                              'assets/svgs/a-12Fshanchu.svg', // 设置SVG图标的路径
+                                              width: 24.w,
+                                              height: 24.w,
+                                              // ignore: deprecated_member_use
+                                              color: AppTheme.browserColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ])),
                           // for (int i = 0; i < 10; i++)
                           CustomListItem(
                             svgPath: 'assets/svgs/del2.svg',
@@ -734,7 +731,7 @@ class _CustomListItemState extends State<CustomListItem> {
   }
 }
 
-//~ 探索  isExplorePage
+//~ 探索页面  isExplorePage
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
 
@@ -931,7 +928,7 @@ class ExplorePageState extends State<ExplorePage> {
   }
 }
 
-//~收藏  isFavoritesPage
+//~收藏页面  isFavoritesPage
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
 

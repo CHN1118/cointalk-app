@@ -996,6 +996,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
     }
 
     final VideoPlayerController vController = kIsWeb
+        // ignore: deprecated_member_use
         ? VideoPlayerController.network(videoFile!.path)
         : VideoPlayerController.file(File(videoFile!.path));
 
