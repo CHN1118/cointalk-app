@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wallet/components/op_click.dart';
+import 'package:wallet/database/index.dart';
 import 'package:wallet/widgets/browser/index.dart';
 
 import 'package:wallet/widgets/mine/wallets.dart';
@@ -34,10 +36,15 @@ class _MymineState extends State<Mymine> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  '我的',
-                  style:
-                      TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w900),
+                OpClick(
+                  onTap: () {
+                    DB.box.remove('WalletList');
+                  },
+                  child: Text(
+                    '我的',
+                    style:
+                        TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w900),
+                  ),
                 ),
               ],
             ),
