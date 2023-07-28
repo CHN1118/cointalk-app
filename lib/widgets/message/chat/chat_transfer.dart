@@ -44,7 +44,7 @@ class _ChatTransferState extends State<ChatTransfer> {
               padding: EdgeInsets.only(right: 20.w),
               child: Text(
                 '转账记录',
-                style: TextStyle(fontSize: 15.sp, color: Color(0xff6B6B6B)),
+                style: TextStyle(fontSize: 15.sp, color: const Color(0xff6B6B6B)),
               ),
             ),
           ],

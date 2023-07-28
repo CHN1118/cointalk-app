@@ -7,7 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wallet/common/style/app_theme.dart';
 
 class WalletMan extends StatefulWidget {
-  const WalletMan({super.key});
+  bool? hasAppBar;
+  WalletMan({super.key, this.hasAppBar = true});
 
   @override
   State<WalletMan> createState() => _WalletManState();
@@ -23,60 +24,6 @@ class ListItem {
 
 //&钱包管理
 class _WalletManState extends State<WalletMan> {
-  double isBtns = 0; //是否选中
-//~左侧的四个图标
-  List<String> btns = [
-    'assets/svgs/purse_icon1.svg',
-    'assets/svgs/purse_icon2.svg',
-    'assets/svgs/purse_icon3.svg',
-    'assets/svgs/purse_icon4.svg',
-  ];
-  //~钱包数据
-  List<ListItem> items = [
-    for (int i = 0; i < 5; i++) ListItem(text: '项1'),
-  ];
-  //~判断点击选择了哪个钱包
-  void handleItemClick(int index) {
-    setState(() {
-      for (int i = 0; i < items.length; i++) {
-        if (i == index) {
-          items[i].isMarkers = true;
-        } else {
-          items[i].isMarkers = false;
-        }
-      }
-    });
-  }
-
-  //~只显示前五位和后六位
-  String formatText({required String text}) {
-    if (text.length <= 11) {
-      return text;
-    } else {
-      String abbreviatedText =
-          "${text.substring(0, 5)}...${text.substring(text.length - 6, text.length)}";
-      return abbreviatedText;
-    }
-  }
-
-//~复制到剪切板
-  void copyToClipboard({required String text}) {
-    Clipboard.setData(ClipboardData(text: text));
-    showSnackBar(msg: '复制成功');
-  }
-
-  //~提示弹框
-  Future<bool?> showSnackBar({String? msg}) {
-    return Fluttertoast.showToast(
-        msg: msg!,
-        toastLength: Toast.LENGTH_SHORT, // 消息框持续的时间
-        gravity: ToastGravity.TOP, // 消息框弹出的位置
-        timeInSecForIosWeb: 1, // ios
-        backgroundColor: const Color(0xffF2F8F5).withOpacity(1),
-        textColor: const Color(0xff000000),
-        fontSize: 14.sp);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,233 +31,40 @@ class _WalletManState extends State<WalletMan> {
         centerTitle: true, // 标题居中
         title: Text('钱包管理', style: TextStyle(fontSize: 20.sp)),
       ),
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width, // 设置容器宽度为屏幕宽度
-        child: Row(
-          children: [
-            Container(
-              color: AppTheme.purseTheme,
-              width: 70.w,
-              height: MediaQuery.of(context).size.height, // 设置容器高度为屏幕高度
-              child: Column(
-                children: [
-                  for (String i in btns)
-                    //& 推荐探索收藏列表
-                    Container(
-                      // width: 70.w,
-                      // height: 54.w,
-                      color: isBtns == btns.indexOf(i).toDouble()
-                          ? Colors.white
-                          : AppTheme.purseTheme,
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            isBtns = btns.indexOf(i).toDouble();
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(16.w),
-                          child: SvgPicture.asset(
-                            i, // 设置SVG图标的路径
-                            width: 38.w,
-                            height: 38.w,
-                          ),
-                        ),
-                      ),
-                    )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 20.w, right: 30.w),
-              width: 320.w,
-              height: MediaQuery.of(context).size.height, // 设置容器高度为屏幕高度
-              child: Stack(children: [
-                SizedBox(
-                  height: 48.w,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'BNB Chain',
-                        style: TextStyle(
-                            fontSize: 14.sp, fontWeight: FontWeight.w900),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          _showBottomSheet(context);
-                        },
-                        child: SvgPicture.asset(
-                          'assets/svgs/add.svg', // 设置SVG图标的路径
-                          width: 20.w,
-                          height: 20.w,
-                          // ignore: deprecated_member_use
-                          color: const Color(0xff45AAAF),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 56.w),
-                  child: SizedBox(
-                    width: 320.w,
-                    child: ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        return ClipRect(
-                          child: GestureDetector(
-                            onTap: () {
-                              handleItemClick(index);
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 272.w,
-                                  height: 67.w,
-                                  margin: EdgeInsets.only(bottom: 10.w),
-                                  child: Slidable(
-                                    key: Key(items[index].text),
-                                    endActionPane: ActionPane(
-                                      extentRatio: 0.35, // 控制滑动项widget的大小
-                                      motion: const ScrollMotion(), //滑动动画
-                                      dragDismissible: false, //是否可以通过拖动将操作取消
-                                      children: [
-                                        SlidableAction(
-                                          onPressed: (BuildContext context) {
-                                            setState(() {
-                                              //~删除钱包
-                                              _delBottomSheet1(context, index);
-                                            });
-                                          },
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(8.w),
-                                              bottomRight:
-                                                  Radius.circular(8.w)),
-                                          backgroundColor:
-                                              const Color(0xff45AAAF),
-                                          foregroundColor: Colors.white,
-                                          label: '删除',
-                                        )
-                                      ],
-                                    ),
-                                    child: Container(
-                                        padding: EdgeInsets.only(
-                                            left: 10.w, right: 15.w),
-                                        decoration: BoxDecoration(
-                                          color: items[index].isMarkers
-                                              ? AppTheme.purseTheme
-                                              : const Color(0xffF1F1F1),
-                                          borderRadius:
-                                              BorderRadius.circular(8.w),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  '钱包1号',
-                                                  style: TextStyle(
-                                                      fontSize: 14.sp,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                if (items[index].isMarkers)
-                                                  SvgPicture.asset(
-                                                    'assets/svgs/markers.svg', // 设置SVG图标的路径
-                                                    width: 18.w,
-                                                    height: 18.w,
-                                                    // ignore: deprecated_member_use
-                                                    color: AppTheme.themeColor,
-                                                  ),
-                                              ],
-                                            ),
-                                            Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  InkWell(
-                                                    onTap: () {
-                                                      //&复制到剪切板
-                                                      copyToClipboard(
-                                                          text:
-                                                              '0xwarashiuggfjkfiddijsc9DP');
-                                                    },
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 15.w),
-                                                          child: Text(
-                                                            //&只显示前五位和后六位
-                                                            formatText(
-                                                                text:
-                                                                    '0xwarashiuggfjkfiddijsc9DP'),
-                                                            style: TextStyle(
-                                                              fontSize: 15.sp,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        SvgPicture.asset(
-                                                          'assets/svgs/copy.svg', // 设置SVG图标的路径
-                                                          width: 16.w,
-                                                          height: 16.w,
-                                                          // ignore: deprecated_member_use
-                                                          color: AppTheme
-                                                              .themeColor,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    '0 BNB',
-                                                    style: TextStyle(
-                                                      fontSize: 14.sp,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                ])
-                                          ],
-                                        )),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ]),
-            )
-          ],
-        ),
-      ),
+      body: WalletBody(),
     );
   }
+}
 
-  //~删除钱包底部弹窗
+class WalletBody extends StatefulWidget {
+  const WalletBody({super.key});
+
+  @override
+  State<WalletBody> createState() => _WalletBodyState();
+}
+
+class _WalletBodyState extends State<WalletBody> {
+//~删除钱包的 底部弹窗
   void _delBottomSheet1(BuildContext context, int index) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: false, //设置为true，此时将会跟随键盘的弹出而弹出
       backgroundColor: const Color(0xffF2FfF5),
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(10.0), // 设置顶部圆角半径为 16.0
+          top: Radius.circular(10.0.w), // 设置顶部圆角半径为 16.0
         ),
       ),
+      barrierColor: const Color(0xff909090).withOpacity(0.5), // 背景色设置为透明
+
       builder: (BuildContext context) {
         return Container(
+          decoration: BoxDecoration(
+            color: const Color(0xffF2FfF5),
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(10.0.w), // 设置顶部圆角半径为 10.0
+            ),
+          ),
           padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 11.w),
           height: 369.h,
           width: MediaQuery.of(context).size.width,
@@ -488,12 +242,13 @@ class _WalletManState extends State<WalletMan> {
     );
   }
 
-  //~创建钱包，导入钱包底部弹窗
+  //~创建钱包，导入钱包 的底部弹窗
   void _showBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: false, //设置为true，此时将会跟随键盘的弹出而弹出
       backgroundColor: const Color(0xffF2FfF5),
+      barrierColor: const Color(0xff909090).withOpacity(0.5), // 背景色设置为透明
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(10.0), // 设置顶部圆角半径为 16.0
@@ -501,6 +256,12 @@ class _WalletManState extends State<WalletMan> {
       ),
       builder: (BuildContext context) {
         return Container(
+          decoration: BoxDecoration(
+            color: const Color(0xffF2FfF5),
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(10.0.w), // 设置顶部圆角半径为 10.0
+            ),
+          ),
           padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 11.w),
           height: 369.h,
           width: MediaQuery.of(context).size.width,
@@ -571,6 +332,259 @@ class _WalletManState extends State<WalletMan> {
           ),
         );
       },
+    );
+  }
+
+  double isBtns = 0; //是否选中
+//~左侧的四个图标
+  List<String> btns = [
+    'assets/svgs/purse_icon1.svg',
+    'assets/svgs/purse_icon2.svg',
+    'assets/svgs/purse_icon3.svg',
+    'assets/svgs/purse_icon4.svg',
+  ];
+  //~钱包数据
+  List<ListItem> items = [
+    for (int i = 0; i < 3; i++) ListItem(text: '项1'),
+  ];
+  //~判断点击选择了哪个钱包
+  void handleItemClick(int index) {
+    setState(() {
+      for (int i = 0; i < items.length; i++) {
+        if (i == index) {
+          items[i].isMarkers = true;
+        } else {
+          items[i].isMarkers = false;
+        }
+      }
+    });
+  }
+
+  //~只显示前五位和后六位
+  String formatText({required String text}) {
+    if (text.length <= 11) {
+      return text;
+    } else {
+      String abbreviatedText =
+          "${text.substring(0, 5)}...${text.substring(text.length - 6, text.length)}";
+      return abbreviatedText;
+    }
+  }
+
+//~复制到剪切板
+  void copyToClipboard({required String text}) {
+    Clipboard.setData(ClipboardData(text: text));
+    showSnackBar(msg: '复制成功');
+  }
+
+  //~提示弹框
+  Future<bool?> showSnackBar({String? msg}) {
+    return Fluttertoast.showToast(
+        msg: msg!,
+        toastLength: Toast.LENGTH_SHORT, // 消息框持续的时间
+        gravity: ToastGravity.TOP, // 消息框弹出的位置
+        timeInSecForIosWeb: 1, // ios
+        backgroundColor: const Color(0xffF2F8F5).withOpacity(1),
+        textColor: const Color(0xff000000),
+        fontSize: 14.sp);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: double.infinity,
+      child: Row(
+        children: [
+          Container(
+            color: AppTheme.purseTheme,
+            width: 70.w,
+            child: Column(
+              children: [
+                for (String i in btns)
+                  Container(
+                    width: double.infinity,
+                    height: 54.w,
+                    color: isBtns == btns.indexOf(i).toDouble()
+                        ? Colors.white
+                        : AppTheme.purseTheme,
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          isBtns = btns.indexOf(i).toDouble();
+                        });
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(16.w, 0.w, 16.w, 0.w),
+                        child: SvgPicture.asset(
+                          i, // 设置SVG图标的路径
+                        ),
+                      ),
+                    ),
+                  )
+              ],
+            ),
+          ),
+          Expanded(
+              child: SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 25.w, right: 28.w),
+                    height: 48.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'BNB Chain',
+                          style: TextStyle(
+                              fontSize: 14.sp, fontWeight: FontWeight.w900),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            _showBottomSheet(context);
+                          },
+                          child: SvgPicture.asset(
+                            'assets/svgs/add.svg', // 设置SVG图标的路径
+                            width: 20.w,
+                            height: 20.w,
+                            // ignore: deprecated_member_use
+                            color: const Color(0xff45AAAF),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  for (int index = 0; index < items.length; index++)
+                    ClipRect(
+                      child: GestureDetector(
+                        onTap: () {
+                          handleItemClick(index);
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 272.w,
+                              height: 67.w,
+                              margin: EdgeInsets.only(bottom: 10.w),
+                              child: Slidable(
+                                key: Key(items[index].text),
+                                endActionPane: ActionPane(
+                                  extentRatio: 0.35, // 控制滑动项widget的大小
+                                  motion: const ScrollMotion(), //滑动动画
+                                  dragDismissible: false, //是否可以通过拖动将操作取消
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (BuildContext context) {
+                                        setState(() {
+                                          //~删除钱包
+                                          _delBottomSheet1(context, index);
+                                        });
+                                      },
+                                      borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(8.w),
+                                          bottomRight: Radius.circular(8.w)),
+                                      backgroundColor: const Color(0xff45AAAF),
+                                      foregroundColor: Colors.white,
+                                      label: '删除',
+                                    )
+                                  ],
+                                ),
+                                child: Container(
+                                    padding: EdgeInsets.only(
+                                        left: 10.w, right: 15.w),
+                                    decoration: BoxDecoration(
+                                      color: items[index].isMarkers
+                                          ? AppTheme.purseTheme
+                                          : const Color(0xffF1F1F1),
+                                      borderRadius: BorderRadius.circular(8.w),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '钱包1号',
+                                              style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            if (items[index].isMarkers)
+                                              SvgPicture.asset(
+                                                'assets/svgs/markers.svg', // 设置SVG图标的路径
+                                                width: 18.w,
+                                                height: 18.w,
+                                                // ignore: deprecated_member_use
+                                                color: AppTheme.themeColor,
+                                              ),
+                                          ],
+                                        ),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  //&复制到剪切板
+                                                  copyToClipboard(
+                                                      text:
+                                                          '0xwarashiuggfjkfiddijsc9DP');
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          right: 15.w),
+                                                      child: Text(
+                                                        //&只显示前五位和后六位
+                                                        formatText(
+                                                            text:
+                                                                '0xwarashiuggfjkfiddijsc9DP'),
+                                                        style: TextStyle(
+                                                          fontSize: 15.sp,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SvgPicture.asset(
+                                                      'assets/svgs/copy.svg', // 设置SVG图标的路径
+                                                      width: 16.w,
+                                                      height: 16.w,
+                                                      // ignore: deprecated_member_use
+                                                      color:
+                                                          AppTheme.themeColor,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Text(
+                                                '0 BNB',
+                                                style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ])
+                                      ],
+                                    )),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                ],
+              ),
+            ),
+          ))
+        ],
+      ),
     );
   }
 }

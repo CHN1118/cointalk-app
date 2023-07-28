@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
               primaryColor: Colors.white,
               useMaterial3: true, //使用Material3
               appBarTheme: AppBarTheme(
-                backgroundColor: Colors.white.withOpacity(0),
+                backgroundColor: Colors.white,
                 surfaceTintColor: Colors.transparent,
                 foregroundColor: Colors.black,
                 titleTextStyle: TextStyle(
@@ -102,7 +102,7 @@ class _MyAppState extends State<MyApp> {
                 seedColor: Colors.black, //主题色
                 primary: Colors.black, //主题色
               ).copyWith(background: Colors.white)),
-          initialRoute: '/importwallet',
+          initialRoute: '/',
           // importwallet
           routingCallback: (routing) {},
           getPages: AppPages.pages,

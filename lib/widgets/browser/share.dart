@@ -22,15 +22,22 @@ class SharePageState extends State<SharePage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: false, //设置为true，此时将会跟随键盘的弹出而弹出
-      backgroundColor: const Color(0xffEDEFF5).withOpacity(1),
-      shape: const RoundedRectangleBorder(
+      barrierColor: const Color(0xff909090).withOpacity(0.5), // 背景色设置为透明
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(10.0), // 设置顶部圆角半径为 16.0
+          top: Radius.circular(10.0.w), // 设置顶部圆角半径为 16.0
         ),
       ),
       builder: (BuildContext context) {
         return Container(
           height: 198.h,
+          // EDEFF5
+          decoration: BoxDecoration(
+            color: const Color(0xffEDEFF5).withOpacity(1),
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(10.0.w), // 设置顶部圆角半径为 10.0
+            ),
+          ),
           width: MediaQuery.of(context).size.width,
           padding:
               EdgeInsets.only(left: 22.w, right: 21.w, top: 8.h, bottom: 8.h),

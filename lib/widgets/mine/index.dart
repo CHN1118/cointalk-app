@@ -50,10 +50,8 @@ class _MymineState extends State<Mymine> {
                   InkWell(
                     onTap: () {
                       //跳转到钱包管理 WalletMan
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const WalletMan()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => WalletMan()));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -313,16 +311,19 @@ class _PersonalDataState extends State<PersonalData> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: false, //设置为true，此时将会跟随键盘的弹出而弹出
-      backgroundColor: const Color(0xffF2FfFc),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(10.0), // 设置顶部圆角半径为 16.0
-        ),
-      ),
+      backgroundColor: const Color(0xffE8F2F2),
+      barrierColor: const Color(0xff909090).withOpacity(0.5), // 背景色设置为透明
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(//圆角
+          Radius.circular(10.0.w))),
       builder: (BuildContext context) {
         return Container(
+          margin: EdgeInsets.only(bottom: 8.h),
           padding: EdgeInsets.only(top: 11.w),
-          height: 140.h,
+          decoration: BoxDecoration(
+              color: const Color(0xffE8F2F2),
+              borderRadius: BorderRadius.all(//圆角
+                  Radius.circular(10.0.w))),
+          height: 130.h,
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
@@ -479,8 +480,6 @@ class _PersonalDataState extends State<PersonalData> {
       }
     }
   }
-
-//&选择图片弹窗
 }
 
 typedef OnPickImageCallback = void Function(
