@@ -148,15 +148,10 @@ class _WalletState extends State<Wallet> {
                           height: 30.w,
                           padding: EdgeInsets.all(2.w),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.w),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 2,
-                                  spreadRadius: 2,
-                                ),
-                              ]),
+                            borderRadius: BorderRadius.circular(20.w),
+                            color: Colors.white,
+                            boxShadow: AppTheme.cardShow,
+                          ),
                           child: Stack(
                             children: [
                               AnimatedAlign(
@@ -332,6 +327,7 @@ class _WalletState extends State<Wallet> {
                                           'assets/images/purse_bg.png'),
                                       fit: BoxFit.cover,
                                     ),
+                                    boxShadow: AppTheme.cardShow,
                                   ),
                                   child: isColdWallet
 
@@ -642,6 +638,7 @@ class _WalletState extends State<Wallet> {
                                               BorderRadius.circular(10.w),
                                           color: const Color(0xFF9BAED2)
                                               .withOpacity(0.35),
+                                          boxShadow: AppTheme.cardShow,
                                         ),
                                         child: Row(
                                           mainAxisAlignment:
@@ -686,6 +683,7 @@ class _WalletState extends State<Wallet> {
                                               BorderRadius.circular(10.w),
                                           color: const Color(0xFF5F9396)
                                               .withOpacity(0.3),
+                                          boxShadow: AppTheme.cardShow,
                                         ),
                                         child: Row(
                                           mainAxisAlignment:
@@ -987,14 +985,7 @@ class _WalletState extends State<Wallet> {
                               topLeft: Radius.circular(20.w),
                               topRight: Radius.circular(20.w),
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-
-                                blurRadius: 6, //阴影模糊程度
-                                offset: const Offset(0, -5), //阴影位置,从什么位置开始
-                              ),
-                            ],
+                            boxShadow: AppTheme.cardShow,
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(

@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTheme {
   AppTheme._();
@@ -26,6 +27,13 @@ class AppTheme {
   static Color browserColor = const Color(0xff000000).withOpacity(0.5);
   static Gradient redBtn =
       const LinearGradient(colors: [Color(0xFF9FDADE), Color(0xFF92ADDF)]);
+  static List<BoxShadow>? cardShow = [
+    BoxShadow(
+      color: Colors.black.withOpacity(.03),
+      spreadRadius: 2.w, //阴影扩散程度
+      blurRadius: 2.w,
+    )
+  ];
   static const String fontName = 'MiSans';
 
   static const TextTheme textTheme = TextTheme(

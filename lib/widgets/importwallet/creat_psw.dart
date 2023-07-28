@@ -29,7 +29,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
 
   var Bio = Biometric();
 
-  bool isEBV = DB.box.read('isEBV'); //是否开启生物识别
+  bool isEBV = false; //是否开启生物识别
   bool isEye = true; //是否显示密码
   bool isFocus = false; //是否聚焦
   bool isFocus1 = false; //是否聚焦
