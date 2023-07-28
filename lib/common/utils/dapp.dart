@@ -224,11 +224,11 @@ class StoreWalletInformation {
       walletList.add(walletInformation);
     }
     await DB.box.write('WalletList', walletList); // 存储钱包信息数组
-    // var walletkey = await storage.read(key: walletInformation['address']);
-    // var walletInfo = DB.box.read('WalletList');
-    // print(walletInformation);
-    // LLogger.d('getStoreBOX：walletInfo: $walletInfo');
-    // LLogger.d('StoreBOX：walletkey: $walletkey');
+    var walletkey = await storage.read(key: walletInformation['address']);
+    var walletInfo = await DB.box.read('WalletList');
+    print('加密后的钱包信息：$walletInformation\n');
+    LLogger.d('存储到普通缓存的数据：$walletInfo\n');
+    LLogger.d('存储到安全缓存的数据：$walletkey');
     return walletInformation;
   }
 }

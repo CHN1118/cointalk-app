@@ -60,33 +60,62 @@ class ISuccessState extends State<Success> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                OpClick(
-                  onTap: () {
-                    //震动
-                    HapticFeedback.mediumImpact();
-                    setState(() {
-                      isAgree = !isAgree;
-                    });
-                  },
-                  child: Container(
-                    height: 40.w,
-                    width: 40.w,
-                    color: Colors.white,
+                Transform.translate(
+                  offset: Offset(8.w, 0),
+                  child: OpClick(
+                    onTap: () {
+                      //震动
+                      HapticFeedback.mediumImpact();
+                      setState(() {
+                        isAgree = !isAgree;
+                      });
+                    },
                     child: Container(
-                      margin: EdgeInsets.all(14.w),
-                      decoration: BoxDecoration(
-                        color: isAgree ? AppTheme.themeColor : Colors.white,
-                        borderRadius: BorderRadius.circular(20.w),
-                        border: Border.all(
-                          color: isAgree ? AppTheme.themeColor : Colors.grey,
-                          width: 1.w,
-                        ),
-                      ),
+                      height: 40.w,
+                      width: 40.w,
+                      color: Colors.white,
+                      child: Container(
+                          margin: EdgeInsets.all(14.w),
+                          decoration: BoxDecoration(
+                            color: isAgree ? AppTheme.themeColor : Colors.white,
+                            borderRadius: BorderRadius.circular(20.w),
+                            border: Border.all(
+                              color:
+                                  isAgree ? AppTheme.themeColor : Colors.grey,
+                              width: 1.w,
+                            ),
+                          ),
+                          child: isAgree
+                              ? Icon(
+                                  Icons.check_rounded,
+                                  size: 8.w,
+                                  color: Colors.white,
+                                )
+                              : null),
                     ),
                   ),
                 ),
-                const Text('我已阅读并同意')
+                Text('我已阅读并同意',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    )),
                 //文字下划线
+                OpClick(
+                  child: Text(
+                    '服务及隐私条款',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppTheme.themeColor,
+                      decoration: TextDecoration.underline,
+                      decorationStyle: TextDecorationStyle.dashed,
+                      decorationColor: AppTheme.themeColor,
+                      decorationThickness: .8.w,
+                    ),
+                  ),
+                ),
               ],
             ),
             SizedBox(

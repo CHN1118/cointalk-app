@@ -356,9 +356,9 @@ class WImportWState extends State<ImportW> {
               wallet_text.text, walletName, password, isEBV,
               active: true);
           var res = await swi.addWalletInfo(context, walletInfo);
-          // if (res != null) {
-          //   Get.offAll(() => const Success(), transition: Transition.topLevel);
-          // }
+          if (res != null) {
+            Get.offAll(() => const Success(), transition: Transition.topLevel);
+          }
         } else {
           await EasyLoading.dismiss();
           ErrorShow(msg: '私钥有误');

@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:wallet/database/index.dart';
 
@@ -15,15 +17,14 @@ class Utils {
   }
 }
 
-
-
 // 判断是否登录
 String checkLoginStatus() {
+  var isLogin = DB.box.read('WalletList') ?? [];
   // 延迟一段时间模拟登录状态检查
-  if (DB.box.read('token') == null) {
+  if (isLogin.length > 0) {
     return '/';
   } else {
-    return '/startup';
+    return '/importwallet';
   }
 }
 

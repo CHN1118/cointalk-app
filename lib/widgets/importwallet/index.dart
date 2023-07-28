@@ -56,10 +56,16 @@ class IimportwalletState extends State<Importwallet> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(
-                    'assets/svgs/logo.svg',
-                    width: 208.947.w,
-                    height: 206.4.w,
+                  OpClick(
+                    onTap: () {
+                      //删除缓存数据
+                      DB.box.remove('WalletList');
+                    },
+                    child: SvgPicture.asset(
+                      'assets/svgs/logo.svg',
+                      width: 208.947.w,
+                      height: 206.4.w,
+                    ),
                   ),
                   SizedBox(height: 78.h),
                   Text(
