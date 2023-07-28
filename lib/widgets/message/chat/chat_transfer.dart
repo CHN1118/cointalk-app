@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wallet/components/op_click.dart';
 
 class ChatTransfer extends StatefulWidget {
   const ChatTransfer({super.key});
@@ -48,7 +49,7 @@ class _ChatTransferState extends State<ChatTransfer> {
               ),
             ),
           ],
-          leading: InkWell(
+          leading: OpClick(
             onTap: () {
               Navigator.pop(context);
             },

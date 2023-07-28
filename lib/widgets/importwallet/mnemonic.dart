@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:wallet/components/op_click.dart';
 import 'package:wallet/widgets/importwallet/backup_mnemonic.dart';
 
 class Mnemonic extends StatefulWidget {
@@ -120,7 +121,7 @@ class MMnemonicState extends State<Mnemonic> {
                 ),
                 const Expanded(child: SizedBox()),
                 Center(
-                  child: InkWell(
+                  child: OpClick(
                     onTap: Next,
                     child: Container(
                       width: 325.w,

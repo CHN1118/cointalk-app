@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/components/custom_dialog.dart';
+import 'package:wallet/components/op_click.dart';
 
 class Walletname extends StatefulWidget {
   const Walletname({super.key});
@@ -44,7 +45,7 @@ class WwalletnameState extends State<Walletname> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          leading: InkWell(
+          leading: OpClick(
               onTap: () {
                 Get.back();
               },
@@ -127,7 +128,7 @@ class WwalletnameState extends State<Walletname> {
                 ),
                 const Expanded(child: SizedBox()),
                 Center(
-                  child: InkWell(
+                  child: OpClick(
                     onTap: Next,
                     child: Container(
                       width: 325.w,

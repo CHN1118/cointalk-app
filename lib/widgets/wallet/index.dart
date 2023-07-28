@@ -11,6 +11,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/index.dart';
+import 'package:wallet/components/op_click.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/mine/wallets.dart';
 
@@ -58,7 +59,15 @@ class _WalletState extends State<Wallet> {
         fontSize: 14.sp);
   }
 
-  bool isColdWallet = false; //是否冷钱包
+//销毁
+  @override
+  void dispose() {
+    isColdWallet = true; //是否冷钱包
+    super.dispose();
+    bus.off("login");
+  }
+
+  bool isColdWallet = true; //是否冷钱包
   bool isEye = false; //是否显示资产
   bool isEyeAssets = false; //是否显示资产单选框
 
@@ -87,11 +96,6 @@ class _WalletState extends State<Wallet> {
       print(arg);
       print('登录成功');
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -131,7 +135,7 @@ class _WalletState extends State<Wallet> {
                     alignment: Alignment.bottomCenter,
                     child: Container(
                       margin: EdgeInsets.only(top: 46.w),
-                      child: InkWell(
+                      child: OpClick(
                         onTap: () {
                           // 震动
                           HapticFeedback.heavyImpact();
@@ -179,7 +183,7 @@ class _WalletState extends State<Wallet> {
                                 alignment: isColdWallet
                                     ? Alignment.centerLeft
                                     : Alignment.centerRight,
-                                child: InkWell(
+                                child: OpClick(
                                   onTap: () {},
                                   child: Container(
                                     width: 78.w,
@@ -213,7 +217,7 @@ class _WalletState extends State<Wallet> {
                     //   child: Row(
                     //     mainAxisAlignment: MainAxisAlignment.center,
                     //     children: [
-                    //       InkWell(
+                    //       OpClick(
                     //         onTap: () {
                     //           setState(() {
                     //             isColdWallet = false;
@@ -241,7 +245,7 @@ class _WalletState extends State<Wallet> {
                     //           )),
                     //         ),
                     //       ),
-                    //       InkWell(
+                    //       OpClick(
                     //         onTap: () {
                     //           setState(() {
                     //             isColdWallet = true;
@@ -488,7 +492,7 @@ class _WalletState extends State<Wallet> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.end,
                                               children: [
-                                                InkWell(
+                                                OpClick(
                                                   onTap: () {
                                                     _walletShowBottomSheet(
                                                         context);
@@ -525,7 +529,7 @@ class _WalletState extends State<Wallet> {
                                                                 color: const Color(
                                                                     0xff292D32)),
                                                           ),
-                                                          InkWell(
+                                                          OpClick(
                                                             onTap: () {
                                                               copyToClipboard(
                                                                   text:
@@ -621,7 +625,7 @@ class _WalletState extends State<Wallet> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    InkWell(
+                                    OpClick(
                                       onTap: () {
                                         _transferShowBottomSheet(
                                           context,
@@ -665,7 +669,7 @@ class _WalletState extends State<Wallet> {
                                         ),
                                       ),
                                     ),
-                                    InkWell(
+                                    OpClick(
                                       onTap: () {
                                         _receiveShowBottomSheet(
                                           context,
@@ -793,7 +797,7 @@ class _WalletState extends State<Wallet> {
                             //                   ),
                             //                 ),
                             //                 Expanded(
-                            //                   child: InkWell(
+                            //                   child: OpClick(
                             //                     onTap: () {
                             //                       setState(() {
                             //                         isEye = !isEye;
@@ -878,7 +882,7 @@ class _WalletState extends State<Wallet> {
                             //               MainAxisAlignment.spaceBetween,
                             //           children: [
                             //             for (String i in btns)
-                            //               InkWell(
+                            //               OpClick(
                             //                 onTap: () {
                             //                   setState(() {
                             //                     isBtns = btns.indexOf(i).toDouble();
@@ -915,7 +919,7 @@ class _WalletState extends State<Wallet> {
                             // SizedBox(height: 8.h),
                             // Padding(
                             //   padding: EdgeInsets.only(left: 20.w),
-                            //   child: InkWell(
+                            //   child: OpClick(
                             //     onTap: () {
                             //       setState(() {
                             //         isEyeAssets = !isEyeAssets;
@@ -1017,7 +1021,7 @@ class _WalletState extends State<Wallet> {
                                 for (int i = 0; i < 5; i++)
                                   Column(
                                     children: [
-                                      InkWell(
+                                      OpClick(
                                         onTap: () {
                                           showCustomDialog(
                                               context, '您收到一笔新的转账');
@@ -1187,7 +1191,7 @@ class _WalletState extends State<Wallet> {
                         ),
                       ]),
                 ),
-                InkWell(
+                OpClick(
                   onTap: () {
                     setState(() {
                       Navigator.pop(context);
@@ -1253,7 +1257,7 @@ class _WalletState extends State<Wallet> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        InkWell(
+                        OpClick(
                           onTap: () {
                             Navigator.pop(context); // 关闭底部弹框
                           },
@@ -1505,7 +1509,7 @@ class _WalletState extends State<Wallet> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  InkWell(
+                                  OpClick(
                                     onTap: () {
                                       setState(() {
                                         isConfirming = true;
@@ -1531,7 +1535,7 @@ class _WalletState extends State<Wallet> {
                                       ),
                                     ),
                                   ),
-                                  InkWell(
+                                  OpClick(
                                     onTap: () {
                                       Navigator.pop(context); // 关闭底部弹框
                                     },
@@ -1575,7 +1579,7 @@ class _WalletState extends State<Wallet> {
                               const SizedBox(
                                 width: 1,
                               ),
-                              InkWell(
+                              OpClick(
                                 onTap: () {
                                   setState(() {
                                     isConfirming = true;
@@ -1837,7 +1841,7 @@ class _WalletState extends State<Wallet> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
+                  OpClick(
                     onTap: () {
                       Navigator.pop(context); // 关闭底部弹框
                     },
@@ -2032,7 +2036,7 @@ void _walletShowBottomSheet(
                                 ),
                               ],
                             ),
-                            InkWell(
+                            OpClick(
                               onTap: () {
                                 Navigator.pop(context); // 关闭底部弹框
                               },

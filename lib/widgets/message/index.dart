@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet/common/utils/index.dart';
+import 'package:wallet/components/op_click.dart';
 import 'package:wallet/widgets/message/chat/chat_transfer.dart';
 
 class MessagePage extends StatefulWidget {
@@ -68,7 +69,7 @@ class _MessagePageState extends State<MessagePage> {
                           style: TextStyle(
                               fontSize: 18.sp, color: const Color(0XFF232832))),
                       //? 加号图标
-                      InkWell(
+                      OpClick(
                         key: iconkey,
                         onTap: () {
                           showModel(context);

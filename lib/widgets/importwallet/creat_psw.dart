@@ -88,7 +88,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          leading: InkWell(
+          leading: OpClick(
               onTap: () {
                 Get.back();
               },
@@ -316,7 +316,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                           right: 0,
                           top: 0,
                           bottom: 0,
-                          child: InkWell(
+                          child: OpClick(
                             onTap: () {
                               isEye = !isEye;
                               setState(() {});
@@ -343,7 +343,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                         Text('开启人脸识别验证',
                             style: TextStyle(
                                 fontSize: 14.sp, fontWeight: FontWeight.w400)),
-                        InkWell(
+                        OpClick(
                           onTap: setFiceID,
                           child: Container(
                             height: 22.w,
