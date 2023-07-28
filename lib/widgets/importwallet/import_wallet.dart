@@ -64,7 +64,7 @@ class WImportWState extends State<ImportW> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text('导入钱包'),
-          leading: InkWell(
+          leading: OpClick(
               onTap: () {
                 Get.back();
               },
@@ -81,7 +81,7 @@ class WImportWState extends State<ImportW> {
               children: [
                 //* 自定义switch 开关按钮
                 Center(
-                    child: InkWell(
+                    child: OpClick(
                   onTap: () {
                     // 震动
                     HapticFeedback.heavyImpact();
@@ -130,7 +130,7 @@ class WImportWState extends State<ImportW> {
                           alignment: isWalletShow
                               ? Alignment.centerLeft
                               : Alignment.centerRight,
-                          child: InkWell(
+                          child: OpClick(
                             onTap: () {},
                             child: Container(
                               width: 78.w,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:wallet/components/op_click.dart';
 import 'package:wallet/controller/index.dart';
 
 class Splash extends StatelessWidget {
@@ -13,7 +14,7 @@ class Splash extends StatelessWidget {
       body: Container(
         color: Colors.pink,
         child: Center(
-            child: InkWell(
+            child: OpClick(
                 onTap: () {
                   C.changeLanguage();
                 },

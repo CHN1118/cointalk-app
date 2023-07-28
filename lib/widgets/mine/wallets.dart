@@ -5,7 +5,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/components/op_click.dart';
 
+// ignore: must_be_immutable
 class WalletMan extends StatefulWidget {
   bool? hasAppBar;
   WalletMan({super.key, this.hasAppBar = true});
@@ -31,7 +33,7 @@ class _WalletManState extends State<WalletMan> {
         centerTitle: true, // 标题居中
         title: Text('钱包管理', style: TextStyle(fontSize: 20.sp)),
       ),
-      body: WalletBody(),
+      body: const WalletBody(),
     );
   }
 }
@@ -78,7 +80,7 @@ class _WalletBodyState extends State<WalletBody> {
                     style:
                         TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w900),
                   ),
-                  InkWell(
+                  OpClick(
                     onTap: () {
                       // 执行选项 2 的操作
                       Navigator.pop(context); // 关闭底部弹框
@@ -142,7 +144,7 @@ class _WalletBodyState extends State<WalletBody> {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                InkWell(
+                                OpClick(
                                   onTap: () {
                                     //&复制到剪切板
                                     copyToClipboard(
@@ -185,7 +187,7 @@ class _WalletBodyState extends State<WalletBody> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      InkWell(
+                      OpClick(
                         onTap: () {
                           setState(() {
                             //删除items的数据
@@ -209,7 +211,7 @@ class _WalletBodyState extends State<WalletBody> {
                                       fontWeight: FontWeight.w600)),
                             )),
                       ),
-                      InkWell(
+                      OpClick(
                         onTap: () {
                           // 执行选项 2 的操作
                           Navigator.pop(context); // 关闭底部弹框
@@ -275,7 +277,7 @@ class _WalletBodyState extends State<WalletBody> {
                     style:
                         TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w900),
                   ),
-                  InkWell(
+                  OpClick(
                     onTap: () {
                       // 执行选项 2 的操作
                       Navigator.pop(context); // 关闭底部弹框
@@ -407,7 +409,7 @@ class _WalletBodyState extends State<WalletBody> {
                     color: isBtns == btns.indexOf(i).toDouble()
                         ? Colors.white
                         : AppTheme.purseTheme,
-                    child: InkWell(
+                    child: OpClick(
                       onTap: () {
                         setState(() {
                           isBtns = btns.indexOf(i).toDouble();
@@ -443,7 +445,7 @@ class _WalletBodyState extends State<WalletBody> {
                           style: TextStyle(
                               fontSize: 14.sp, fontWeight: FontWeight.w900),
                         ),
-                        InkWell(
+                        OpClick(
                           onTap: () {
                             _showBottomSheet(context);
                           },
@@ -530,7 +532,7 @@ class _WalletBodyState extends State<WalletBody> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              InkWell(
+                                              OpClick(
                                                 onTap: () {
                                                   //&复制到剪切板
                                                   copyToClipboard(

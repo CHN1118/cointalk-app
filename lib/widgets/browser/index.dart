@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/components/op_click.dart';
 
 import 'package:wallet/widgets/browser/share.dart';
 
@@ -187,7 +188,7 @@ class _BrowserState extends State<Browser> {
                         width: 35.h,
                         height: 23.w,
                         margin: EdgeInsets.only(top: 70.h, left: 8.w),
-                        child: InkWell(
+                        child: OpClick(
                           onTap: () {
                             setState(() {
                               isSearching = false; //设置正在搜索
@@ -238,7 +239,7 @@ class _BrowserState extends State<Browser> {
                                   children: [
                                     for (String i in btns)
                                       //& 推荐探索收藏列表
-                                      InkWell(
+                                      OpClick(
                                         onTap: () {
                                           setState(() {
                                             isBtns = btns.indexOf(i).toDouble();
@@ -388,7 +389,7 @@ class _BrowserState extends State<Browser> {
                                                 Container(
                                                   margin: EdgeInsets.only(
                                                       left: 3.w),
-                                                  child: InkWell(
+                                                  child: OpClick(
                                                     onTap: () {
                                                       setState(() {
                                                         isCollect = !isCollect;
@@ -708,7 +709,7 @@ class _CustomListItemState extends State<CustomListItem> {
               ),
               Container(
                 margin: EdgeInsets.only(left: 3.w),
-                child: InkWell(
+                child: OpClick(
                   onTap: () {
                     widget.onTapIncident!();
                   },
@@ -774,7 +775,7 @@ class ExplorePageState extends State<ExplorePage> {
                         children: [
                           for (String i in btns)
                             //& 推荐探索收藏列表
-                            InkWell(
+                            OpClick(
                               onTap: () {
                                 setState(() {
                                   isBtns = btns.indexOf(i).toDouble();
@@ -880,7 +881,7 @@ class ExplorePageState extends State<ExplorePage> {
                                           ),
                                           Container(
                                             margin: EdgeInsets.only(left: 7.w),
-                                            child: InkWell(
+                                            child: OpClick(
                                               onTap: () {
                                                 setState(() {
                                                   isCollect = !isCollect;
@@ -1009,7 +1010,7 @@ class FavoritesPageState extends State<FavoritesPage> {
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(left: 7.w),
-                                          child: InkWell(
+                                          child: OpClick(
                                             onTap: () {
                                               setState(() {
                                                 isCollect = !isCollect;

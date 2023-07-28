@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/dapp.dart';
+import 'package:wallet/components/op_click.dart';
 
 class BackupMnemonic extends StatefulWidget {
   const BackupMnemonic({super.key});
@@ -56,7 +57,7 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          leading: InkWell(
+          leading: OpClick(
               onTap: () {
                 Get.back();
               },
@@ -87,7 +88,7 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
                   children: nullMnemonicArr.asMap().entries.map((entry) {
                     final int index = entry.key;
                     final Map<dynamic, dynamic> item = entry.value;
-                    return InkWell(
+                    return OpClick(
                       onTap: () {
                         removeItem(item, index);
                       },
@@ -159,7 +160,7 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
                   runSpacing: 8.h,
                   children: shuffledList.asMap().entries.map((entry) {
                     final int item = entry.value;
-                    return InkWell(
+                    return OpClick(
                       onTap: () {
                         addItem(item);
                       },
@@ -186,7 +187,7 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
                 //*下一步
                 Opacity(
                   opacity: isShow ? 1 : .3,
-                  child: InkWell(
+                  child: OpClick(
                     onTap: Next,
                     child: Container(
                       width: 325.w,

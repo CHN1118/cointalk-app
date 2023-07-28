@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:wallet/components/op_click.dart';
+import 'package:wallet/components/op_click.dart';
 import 'package:wallet/database/index.dart';
 import 'package:wallet/widgets/browser/index.dart';
 
@@ -55,7 +56,7 @@ class _MymineState extends State<Mymine> {
               padding: EdgeInsets.only(left: 22.w, right: 25.w),
               child: Column(
                 children: [
-                  InkWell(
+                  OpClick(
                     onTap: () {
                       //跳转到钱包管理 WalletMan
                       Get.to(() => WalletMan());
@@ -104,7 +105,7 @@ class _MymineState extends State<Mymine> {
                           ),
                         ),
                       )),
-                  InkWell(
+                  OpClick(
                     onTap: () {
                       //跳转到个人资料 PersonalData
                       setState(() {
@@ -208,7 +209,7 @@ class _PersonalDataState extends State<PersonalData> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //网络图片
-                InkWell(
+                OpClick(
                   onTap: () {
                     _showBottomSheet(context);
                   },
@@ -241,7 +242,7 @@ class _PersonalDataState extends State<PersonalData> {
               ),
             ),
           ),
-          child: InkWell(
+          child: OpClick(
             onTap: () {
               //  跳转到编辑名字 EditorPage
               Navigator.push(context,
@@ -279,7 +280,7 @@ class _PersonalDataState extends State<PersonalData> {
         Positioned(
           top: 65.w,
           left: 212.w,
-          child: InkWell(
+          child: OpClick(
             onTap: () {
               _showBottomSheet(context);
             },
@@ -334,7 +335,7 @@ class _PersonalDataState extends State<PersonalData> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
-              InkWell(
+              OpClick(
                 onTap: () async {
                   _picker.pickImage(source: ImageSource.camera);
                 },
@@ -358,7 +359,7 @@ class _PersonalDataState extends State<PersonalData> {
                       ),
                     ),
                   )),
-              InkWell(
+              OpClick(
                 onTap: () {
                   setState(() {
                     Navigator.pop(context); //关闭弹窗
@@ -388,7 +389,7 @@ class _PersonalDataState extends State<PersonalData> {
                       ),
                     ),
                   )),
-              InkWell(
+              OpClick(
                 onTap: () {
                   Navigator.pop(context);
                 },
@@ -579,7 +580,7 @@ class _EditorPageState extends State<EditorPage> {
       appBar: AppBar(
         centerTitle: true, // 标题居中
         actions: [
-          InkWell(
+          OpClick(
             onTap: () {
               showSnackBar(msg: '编辑成功');
               Navigator.pop(context);
@@ -597,7 +598,7 @@ class _EditorPageState extends State<EditorPage> {
           '编辑资料',
           style: TextStyle(fontSize: 20.sp),
         ),
-        leading: InkWell(
+        leading: OpClick(
           onTap: () {
             Navigator.pop(context);
           },
