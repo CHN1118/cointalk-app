@@ -94,7 +94,7 @@ class _BrowserState extends State<Browser> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          // FocusScope.of(context).requestFocus(FocusNode()); // 点击空白处隐藏键盘
+          FocusScope.of(context).requestFocus(FocusNode()); // 点击空白处隐藏键盘
         },
         child: Scaffold(
             resizeToAvoidBottomInset: false,

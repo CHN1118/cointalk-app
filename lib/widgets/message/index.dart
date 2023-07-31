@@ -300,10 +300,11 @@ class _MessagePageState extends State<MessagePage> {
                                                   Container(
                                                     margin: EdgeInsets.only(
                                                         top: 5.w),
-                                                    child: const Text(
+                                                    child: Text(
                                                       '保存朋友的名片，转账更方便',
                                                       style: TextStyle(
-                                                          color: Color(
+                                                          fontSize: 12.sp,
+                                                          color: const Color(
                                                               0xff828895)),
                                                     ),
                                                   )
@@ -313,10 +314,12 @@ class _MessagePageState extends State<MessagePage> {
                                             Container(
                                                 margin: EdgeInsets.only(
                                                     bottom: 28.w),
-                                                child: const Text(
+                                                child: Text(
                                                   '23/03/12',
                                                   style: TextStyle(
-                                                      color: Color(0xff828895)),
+                                                      fontSize: 12.sp,
+                                                      color: const Color(
+                                                          0xff828895)),
                                                 )),
                                           ],
                                         ),

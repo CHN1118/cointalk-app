@@ -105,8 +105,7 @@ class _MymineState extends State<Mymine> {
                     onTap: () {
                       //跳转到个人资料 PersonalData
                       setState(() {
-                       
-                        Get.to(() => const PersonalData()); 
+                        Get.to(() => const PersonalData());
                       });
                     },
                     child: Container(
@@ -317,26 +316,28 @@ class _PersonalDataState extends State<PersonalData> {
           Radius.circular(10.0.w))),
       builder: (BuildContext context) {
         return Container(
-          margin: EdgeInsets.only(bottom: 8.h),
           padding: EdgeInsets.only(top: 11.w),
           decoration: BoxDecoration(
               color: const Color(0xffE8F2F2),
               borderRadius: BorderRadius.all(//圆角
                   Radius.circular(10.0.w))),
-          height: 130.h,
+          height: 135.h,
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
               OpClick(
                 onTap: () async {
+                  Navigator.pop(context); //关闭弹窗
                   _picker.pickImage(source: ImageSource.camera);
                 },
                 child: Container(
                   margin: EdgeInsets.only(bottom: 7.h),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('拍照', style: TextStyle(color: Color(0xff1C59F3)))
+                      Text('拍照',
+                          style: TextStyle(
+                              color: const Color(0xff1C59F3), fontSize: 18.sp))
                     ],
                   ),
                 ),
@@ -360,12 +361,13 @@ class _PersonalDataState extends State<PersonalData> {
                 },
                 child: Container(
                   margin: EdgeInsets.only(top: 7.h, bottom: 7.h),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         '相册',
-                        style: TextStyle(color: Color(0xff1C59F3)),
+                        style: TextStyle(
+                            color: const Color(0xff1C59F3), fontSize: 18.sp),
                       )
                     ],
                   ),
@@ -387,12 +389,13 @@ class _PersonalDataState extends State<PersonalData> {
                 },
                 child: Container(
                   margin: EdgeInsets.only(top: 7.h, bottom: 7.h),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         '取消',
-                        style: TextStyle(color: Color(0xffB4B4B4)),
+                        style: TextStyle(
+                            color: const Color(0xffB4B4B4), fontSize: 18.sp),
                       )
                     ],
                   ),
@@ -568,78 +571,83 @@ class _EditorPageState extends State<EditorPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true, // 标题居中
-        actions: [
-          OpClick(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode()); // 点击空白处隐藏键盘
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true, // 标题居中
+          actions: [
+            OpClick(
+              onTap: () {
+                showSnackBar(msg: '编辑成功');
+                Navigator.pop(context);
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 22.w),
+                child: Text(
+                  '保存',
+                  style: TextStyle(fontSize: 20.sp),
+                ),
+              ),
+            ),
+          ],
+          title: Text(
+            '编辑资料',
+            style: TextStyle(fontSize: 20.sp),
+          ),
+          leading: OpClick(
             onTap: () {
-              showSnackBar(msg: '编辑成功');
               Navigator.pop(context);
             },
             child: Container(
-              margin: EdgeInsets.only(right: 22.w),
-              child: Text(
-                '保存',
-                style: TextStyle(fontSize: 20.sp),
+              margin: EdgeInsets.only(left: 9.w),
+              child: Center(
+                child: Text(
+                  '取消',
+                  style: TextStyle(
+                      fontSize: 20.sp,
+                      color: const Color(0xff000000).withOpacity(0.5)),
+                ),
               ),
             ),
           ),
-        ],
-        title: Text(
-          '编辑资料',
-          style: TextStyle(fontSize: 20.sp),
         ),
-        leading: OpClick(
-          onTap: () {
-            Navigator.pop(context);
-          },
+        //&输入框
+        body: Container(
+          padding: EdgeInsets.only(bottom: 7.w),
+          margin: EdgeInsets.only(top: 55.h, left: 21.w, right: 21.w),
+          decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(
+            width: 1.w,
+            color: const Color(0xffE5E5E5),
+          ))),
           child: Container(
-            margin: EdgeInsets.only(left: 9.w),
-            child: Center(
-              child: Text(
-                '取消',
-                style: TextStyle(
-                    fontSize: 20.sp,
-                    color: const Color(0xff000000).withOpacity(0.5)),
+            padding: EdgeInsets.only(left: 17.w),
+            child: TextField(
+              focusNode: _focusNode, // 将输入框与焦点关联
+              autofocus: true, // 自动获取焦点
+              cursorColor: const Color(0xff000000).withOpacity(0.5), //设置光标颜色
+              strutStyle: StrutStyle.fromTextStyle(
+                  TextStyle(fontSize: 25.0.w, height: 0.8.w)),
+              style: TextStyle(fontSize: 14.0.w), //设置字体大小
+              cursorHeight: 18.sp, //设置光标高度
+              cursorRadius: const Radius.circular(10), // 设置光标圆角半径
+              textAlignVertical: TextAlignVertical.center, // 将光标居中
+              decoration: InputDecoration(
+                isCollapsed: true, //去除内边距
+                contentPadding: EdgeInsets.all(0.w), //*去除内边距
+                border: InputBorder.none,
               ),
+              // 添加 onSubmitted 回调处理用户按下键盘上的搜索按钮的事件
+              onSubmitted: (value) {},
+              // 添加 onChanged 回调处理用户输入的内容
+              onChanged: (value) {
+                setState(() {});
+              },
             ),
-          ),
-        ),
-      ),
-      //&输入框
-      body: Container(
-        padding: EdgeInsets.only(bottom: 7.w),
-        margin: EdgeInsets.only(top: 55.h, left: 21.w, right: 21.w),
-        decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(
-          width: 1.w,
-          color: const Color(0xffE5E5E5),
-        ))),
-        child: Container(
-          padding: EdgeInsets.only(left: 17.w),
-          child: TextField(
-            focusNode: _focusNode, // 将输入框与焦点关联
-            autofocus: true, // 自动获取焦点
-            cursorColor: const Color(0xff000000).withOpacity(0.5), //设置光标颜色
-            strutStyle: StrutStyle.fromTextStyle(
-                TextStyle(fontSize: 25.0.w, height: 0.8.w)),
-            style: TextStyle(fontSize: 14.0.w), //设置字体大小
-            cursorHeight: 18.sp, //设置光标高度
-            cursorRadius: const Radius.circular(10), // 设置光标圆角半径
-            textAlignVertical: TextAlignVertical.center, // 将光标居中
-            decoration: InputDecoration(
-              isCollapsed: true, //去除内边距
-              contentPadding: EdgeInsets.all(0.w), //*去除内边距
-              border: InputBorder.none,
-            ),
-            // 添加 onSubmitted 回调处理用户按下键盘上的搜索按钮的事件
-            onSubmitted: (value) {},
-            // 添加 onChanged 回调处理用户输入的内容
-            onChanged: (value) {
-              setState(() {});
-            },
           ),
         ),
       ),
