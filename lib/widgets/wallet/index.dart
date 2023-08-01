@@ -14,10 +14,10 @@ import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/components/qr_code_scanner.dart';
+import 'package:wallet/controller/index.dart';
+import 'package:wallet/database/index.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/mine/wallets.dart';
-
-// List<String> coinName = ['USDT', 'BTC', 'USDC', 'ETH', 'BCH'];
 
 class Wallet extends StatefulWidget {
   const Wallet({super.key});
@@ -77,12 +77,6 @@ class _WalletState extends State<Wallet> {
   bool isConfirming = false; // ~是否确认中
   bool isSuccessful = false; // ~是否成功
 
-  // double balance = 2345855.0512;
-  // double balance1 = 0.16088439;
-  // double isBtns = 0;
-
-  // List<String> btns = ['购买', '兑换', '接收', '发送'];
-
   NumberFormat oCcy = NumberFormat("#,###.####", "en_US");
   NumberFormat oCcy1 = NumberFormat("#,###.##########", "en_US");
   NumberFormat oCcy2 = NumberFormat("#,###.##", "en_US");
@@ -98,16 +92,12 @@ class _WalletState extends State<Wallet> {
       print(arg);
       print('登录成功');
     });
+    print(C.walletList);
+    print(C.currentWallet);
   }
 
   @override
   Widget build(BuildContext context) {
-    // var textStyle = TextStyle(
-    //   color: const Color(0xFF828895),
-    //   fontSize: 12.sp,
-    //   fontWeight: FontWeight.w500,
-    // );
-
     return GestureDetector(
       onTap: () =>
           FocusScope.of(context).requestFocus(FocusNode()), // 点击空白处隐藏键盘
@@ -227,73 +217,6 @@ class _WalletState extends State<Wallet> {
                         ),
                       ),
                     ),
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.circular(4.w),
-                    //   ),
-                    //   width: 228.w,
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: [
-                    //       OpClick(
-                    //         onTap: () {
-                    //           setState(() {
-                    //             isColdWallet = false;
-                    //           });
-                    //         },
-                    //         child: Container(
-                    //           height: 37.w,
-                    //           width: 114.w,
-                    //           decoration: BoxDecoration(
-                    //             borderRadius: BorderRadius.circular(4.w),
-                    //             color: isColdWallet
-                    //                 ? Colors.transparent
-                    //                 : AppTheme.themeColor,
-                    //           ),
-                    //           child: Center(
-                    //               child: Text(
-                    //             '热钱包',
-                    //             style: TextStyle(
-                    //               fontSize: 17.sp,
-                    //               fontWeight: FontWeight.w600,
-                    //               color: isColdWallet
-                    //                   ? AppTheme.themeColor
-                    //                   : Colors.white,
-                    //             ),
-                    //           )),
-                    //         ),
-                    //       ),
-                    //       OpClick(
-                    //         onTap: () {
-                    //           setState(() {
-                    //             isColdWallet = true;
-                    //           });
-                    //         },
-                    //         child: Container(
-                    //           height: 37.w,
-                    //           width: 114.w,
-                    //           decoration: BoxDecoration(
-                    //             borderRadius: BorderRadius.circular(4.w),
-                    //             color: isColdWallet
-                    //                 ? AppTheme.themeColor
-                    //                 : Colors.transparent,
-                    //           ),
-                    //           child: Center(
-                    //               child: Text(
-                    //             '冷钱包',
-                    //             style: TextStyle(
-                    //               fontSize: 17.sp,
-                    //               fontWeight: FontWeight.w600,
-                    //               color: isColdWallet
-                    //                   ? Colors.white
-                    //                   : AppTheme.themeColor,
-                    //             ),
-                    //           )),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                   ),
                 ),
               ),
@@ -561,61 +484,69 @@ class _WalletState extends State<Wallet> {
                                     ? Padding(
                                         padding: EdgeInsets.only(
                                             top: 10.w, bottom: 9.w),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                    '${oCcy2.format(712.34888)}\u00A0USDT',
-                                                    style: TextStyle(
-                                                        fontSize: 16.sp,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: const Color(
-                                                            0xFF111111))),
-                                                Text(
-                                                    '\u00A0\u00A0\u2248\$${oCcy2.format(34623.65)}', //\u00A0添加非断行空格
+                                        child: SizedBox(
+                                          height: 18.w,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                      '${oCcy2.format(712.34888)}\u00A0USDT',
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: const Color(
+                                                              0xFF111111))),
+                                                  Text(
+                                                      '\u00A0\u00A0\u2248\$${oCcy2.format(34623.65)}', //\u00A0添加非断行空格
 
-                                                    style: TextStyle(
-                                                        fontSize: 12.sp,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: const Color(
-                                                            0xFF828895))),
-                                              ],
-                                            ),
-                                            Text('+${oCcy3.format(0.1234)}%',
-                                                style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    fontWeight: FontWeight.w500,
-                                                    color:
-                                                        AppTheme.themeColor)),
-                                          ],
+                                                      style: TextStyle(
+                                                          fontSize: 12.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: const Color(
+                                                              0xFF828895))),
+                                                ],
+                                              ),
+                                              Text('+${oCcy3.format(0.1234)}%',
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color:
+                                                          AppTheme.themeColor)),
+                                            ],
+                                          ),
                                         ),
                                       )
                                     : Padding(
                                         padding: EdgeInsets.only(
-                                            top: 11.w, bottom: 11.w),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text('资产估值',
+                                            top: 10.w, bottom: 9.w),
+                                        child: SizedBox(
+                                          height: 18.w,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text('资产估值',
+                                                  style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color:
+                                                          AppTheme.themeColor)),
+                                              Text(
+                                                '\$${oCcy.format(2345866.0512)}',
                                                 style: TextStyle(
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w400,
-                                                    color:
-                                                        AppTheme.themeColor)),
-                                            Text(
-                                              '\$${oCcy.format(2345866.0512)}',
-                                              style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: AppTheme.themeColor),
-                                            ),
-                                          ],
+                                                    color: AppTheme.themeColor),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                 Row(
@@ -716,261 +647,7 @@ class _WalletState extends State<Wallet> {
                                 )
                               ],
                             )),
-                        Container(
-                            //   height: 182.w,
-                            //   padding: EdgeInsets.fromLTRB(20.w, 14.w, 20.w, 16.w),
-                            //   child: Column(
-                            //     children: [
-                            //       SizedBox(
-                            //         height: 91.w,
-                            //         child: Column(
-                            //           mainAxisAlignment: MainAxisAlignment.end,
-                            //           children: [
-                            //             SizedBox(
-                            //               height: 20.w,
-                            //               child: Row(
-                            //                 crossAxisAlignment:
-                            //                     CrossAxisAlignment.start,
-                            //                 children: [
-                            //                   Text(
-                            //                     '资产估值',
-                            //                     style: TextStyle(
-                            //                         color: const Color(0xFF7F8391),
-                            //                         fontSize: 12.sp,
-                            //                         fontWeight: FontWeight.w400),
-                            //                   ),
-                            //                   SizedBox(width: 4.w),
-                            //                   Icon(
-                            //                     color: const Color(0xFF7F8391),
-                            //                     size: 14.sp,
-                            //                     isEye
-                            //                         ? Icons.visibility_off
-                            //                         : Icons.visibility,
-                            //                   ),
-                            //                   SizedBox(width: 10.w),
-                            //                   Container(
-                            //                     width: 91.w,
-                            //                     height: 20.w,
-                            //                     decoration: BoxDecoration(
-                            //                         border: Border.all(
-                            //                           color: AppTheme.themeColor,
-                            //                           width: 1.w,
-                            //                         ),
-                            //                         borderRadius:
-                            //                             BorderRadius.circular(
-                            //                                 10.w)),
-                            //                     child: Center(
-                            //                       child: Text(
-                            //                         '观察者模式',
-                            //                         style: TextStyle(
-                            //                             color: AppTheme.themeColor,
-                            //                             fontSize: 13.sp,
-                            //                             fontWeight:
-                            //                                 FontWeight.w400),
-                            //                       ),
-                            //                     ),
-                            //                   ),
-                            //                 ],
-                            //               ),
-                            //             ),
-                            //             Row(
-                            //               crossAxisAlignment:
-                            //                   CrossAxisAlignment.end,
-                            //               children: [
-                            //                 SizedBox(
-                            //                   height: 36.w,
-                            //                   child: Padding(
-                            //                     padding:
-                            //                         EdgeInsets.only(right: 4.w),
-                            //                     child: Center(
-                            //                       child: Text(
-                            //                         isEye ? '' : '\u0024',
-                            //                         style: TextStyle(
-                            //                           color:
-                            //                               const Color(0xFF212121),
-                            //                           fontSize: 16.sp,
-                            //                           fontWeight: FontWeight.w700,
-                            //                         ),
-                            //                       ),
-                            //                     ),
-                            //                   ),
-                            //                 ),
-                            //                 Expanded(
-                            //                   child: OpClick(
-                            //                     onTap: () {
-                            //                       setState(() {
-                            //                         isEye = !isEye;
-                            //                       });
-                            //                     },
-                            //                     child: SizedBox(
-                            //                       height: 36.w,
-                            //                       width: double.infinity,
-                            //                       child: Align(
-                            //                         alignment: Alignment.centerLeft,
-                            //                         child: Text(
-                            //                           isEye
-                            //                               ? maskString(
-                            //                                   balance.toString(),
-                            //                                   '*')
-                            //                               : oCcy.format(balance),
-                            //                           style: TextStyle(
-                            //                             color:
-                            //                                 const Color(0xFF212121),
-                            //                             fontSize: 28.sp,
-                            //                             fontWeight: FontWeight.w500,
-                            //                           ),
-                            //                         ),
-                            //                       ),
-                            //                     ),
-                            //                   ),
-                            //                 ),
-                            //               ],
-                            //             ),
-                            //             SizedBox(
-                            //               height: 16.w,
-                            //               child: Row(
-                            //                 children: [
-                            //                   Padding(
-                            //                     padding:
-                            //                         EdgeInsets.only(right: 4.w),
-                            //                     child: Text(
-                            //                       isEye ? '' : '\u2248',
-                            //                       style: TextStyle(
-                            //                         color: const Color(0xFF686C77),
-                            //                         fontSize: 14.sp,
-                            //                         fontWeight: FontWeight.w500,
-                            //                       ),
-                            //                     ),
-                            //                   ),
-                            //                   Align(
-                            //                     alignment: Alignment.centerLeft,
-                            //                     child: Text(
-                            //                       isEye
-                            //                           ? maskString(
-                            //                               balance1.toString(), '*')
-                            //                           : oCcy1.format(balance1),
-                            //                       style: TextStyle(
-                            //                         color: const Color(0xFF686C77),
-                            //                         fontSize: 14.sp,
-                            //                         fontWeight: FontWeight.w500,
-                            //                       ),
-                            //                     ),
-                            //                   ),
-                            //                   Padding(
-                            //                     padding: EdgeInsets.only(left: 4.w),
-                            //                     child: Text(
-                            //                       isEye ? '' : 'BTC',
-                            //                       style: TextStyle(
-                            //                         color: const Color(0xFF686C77),
-                            //                         fontSize: 14.sp,
-                            //                         fontWeight: FontWeight.w500,
-                            //                       ),
-                            //                     ),
-                            //                   ),
-                            //                 ],
-                            //               ),
-                            //             ),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //       SizedBox(height: 24.h),
-                            //       SizedBox(
-                            //         height: 36.w,
-                            //         child: Row(
-                            //           mainAxisAlignment:
-                            //               MainAxisAlignment.spaceBetween,
-                            //           children: [
-                            //             for (String i in btns)
-                            //               OpClick(
-                            //                 onTap: () {
-                            //                   setState(() {
-                            //                     isBtns = btns.indexOf(i).toDouble();
-                            //                   });
-                            //                 },
-                            //                 child: Container(
-                            //                   width: 72.w,
-                            //                   decoration: BoxDecoration(
-                            //                     color: isBtns == btns.indexOf(i)
-                            //                         ? AppTheme.themeColor
-                            //                         : AppTheme.themeColor2,
-                            //                     borderRadius:
-                            //                         BorderRadius.circular(4.w),
-                            //                   ),
-                            //                   child: Center(
-                            //                       child: Text(
-                            //                     i,
-                            //                     style: TextStyle(
-                            //                       fontSize: 14.sp,
-                            //                       fontWeight: FontWeight.w600,
-                            //                       color: isBtns == btns.indexOf(i)
-                            //                           ? Colors.white
-                            //                           : Colors.black,
-                            //                     ),
-                            //                   )),
-                            //                 ),
-                            //               )
-                            //           ],
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                            // SizedBox(height: 8.h),
-                            // Padding(
-                            //   padding: EdgeInsets.only(left: 20.w),
-                            //   child: OpClick(
-                            //     onTap: () {
-                            //       setState(() {
-                            //         isEyeAssets = !isEyeAssets;
-                            //       });
-                            //     },
-                            //     child: Row(
-                            //       children: [
-                            //         AnimatedContainer(
-                            //           duration: const Duration(milliseconds: 100),
-                            //           width: 16.w,
-                            //           height: 16.w,
-                            //           decoration: BoxDecoration(
-                            //             borderRadius: BorderRadius.circular(2.w),
-                            //             border: Border.all(
-                            //               color: isEyeAssets
-                            //                   ? AppTheme.themeColor
-                            //                   : const Color(0xFF828895),
-                            //               width: 1.w,
-                            //             ),
-                            //           ),
-                            //           child: Center(
-                            //             child: Container(
-                            //                 width: 16.w,
-                            //                 height: 16.w,
-                            //                 decoration: BoxDecoration(
-                            //                   color: isEyeAssets
-                            //                       ? AppTheme.themeColor
-                            //                       : Colors.transparent,
-                            //                 ),
-                            //                 child: isEyeAssets
-                            //                     ? Icon(
-                            //                         Icons.check_rounded,
-                            //                         size: 12.sp,
-                            //                         color: Colors.white,
-                            //                         weight: 700,
-                            //                       )
-                            //                     : null),
-                            //           ),
-                            //         ),
-                            //         SizedBox(width: 4.w),
-                            //         Text(
-                            //           '隐藏 ${0} 资产',
-                            //           style: TextStyle(
-                            //             fontSize: 14.sp,
-                            //             fontWeight: FontWeight.w400,
-                            //             color: const Color(0xFF585E68),
-                            //           ),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            ),
+
                         SizedBox(height: 14.h),
                         //* 操作信息
                         Container(
@@ -2041,110 +1718,6 @@ void _walletShowBottomSheet(
 }
 //~钱包列表底部弹框 -------end
 
-// &
-class Item extends StatelessWidget {
-  const Item({
-    super.key,
-    required this.title,
-    required this.oCcy,
-    required this.textStyle,
-    required this.oCcy2,
-    required this.balance,
-    required this.balance1,
-    required this.imgurl,
-  });
-
-  final String title;
-  final String imgurl;
-  final NumberFormat oCcy;
-  final TextStyle textStyle;
-  final NumberFormat oCcy2;
-  final double balance;
-  final double balance1;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(20.w, 0, 0.w, 0),
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.only(right: 20.w),
-            height: 70.w,
-            child: Row(
-              children: [
-                Image.asset(
-                  imgurl,
-                  height: 36.w,
-                  width: 36.w,
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(width: 7.w),
-                Text(
-                  title,
-                  style: TextStyle(
-                      color: const Color(0xFF111111),
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500),
-                ),
-                const Expanded(child: SizedBox()),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      height: 24.w,
-                      child: Text(
-                        oCcy.format(balance),
-                        style: TextStyle(
-                            color: const Color(0xFF111111),
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 1.w),
-                          child: Text(
-                            '\u2248',
-                            style: textStyle,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 1.w),
-                          child: Text(
-                            '\u0024',
-                            style: textStyle,
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            oCcy2.format(balance1),
-                            style: textStyle,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 36.w),
-            child: Divider(
-              height: 1.w,
-              color: const Color(0xFFEDEFF5).withOpacity(.8),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
 //&账单列表
 class Items extends StatelessWidget {
   const Items({
@@ -2257,5 +1830,3 @@ class Items extends StatelessWidget {
     );
   }
 }
-
-

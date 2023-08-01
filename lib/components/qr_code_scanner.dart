@@ -1,6 +1,5 @@
-// ignore_for_file: library_private_types_in_public_api, must_be_immutable, use_key_in_widget_constructors, unused_local_variable, prefer_typing_uninitialized_variables
+// ignore_for_file: library_private_types_in_public_api, must_be_immutable, use_key_in_widget_constructors, unused_local_variable, prefer_typing_uninitialized_variables, unnecessary_brace_in_string_interps, avoid_print
 
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -12,8 +11,6 @@ import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 // import 'package:redleaf/api/contact_api.dart';
 // import 'package:redleaf/centre/centre.dart';
@@ -101,7 +98,7 @@ class _MyQRScannerWidgetState extends State<MyQRScannerWidget> {
         //   return;
         // }
         // 倒计时
-        Future.delayed(Duration(seconds: 1), () {
+        Future.delayed(const Duration(seconds: 1), () {
           createFriend(data[0], data[0]['nickname']);
         });
       } else {
@@ -167,7 +164,7 @@ class _MyQRScannerWidgetState extends State<MyQRScannerWidget> {
                       showSnackBar(msg: '请扫正确的二维码');
                       _controller.stop();
                       //倒计时
-                      Future.delayed(Duration(seconds: 1), () {
+                      Future.delayed(const Duration(seconds: 1), () {
                         _controller.start();
                       });
                     }
