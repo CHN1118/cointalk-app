@@ -29,19 +29,18 @@ class Controller extends GetxController {
     setLanguage();
   }
 
-  // *钱包信息数组 (Wallet Information Array)
+  /// 钱包信息数组
   var walletList = [].obs;
 
-  // *当前钱包信息 (Current Wallet Information)
+  /// 当前钱包信息
   var currentWallet = {}.obs;
 
-  // *获取钱包信息 (Get Wallet Information)
-  getWalletList() {
+  /// 获取钱包信息
+  getWL() {
     var list = DB.box.read('WalletList') ?? [];
     walletList.value = list;
-    if (list.length > 0) {
-      currentWallet.value = list[0];
-    }
+    //* active为true的钱包为当前钱包
+    currentWallet.value = list.firstWhere((e) => e['active'] == true);
   }
 }
 
