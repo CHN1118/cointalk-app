@@ -321,7 +321,7 @@ class _PersonalDataState extends State<PersonalData> {
               color: const Color(0xffE8F2F2),
               borderRadius: BorderRadius.all(//圆角
                   Radius.circular(10.0.w))),
-          height: 135.h,
+          height: 140.h,
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [

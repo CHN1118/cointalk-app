@@ -102,7 +102,7 @@ class _MyAppState extends State<MyApp> {
                 seedColor: Colors.black, //主题色
                 primary: Colors.black, //主题色
               ).copyWith(background: Colors.white)),
-          initialRoute:checkLoginStatus(),
+          initialRoute: checkLoginStatus(),
           // importwallet
           routingCallback: (routing) {},
           getPages: AppPages.pages,
