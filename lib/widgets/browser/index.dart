@@ -306,7 +306,7 @@ class _BrowserState extends State<Browser> {
                                                 height: 149.h,
                                                 child: const Image(
                                                     image: AssetImage(
-                                                        'assets/images/Shopping_Online.png')),
+                                                        'assets/images/shopping_online.png')),
                                               ),
                                             ),
                                             Container(

@@ -146,7 +146,7 @@ class _WalletState extends State<Wallet> {
                     ),
                   ),
                 ),
-              //* 头部按钮
+              //* 冷热钱包按钮
               Positioned(
                 child: SizedBox(
                   height: getStatusBarHeight(context),
@@ -303,20 +303,6 @@ class _WalletState extends State<Wallet> {
                 right: 0,
                 child: Container(
                   padding: EdgeInsets.only(top: 13.h),
-                  decoration: BoxDecoration(
-                    // color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.w),
-                      topRight: Radius.circular(20.w),
-                    ),
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //     color: Colors.grey.withOpacity(.1),
-                    //     spreadRadius: 1,
-                    //     blurRadius: 20.w,
-                    //   ),
-                    // ],
-                  ),
                   child: LiquidPullToRefresh(
                     height: 50.w,
                     onRefresh: _handleRefresh,
