@@ -11,11 +11,11 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/components/qr_code_scanner.dart';
 import 'package:wallet/controller/index.dart';
-import 'package:wallet/database/index.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/mine/wallets.dart';
 
@@ -92,8 +92,8 @@ class _WalletState extends State<Wallet> {
       print(arg);
       print('登录成功');
     });
-    print(C.walletList);
-    print(C.currentWallet);
+    // print(C.walletList);
+    // print(C.currentWallet);
   }
 
   @override
@@ -555,12 +555,13 @@ class _WalletState extends State<Wallet> {
                                   children: [
                                     OpClick(
                                       onTap: () {
-                                        _transferShowBottomSheet(
-                                          context,
-                                          iconurl: 'assets/svgs/shuffle.svg',
-                                          title: '转账',
-                                          oCcy: oCcy,
-                                        );
+                                        dapp.transfer();
+                                        // _transferShowBottomSheet(
+                                        //   context,
+                                        //   iconurl: 'assets/svgs/shuffle.svg',
+                                        //   title: '转账',
+                                        //   oCcy: oCcy,
+                                        // );
                                       },
                                       child: Container(
                                         width: 141.w,

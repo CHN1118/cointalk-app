@@ -56,8 +56,7 @@ dependencies:
   encrypt: ^5.0.1                       #* 加密
   flutter_qr_reader: ^1.0.5              #* 扫码
   audioplayers: ^4.1.0                  #* 扫码提示音
-
-
+  http: ^0.13.6                         #* http
 
 dev_dependencies:
   flutter_test:

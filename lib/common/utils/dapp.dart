@@ -1,4 +1,5 @@
-// ignore_for_file: deprecated_member_use, avoid_print, prefer_interpolation_to_compose_strings
+// ignore_for_file: deprecated_member_use, avoid_print, prefer_interpolation_to_compose_strings, depend_on_referenced_packages
+import 'dart:async';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -7,11 +8,14 @@ import 'package:bip32/bip32.dart' as bip32;
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:wallet/common/utils/log.dart';
+import 'package:wallet/common/utils/symbol_arr.dart';
 import 'package:wallet/components/custom_dialog.dart';
+import 'package:wallet/controller/index.dart';
 import 'package:wallet/database/index.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:hex/hex.dart';
+import 'package:http/http.dart' as http;
 
 class Dapp {
   /// 助记词 生成钱包
@@ -125,23 +129,27 @@ class Dapp {
 
     final encrypted = encrypter.encrypt(plainText, iv: iv); //iv 为初始化向量
 
-    return encrypted.base64; // 将加密结果转换为Base64格式返回
+    return encrypted.base64 + '@$timestamp'; // 将加密结果转换为Base64格式返回
   }
 
   /// 通过密码解密 密文
   String decryptString(String encryptedString, String password) {
     String psw = '';
+    var timestamp = encryptedString.split('@')[1];
     if (password.length < 32) {
-      psw = password.padRight(32, ' ');
+      psw = (password + timestamp).length < 32
+          ? (password + timestamp).padRight(32, ' ')
+          : (password + timestamp).substring(0, 32);
     } else {
-      psw = password.substring(0, 32);
+      // 截取钱19位加上时间戳
+      psw = password.substring(0, 19) + timestamp;
     }
     final key = Key.fromUtf8(psw);
     final iv = IV.fromLength(16);
 
     final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
 
-    final encrypted = Encrypted.fromBase64(encryptedString);
+    final encrypted = Encrypted.fromBase64(encryptedString.split('@')[0]);
 
     try {
       final decrypted = encrypter.decrypt(encrypted, iv: iv);
@@ -151,6 +159,62 @@ class Dapp {
       return '';
     }
   }
+
+  /// 获取余额
+  connect() async {
+    var apiUrl =
+        blockchainInfo.where((element) => element['active'] == true).toList();
+    EthereumAddress address =
+        EthereumAddress.fromHex(C.currentWallet['address']);
+    print(apiUrl);
+    var client = Web3Client(apiUrl[0]['rpcUrl'][0], http.Client());
+    EtherAmount balance = await client.getBalance(address);
+    print(balance.getValueInUnit(EtherUnit.ether));
+  }
+
+  /// 转账
+  Future<dynamic> transfer() async {
+    var apiUrl =
+        blockchainInfo.where((element) => element['active'] == true).toList();
+    EthereumAddress address =
+        EthereumAddress.fromHex(C.currentWallet['address']);
+    var client = Web3Client(apiUrl[0]['rpcUrl'][0], http.Client());
+    EtherAmount balance = await client.getBalance(address);
+    var keystore = decryptString(C.currentWallet['keystore'], 'Chn1023.');
+    Wallet wallet = Wallet.fromJson(keystore, 'Chn1023.');
+    Credentials credentials =
+        EthPrivateKey.fromHex(HEX.encode(wallet.privateKey.privateKey));
+
+    BigInt amountInWei =
+        BigInt.from(100000000000000000); // 以太币的最小单位 Wei，这里表示转 1 ETH
+    BigInt gasPriceInWei =
+        BigInt.from(20000000000); // 1 Gwei (1e9 Wei) 作为 gasPrice
+    int gasLimit = 6721975; // gasLimit 是执行交易所需的 gas 数量，一般情况下转账的固定值为 21000
+
+    Transaction transaction = Transaction(
+      to: EthereumAddress.fromHex(
+          '0xc645fF291d18203B0F6D2622656B5F894c44641d'), // 接收地址
+      gasPrice: EtherAmount.inWei(gasPriceInWei), // gasPrice
+      maxGas: gasLimit, // gasLimit
+      value: EtherAmount.inWei(amountInWei), // 转账金额
+    );
+    var signedTransaction =
+        await client.signTransaction(credentials, transaction, chainId: 1337);
+    var res = await client.sendRawTransaction(signedTransaction);
+    print(res);
+    print(balance.getValueInUnit(EtherUnit.ether));
+    //交易回调定时
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
+      var receipt = await client.getTransactionReceipt(res);
+      print(receipt?.status);
+      if (receipt != null) {
+        timer.cancel();
+        print(receipt);
+      }
+    });
+  }
+
+ 
 }
 
 var dapp = Dapp();
