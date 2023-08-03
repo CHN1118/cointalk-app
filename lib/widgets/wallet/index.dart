@@ -15,7 +15,6 @@ import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/components/qr_code_scanner.dart';
 import 'package:wallet/controller/index.dart';
-import 'package:wallet/database/index.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/mine/wallets.dart';
 

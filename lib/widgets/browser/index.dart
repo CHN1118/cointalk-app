@@ -132,7 +132,11 @@ class _BrowserState extends State<Browser> {
                           cursorColor: Colors.green, //设置光标颜色
                           strutStyle: StrutStyle.fromTextStyle(
                               TextStyle(fontSize: 25.0.w, height: 0.8.w)),
-                          style: TextStyle(fontSize: 14.0.w), //设置字体大小
+                          style: TextStyle(
+                              fontSize: 14.0.w,
+                              textBaseline:
+                                  TextBaseline.alphabetic), //设置字体大小 以及基线对齐
+
                           cursorHeight: 18.sp, //设置光标高度
                           cursorRadius: const Radius.circular(10), // 设置光标圆角半径
                           textAlignVertical: TextAlignVertical.center, // 将光标居中
@@ -167,7 +171,12 @@ class _BrowserState extends State<Browser> {
                           // 添加 onSubmitted 回调处理用户按下键盘上的搜索按钮的事件
                           onSubmitted: (value) {
                             setState(() {
-                              _searchText = value;
+                              _searchText = value.trim();
+                              if (value.trim() == '') {
+                                _searchText = '';
+                                _textEditingController.clear(); //清空搜索框
+                              }
+
                               if (_searchText.isNotEmpty) {
                                 addToHistory(_searchText); // 将搜索内容添加到历史记录列表
                               }
@@ -177,6 +186,11 @@ class _BrowserState extends State<Browser> {
                           // 添加 onChanged 回调处理搜索文本的更新
                           onChanged: (value) {
                             setState(() {
+                              String trimmedValue = value.replaceAll(' ', '');
+                              _textEditingController.value =
+                                  _textEditingController.value
+                                      .copyWith(text: trimmedValue);
+
                               if (value == '') _searchText = '';
                             });
                           }, // 添加 onChanged 回调处理搜索文本的更新

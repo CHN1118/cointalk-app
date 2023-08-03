@@ -28,7 +28,7 @@ class _ChatTransferState extends State<ChatTransfer> {
   void dispose() {
     _focusNode.dispose(); //释放 focusNode
     super.dispose();
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,8 @@ class _ChatTransferState extends State<ChatTransfer> {
               padding: EdgeInsets.only(right: 20.w),
               child: Text(
                 '转账记录',
-                style: TextStyle(fontSize: 15.sp, color: const Color(0xff6B6B6B)),
+                style:
+                    TextStyle(fontSize: 15.sp, color: const Color(0xff6B6B6B)),
               ),
             ),
           ],
@@ -124,9 +125,11 @@ class _ChatTransferState extends State<ChatTransfer> {
                       fontSize: 14.sp, color: const Color(0xff828895)),
                 ),
                 Container(
-                  padding: EdgeInsets.only(bottom: 7.w),
-                  margin: EdgeInsets.only(top: 55.h, left: 21.w, right: 21.w),
+                  height: 64.h,
+                  padding: EdgeInsets.only(bottom: 7.w, top: 18.w),
+                  margin: EdgeInsets.only(left: 21.w, right: 21.w),
                   decoration: BoxDecoration(
+                      // color: const Color.fromARGB(255, 240, 3, 3),
                       border: Border(
                           bottom: BorderSide(
                     width: 1.w,
