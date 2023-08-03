@@ -1,5 +1,6 @@
 List<Map<String, dynamic>> blockchainInfo = [
   {
+    'active': false,
     'networkName': 'Ethereum',
     'rpcUrl': [
       'https://eth.public-rpc.com',
@@ -10,6 +11,7 @@ List<Map<String, dynamic>> blockchainInfo = [
     'explorerUrl': 'https://etherscan.io',
   },
   {
+    'active': false,
     'networkName': 'Binance Smart Chain',
     'rpcUrl': [
       'https://rpc.ankr.com/bsc',
@@ -20,6 +22,7 @@ List<Map<String, dynamic>> blockchainInfo = [
     'explorerUrl': 'https://bscscan.com',
   },
   {
+    'active': false,
     'networkName': 'Polygon',
     'rpcUrl': [
       'https://rpc.ankr.com/polygon',
@@ -28,6 +31,16 @@ List<Map<String, dynamic>> blockchainInfo = [
     'chainId': '137',
     'symbol': 'MATIC',
     'explorerUrl': 'https://polygonscan.com',
+  },
+  {
+    'active': true,
+    'networkName': 'CHN-XCZ',
+    'rpcUrl': [
+      'http://192.168.1.73:1118',
+    ],
+    'chainId': '1337',
+    'symbol': 'CHN',
+    'explorerUrl': '',
   },
   // Add more networks here as needed
 ];

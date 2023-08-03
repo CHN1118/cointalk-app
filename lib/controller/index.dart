@@ -41,6 +41,7 @@ class Controller extends GetxController {
     walletList.value = list;
     //* active为true的钱包为当前钱包
     currentWallet.value = list.firstWhere((e) => e['active'] == true);
+    print('当前钱包信息：$currentWallet');
   }
 }
 
