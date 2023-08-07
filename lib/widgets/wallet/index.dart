@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/common/utils/index.dart';
@@ -29,7 +28,7 @@ class Wallet extends StatefulWidget {
 class _WalletState extends State<Wallet> {
   Future<void> _handleRefresh() async {
     HapticFeedback.heavyImpact(); // 震动
-    await Future.delayed(const Duration(milliseconds: 1000)); // 延迟1秒
+    await C.getPrice(); // 延迟1秒
   }
 
   //~只显示前五位和后六位
@@ -61,21 +60,11 @@ class _WalletState extends State<Wallet> {
         fontSize: 14.sp);
   }
 
-//销毁
-  @override
-  void dispose() {
-    isColdWallet = true; //是否冷钱包
-    super.dispose();
-    bus.off("login");
-  }
-
   bool isColdWallet = true; //是否冷钱包
-  bool isEye = false; //是否显示资产
+  // bool isEye = false; //是否显示资产
   bool isEyeAssets = false; //是否显示资产单选框
-
-  int currentStep = 4; // ~当前步骤
-  bool isConfirming = false; // ~是否确认中
-  bool isSuccessful = false; // ~是否成功
+  bool isFocus = false; //是否聚焦
+  bool isFocus1 = false; //是否聚焦
 
   NumberFormat oCcy = NumberFormat("#,###.####", "en_US");
   NumberFormat oCcy1 = NumberFormat("#,###.##########", "en_US");
@@ -85,6 +74,11 @@ class _WalletState extends State<Wallet> {
     return originalString.replaceAll(RegExp('[0-9.]'), maskChar);
   }
 
+  final TextEditingController _toController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+  final FocusNode _toFocusNode = FocusNode();
+  final FocusNode _amountFocusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -92,8 +86,31 @@ class _WalletState extends State<Wallet> {
       print(arg);
       print('登录成功');
     });
+    // 监听输入框 设置isFocus
+    _toFocusNode.addListener(() {
+      setState(() {
+        isFocus = _toFocusNode.hasFocus;
+      });
+    });
+    _amountFocusNode.addListener(() {
+      setState(() {
+        isFocus1 = _amountFocusNode.hasFocus;
+      });
+    });
     // print(C.walletList);
     // print(C.currentWallet);
+  }
+
+  //销毁
+  @override
+  void dispose() {
+    isColdWallet = true; //是否冷钱包
+    _toFocusNode.dispose();
+    _toController.dispose();
+    _amountFocusNode.dispose();
+    _amountController.dispose();
+    bus.off("login");
+    super.dispose();
   }
 
   @override
@@ -293,20 +310,24 @@ class _WalletState extends State<Wallet> {
                                                     padding:
                                                         EdgeInsets.symmetric(
                                                             horizontal: 10.w),
-                                                    child: Text(
-                                                      overflow: TextOverflow
-                                                          .ellipsis, // 超出部分显示省略号
-                                                      maxLines: 1, // 限制文本显示为一行
-                                                      oCcy.format(2345866.0512),
-                                                      style: TextStyle(
-                                                          fontSize: 28.sp,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: Colors.white),
-                                                    ),
+                                                    child: Obx(() => Text(
+                                                          overflow: TextOverflow
+                                                              .ellipsis, // 超出部分显示省略号
+                                                          maxLines:
+                                                              1, // 限制文本显示为一行
+                                                          oCcy.format(
+                                                              C.balance.value),
+                                                          style: TextStyle(
+                                                              fontSize: 28.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.white),
+                                                        )),
                                                   ),
                                                 ),
-                                                Text('USDT',
+                                                Text('BNB',
                                                     style: TextStyle(
                                                         fontSize: 16.sp,
                                                         fontWeight:
@@ -334,13 +355,17 @@ class _WalletState extends State<Wallet> {
                                                             FontWeight.w700,
                                                         color: Colors.white
                                                             .withOpacity(0.5))),
-                                                Text(oCcy.format(2345866.0512),
+                                                Obx(() => Text(
+                                                    oCcy.format(
+                                                        C.usdprice.value *
+                                                            C.balance.value),
                                                     style: TextStyle(
                                                         fontSize: 20.sp,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                         color: Colors.white
-                                                            .withOpacity(0.5))),
+                                                            .withOpacity(
+                                                                0.5)))),
                                               ],
                                             )
                                           ],
@@ -555,13 +580,13 @@ class _WalletState extends State<Wallet> {
                                   children: [
                                     OpClick(
                                       onTap: () {
-                                        dapp.transfer();
-                                        // _transferShowBottomSheet(
-                                        //   context,
-                                        //   iconurl: 'assets/svgs/shuffle.svg',
-                                        //   title: '转账',
-                                        //   oCcy: oCcy,
-                                        // );
+                                        _transferShowBottomSheet(
+                                          context, //上下文
+                                          iconurl:
+                                              'assets/svgs/shuffle.svg', //图标
+                                          title: '转账', //标题
+                                          oCcy: oCcy, //格式化
+                                        );
                                       },
                                       child: Container(
                                         width: 141.w,
@@ -885,587 +910,443 @@ class _WalletState extends State<Wallet> {
     );
   }
 
-  // ~转账底部弹窗 --- 热钱包  -------start
+  //* 转账底部弹窗 --- 热钱包  -------start
   void _transferShowBottomSheet(BuildContext context,
-      {required String iconurl,
-      required String title,
-      required NumberFormat oCcy}) {
+      {String? iconurl, String? title, NumberFormat? oCcy}) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: false, //设置为true，此时将会跟随键盘的弹出而弹出
-      barrierColor: const Color(0xff909090).withOpacity(0.5), // 背景色设置为透明
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(10.0.w), // 设置顶部圆角半径为 10.0
-        ),
-      ),
-
+      isScrollControlled: true, //设置为true，此时将会跟随键盘的弹出而弹出
+      elevation: 0,
+      barrierColor: Colors.transparent, // 背景色设置为透明
+      backgroundColor: Colors.transparent, // 设置透明背景
       builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  FocusScope.of(context).requestFocus(FocusNode()); // 点击空白处隐藏键盘
-                },
-                child: Container(
-                  //最小高度
-                  constraints: BoxConstraints(
-                    minHeight: 470.h,
-                  ),
-                  padding: EdgeInsets.only(
-                      left: 19.w, right: 21.w, top: 17.w, bottom: 26.w),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(10.0.w), // 设置顶部圆角半径为 10.0
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          OpClick(
-                            onTap: () {
-                              Navigator.pop(context); // 关闭底部弹框
-                            },
-                            child: const Icon(Icons.arrow_back), // 使用内置的左箭头图标
-                          ),
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                iconurl,
-                                width: 22.sp,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 8.w),
-                                child: Text(
-                                  title,
-                                  style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 1.w)
-                        ],
+        return GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            resizeToAvoidBottomInset: true,
+            body: SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(
+                        minHeight: 470.h,
                       ),
-                      //^^^^^^^^^^^转账
-                      if (!isConfirming && !isSuccessful)
-                        Container(
-                          constraints: BoxConstraints(minHeight: 360.h),
-                          margin: EdgeInsets.only(top: 28.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 4.h),
-                                child: Text(
-                                  '发送到',
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0xFF333333)),
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(
-                                  left: 8.w,
-                                ),
-                                constraints: BoxConstraints(
-                                  minHeight: 48.w,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffF1F1F1),
-                                  borderRadius: BorderRadius.circular(4.w),
-                                ),
-                                child: TextField(
-                                  //超出换行
-                                  minLines: 1,
-                                  maxLines: null,
-                                  cursorColor: Colors.green, //设置光标颜色
-                                  style: TextStyle(fontSize: 16.0.sp), //设置字体大小
-                                  // cursorHeight: 20.sp, //设置光标高度
-                                  cursorRadius:
-                                      Radius.circular(10.w), // 设置光标圆角半径
-                                  textAlignVertical:
-                                      TextAlignVertical.center, // 将光标居中
-
-                                  decoration: InputDecoration(
-                                    suffixIcon: OpClick(
-                                      // MyQRScannerWidget
-                                      onTap: () {
-                                        //关闭弹框
-                                        Navigator.pop(context);
-                                        Get.to(const MyQRScannerWidget());
-                                      },
-                                      child: Container(
-                                        width: 23.w,
-                                        height: 23.w,
-                                        margin: EdgeInsets.only(
-                                            top: 12.w, bottom: 12.w),
-                                        child: SvgPicture.asset(
-                                          'assets/svgs/scan.svg',
-                                          width: 23.w,
-                                          height: 23.w,
-                                          color: const Color(0xff999999),
-                                        ),
-                                      ),
-                                    ),
-                                    isCollapsed: true, //去除内边距
-                                    contentPadding:
-                                        EdgeInsets.all(0.w), //*去除内边距
-                                    border: InputBorder.none,
-                                  ),
-
-                                  // 添加 onChanged 回调处理搜索文本的更新
-                                  onChanged: (value) {
-                                    setState(() {});
-                                  }, // 添加 onChanged 回调处理搜索文本的更新
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(bottom: 4.h, top: 16.w),
-                                child: Text(
-                                  '发送金额',
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0xFF333333)),
-                                ),
-                              ),
-                              Container(
-                                height: 48.h,
-                                padding:
-                                    EdgeInsets.fromLTRB(8.w, 12.w, 13.w, 12.w),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffF1F1F1),
-                                  borderRadius: BorderRadius.circular(4.w),
-                                ),
-                                child: TextField(
-                                  //超出换行
-                                  minLines: 1,
-                                  maxLines: 1,
-                                  keyboardType:
-                                      TextInputType.number, // 设置键盘类型为数字键盘
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter
-                                        .digitsOnly // 仅允许输入数字
-                                  ],
-                                  cursorColor: Colors.green, //设置光标颜色
-                                  strutStyle: StrutStyle.fromTextStyle(
-                                      TextStyle(
-                                          fontSize: 25.0.w, height: 0.8.w)),
-                                  style: TextStyle(fontSize: 18.0.w), //设置字体大小
-                                  cursorHeight: 18.sp, //设置光标高度
-                                  cursorRadius:
-                                      const Radius.circular(10), // 设置光标圆角半径
-                                  textAlignVertical:
-                                      TextAlignVertical.center, // 将光标居中
-
-                                  decoration: InputDecoration(
-                                    suffixIcon: Text(
-                                      'USDT',
-                                      style: TextStyle(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color:
-                                            const Color(0xff212121), // 设置字体颜色
-                                      ),
-                                    ),
-                                    isCollapsed: true, //去除内边距
-                                    contentPadding:
-                                        EdgeInsets.all(0.w), //*去除内边距
-                                    border: InputBorder.none,
-                                  ),
-
-                                  // 添加 onChanged 回调处理搜索文本的更新
-                                  onChanged: (value) {
-                                    setState(() {});
-                                  }, // 添加 onChanged 回调处理搜索文本的更新
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 6.w),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                        '可用：${oCcy.format(64000.0045)}\u00A0USDT',
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: const Color(0xFF333333)
-                                                .withOpacity(0.5))),
-                                    Text(
-                                      '全部',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: AppTheme.themeColor),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 24.w),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('手续费',
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: const Color(0xFF333333))),
-                                    Text(
-                                      '3\u00A0UDST',
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: const Color(0xFF333333)),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(top: 8.w, bottom: 53.h),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('实际到账',
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: const Color(0xFF333333))),
-                                    Text(
-                                      '${oCcy.format(98.1231)}\u00A0UDST',
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: const Color(0xFF333333)),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 7.w), // 设置左右边距为7
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    OpClick(
-                                      onTap: () {
-                                        setState(() {
-                                          isConfirming = true;
-                                        });
-                                        setState(() {});
-                                      },
-                                      child: Container(
-                                        width: 146.w,
-                                        height: 47.h,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(4.w),
-                                            color: AppTheme.themeColor),
-                                        child: Center(
-                                          child: Text(
-                                            '确认',
-                                            style: TextStyle(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w900,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    OpClick(
-                                      onTap: () {
-                                        Navigator.pop(context); // 关闭底部弹框
-                                      },
-                                      child: Container(
-                                        width: 146.w,
-                                        height: 47.h,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(4.w),
-                                          color: Colors.white,
-                                          border: Border.all(
-                                            color: AppTheme.themeColor,
-                                            width: 1.w,
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            '取消',
-                                            style: TextStyle(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w900,
-                                              color: AppTheme.themeColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                      padding: EdgeInsets.only(bottom: 26.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(10.0.w), // 设置顶部圆角半径为 10.0
                         ),
-                      //~~~~~~~~~~~----------确认中
-                      if (isConfirming && !isSuccessful)
-                        Container(
-                          constraints: BoxConstraints(minHeight: 360.h),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        boxShadow: AppTheme.cardShow,
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: getScreenWidth(context, 1),
+                            child: Stack(
                               children: [
-                                const SizedBox(
-                                  width: 1,
-                                ),
-                                OpClick(
-                                  onTap: () {
-                                    setState(() {
-                                      isConfirming = true;
-                                      isSuccessful = true;
-                                    });
-                                    setState(() {});
-                                  },
-                                  child: Stack(
+                                Positioned(
+                                  left: 0,
+                                  top: 17.w,
+                                  right: 0,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        width: 320.w,
-                                        height: 48.w,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: const Color(0xff45AAAF),
-                                            width: 1.w,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(5.w),
-                                        ),
-                                        child: StepProgressIndicator(
-                                          // totalSteps: 5, // 总步数
-                                          // currentStep: currentStep, // 当前步骤
-                                          totalSteps: 100, // 总进度
-                                          currentStep: 50, // 当前进度
-                                          size: 46.w, // 圆点大小
-                                          padding: 0, // 圆点间距
-                                          selectedColor:
-                                              const Color(0xff45AAAF), // 选中颜色
-                                          unselectedColor:
-                                              Colors.white, // 未选中颜色
-                                          roundedEdges:
-                                              Radius.circular(4.w), // 圆角
+                                      SvgPicture.asset(
+                                        iconurl!,
+                                        width: 22.sp,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 8.w),
+                                        child: Text(
+                                          title!,
+                                          style: TextStyle(
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w600),
                                         ),
                                       ),
-                                      Positioned(
-                                          right: 0,
-                                          bottom: 0,
-                                          left: 0,
-                                          top: 0,
-                                          child: Center(
-                                              child: Text(
-                                            '确认中',
-                                            style: TextStyle(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w900,
-                                                color: const Color(0xff105457)
-                                                    .withOpacity(0.6)),
-                                          ))),
                                     ],
                                   ),
                                 ),
-                              ]),
-                        ),
-                      //&&&&&&&&&------------   转账成功   &~~~
-                      if (isConfirming && isSuccessful)
-                        Container(
-                          constraints: BoxConstraints(minHeight: 360.h),
-                          margin: EdgeInsets.only(top: 28.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 4.h),
-                                child: Text(
-                                  '接收地址',
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0xFF333333)),
+                                OpClick(
+                                  onTap: () {
+                                    Navigator.pop(context); // 关闭底部弹框
+                                  },
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.only(top: 8.w, left: 10.w),
+                                    child: SizedBox(
+                                        width: 40.w,
+                                        height: 40.w,
+                                        child: const Icon(Icons.arrow_back)),
+                                  ), // 使用内置的左箭头图标
                                 ),
-                              ),
-                              Container(
-                                height: 48.h,
-                                padding:
-                                    EdgeInsets.fromLTRB(8.w, 12.w, 13.w, 12.w),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffF1F1F1),
-                                  borderRadius: BorderRadius.circular(4.w),
+                              ],
+                            ),
+                          ),
+                          //^^^^^^^^^^^转账
+                          Container(
+                            constraints: BoxConstraints(minHeight: 360.h),
+                            padding: EdgeInsets.only(
+                              top: 28.w,
+                              left: 20.w,
+                              right: 20.w,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 4.h),
+                                  child: Text(
+                                    '发送到',
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xFF333333)),
+                                  ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                Stack(
                                   children: [
-                                    SizedBox(
-                                      width: 272.w,
-                                      child: Text(
-                                        '0x123cdgt4567890152Wn7fAcgXiimmCUyNGwpyY5y',
-                                        overflow:
-                                            TextOverflow.ellipsis, // 超出部分显示省略号
-                                        maxLines: 1, // 限制文本显示为一行
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          color:
-                                              const Color(0xff212121), // 设置字体颜色
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(bottom: 4.h, top: 16.w),
-                                child: Text(
-                                  '发送金额',
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0xFF333333)),
-                                ),
-                              ),
-                              Container(
-                                height: 48.h,
-                                padding:
-                                    EdgeInsets.fromLTRB(8.w, 12.w, 13.w, 12.w),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffF1F1F1),
-                                  borderRadius: BorderRadius.circular(4.w),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                      width: 272.w,
-                                      child: Text(
-                                        '2300',
-                                        overflow:
-                                            TextOverflow.ellipsis, // 超出部分显示省略号
-                                        maxLines: 1, // 限制文本显示为一行
-                                        style: TextStyle(
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color:
-                                              const Color(0xff212121), // 设置字体颜色
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      'USDT',
-                                      style: TextStyle(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color:
-                                            const Color(0xff212121), // 设置字体颜色
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 12.w),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('手续费',
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: const Color(0xFF333333))),
-                                    Text(
-                                      '3\u00A0UDST',
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: const Color(0xFF333333)),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(top: 8.w, bottom: 53.h),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('实际到账',
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: const Color(0xFF333333))),
-                                    Text(
-                                      '${oCcy.format(98.1231)}\u00A0UDST',
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: const Color(0xFF333333)),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: 7.w, right: 7, top: 30.w), // 设置左右边距为7
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 320.w,
-                                      height: 48.h,
+                                    AnimatedContainer(
+                                      duration:
+                                          const Duration(milliseconds: 150),
+                                      height: 52.w,
                                       decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.w),
-                                          color: AppTheme.themeColor),
+                                        color: const Color(0xffF1F1F1),
+                                        borderRadius:
+                                            BorderRadius.circular(4.w),
+                                        border: Border.all(
+                                            color: isFocus
+                                                ? AppTheme.themeColor
+                                                : Colors.transparent,
+                                            width: 1.w),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 52.w,
+                                      padding: EdgeInsets.only(
+                                          left: 15.w, right: 46.w),
                                       child: Center(
-                                        child: Text(
-                                          '转账成功',
+                                        child: TextFormField(
+                                          controller: _toController,
+                                          focusNode: _toFocusNode,
+                                          keyboardType: TextInputType.text,
+                                          onChanged: (value) {
+                                            String trimmedText = value
+                                                .replaceAll(' ', ''); // 去除空格
+                                            if (trimmedText != value) {
+                                              final int cursorPosition =
+                                                  _toController.selection
+                                                          .baseOffset -
+                                                      1; // 获取当前光标位置
+                                              final TextSelection newSelection =
+                                                  TextSelection.collapsed(
+                                                      offset:
+                                                          cursorPosition); // 生成新的光标位置
+                                              setState(() {
+                                                _toController.value =
+                                                    TextEditingValue(
+                                                  text: trimmedText,
+                                                  selection: newSelection,
+                                                ); // 更新内容
+                                              });
+                                            }
+                                            setState(() {});
+                                          },
+                                          onEditingComplete: () {
+                                            FocusScope.of(context)
+                                                .requestFocus(_amountFocusNode);
+                                          },
+                                          cursorHeight: 18.w, // 设置光标高度
+                                          cursorWidth: 2.0, // 设置光标宽度
                                           style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w900,
-                                            color: Colors.white,
+                                              fontSize: 17.sp,
+                                              fontWeight: FontWeight.w500),
+                                          decoration: const InputDecoration(
+                                            border: InputBorder.none, // 移除边框
+                                            hintStyle: TextStyle(
+                                                color: Colors.grey), // 设置提示文本颜色
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 12), // 设置内容内边距
                                           ),
                                         ),
                                       ),
                                     ),
+                                    Positioned(
+                                      top: 0,
+                                      bottom: 0,
+                                      right: 3.w,
+                                      child: OpClick(
+                                        onTap: () {
+                                          Get.to(const MyQRScannerWidget());
+                                        },
+                                        child: Container(
+                                          width: 40.w,
+                                          height: 40.w,
+                                          padding: EdgeInsets.all(3.w),
+                                          child: SvgPicture.asset(
+                                            'assets/svgs/scan.svg',
+                                            color: const Color(0xff999999),
+                                          ),
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(bottom: 4.h, top: 16.w),
+                                  child: Text(
+                                    '发送金额',
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xFF333333)),
+                                  ),
+                                ),
+                                Stack(
+                                  children: [
+                                    AnimatedContainer(
+                                      duration:
+                                          const Duration(milliseconds: 150),
+                                      height: 52.w,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xffF1F1F1),
+                                        borderRadius:
+                                            BorderRadius.circular(4.w),
+                                        border: Border.all(
+                                            color: isFocus1
+                                                ? AppTheme.themeColor
+                                                : Colors.transparent,
+                                            width: 1.w),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 52.w,
+                                      padding: EdgeInsets.only(
+                                          left: 15.w, right: 46.w),
+                                      child: Center(
+                                        child: TextFormField(
+                                          controller: _amountController,
+                                          focusNode: _amountFocusNode,
+                                          keyboardType: const TextInputType
+                                              .numberWithOptions(decimal: true),
+                                          // 添加"完成"按钮
+                                          textInputAction: TextInputAction.done,
+                                          onFieldSubmitted: (_) =>
+                                              FocusScope.of(context).unfocus(),
+                                          onChanged: (value) {
+                                            String trimmedText = value
+                                                .replaceAll(' ', ''); // 去除空格
+                                            if (trimmedText != value) {
+                                              final int cursorPosition =
+                                                  _amountController.selection
+                                                          .baseOffset -
+                                                      1; // 获取当前光标位置
+                                              final TextSelection newSelection =
+                                                  TextSelection.collapsed(
+                                                      offset:
+                                                          cursorPosition); // 生成新的光标位置
+                                              setState(() {
+                                                _amountController.value =
+                                                    TextEditingValue(
+                                                  text: trimmedText,
+                                                  selection: newSelection,
+                                                ); // 更新内容
+                                              });
+                                            }
+                                            setState(() {});
+                                          },
+                                          cursorHeight: 18.w, // 设置光标高度
+                                          cursorWidth: 2.0, // 设置光标宽度
+                                          style: TextStyle(
+                                              fontSize: 17.sp,
+                                              fontWeight: FontWeight.w500),
+                                          decoration: const InputDecoration(
+                                            border: InputBorder.none, // 移除边框
+                                            hintStyle: TextStyle(
+                                                color: Colors.grey), // 设置提示文本颜色
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 12), // 设置内容内边距
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(3.w),
+                                          child: Text(
+                                            'USDT',
+                                            style: TextStyle(
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: const Color(
+                                                  0xff212121), // 设置字体颜色
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 6.w),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Obx(() => Text(
+                                          '可用：${oCcy!.format(C.balance.value)}\u00A0USDT',
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xFF333333)
+                                                  .withOpacity(0.5)))),
+                                      Text(
+                                        '全部',
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: AppTheme.themeColor),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 24.w),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('手续费',
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xFF333333))),
+                                      Text(
+                                        '3\u00A0UDST',
+                                        style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: const Color(0xFF333333)),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 8.w, bottom: 53.h),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('实际到账',
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xFF333333))),
+                                      Text(
+                                        '${oCcy!.format(98.1231)}\u00A0UDST',
+                                        style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: const Color(0xFF333333)),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 7.w), // 设置左右边距为7
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      OpClick(
+                                        onTap: () {
+                                          dapp.transfer(
+                                              _toController.text,
+                                              num.parse(
+                                                  _amountController.text));
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                          width: 146.w,
+                                          height: 47.h,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(4.w),
+                                              color: AppTheme.themeColor),
+                                          child: Center(
+                                            child: Text(
+                                              '确认',
+                                              style: TextStyle(
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.w900,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      OpClick(
+                                        onTap: () {
+                                          Navigator.pop(context); // 关闭底部弹框
+                                        },
+                                        child: Container(
+                                          width: 146.w,
+                                          height: 47.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4.w),
+                                            color: Colors.white,
+                                            border: Border.all(
+                                              color: AppTheme.themeColor,
+                                              width: 1.w,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              '取消',
+                                              style: TextStyle(
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.w900,
+                                                color: AppTheme.themeColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        )
-                    ],
-                  ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
         );
       },
     );
   }
-  // ~转账底部弹窗 ---热钱包 -------end
+  //* 转账底部弹窗 ---热钱包 -------end
 
   // ~接收底部弹窗  -------start
   void _receiveShowBottomSheet(BuildContext context,

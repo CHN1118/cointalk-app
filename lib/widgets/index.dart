@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart';
 import 'package:wallet/common/style/app_theme.dart';
-import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/browser/index.dart';
 import 'package:wallet/widgets/message/index.dart';
 import 'package:wallet/widgets/mine/index.dart';
 import 'package:wallet/widgets/wallet/index.dart' as wallet;
-import 'package:web3dart/web3dart.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -34,7 +31,7 @@ class _IndexState extends State<Index> {
   void initState() {
     super.initState();
     C.getWL();
-    dapp.connect();
+    
   }
 
   @override
@@ -42,8 +39,6 @@ class _IndexState extends State<Index> {
     bus.off("login");
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {

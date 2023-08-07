@@ -169,11 +169,11 @@ class Dapp {
     print(apiUrl);
     var client = Web3Client(apiUrl[0]['rpcUrl'][0], http.Client());
     EtherAmount balance = await client.getBalance(address);
-    print(balance.getValueInUnit(EtherUnit.ether));
+    return balance.getValueInUnit(EtherUnit.ether);
   }
 
   /// 转账
-  Future<dynamic> transfer() async {
+  Future<dynamic> transfer(String to, num amount) async {
     var apiUrl =
         blockchainInfo.where((element) => element['active'] == true).toList();
     EthereumAddress address =
@@ -184,18 +184,17 @@ class Dapp {
     Wallet wallet = Wallet.fromJson(keystore, 'Chn1023.');
     Credentials credentials =
         EthPrivateKey.fromHex(HEX.encode(wallet.privateKey.privateKey));
-
-    BigInt amountInWei =
-        BigInt.from(100000000000000000); // 以太币的最小单位 Wei，这里表示转 1 ETH
-    BigInt gasPriceInWei =
-        BigInt.from(20000000000); // 1 Gwei (1e9 Wei) 作为 gasPrice
-    int gasLimit = 6721975; // gasLimit 是执行交易所需的 gas 数量，一般情况下转账的固定值为 21000
+    amount = amount * pow(10, 18); //转换成wei
+    BigInt amountInWei = BigInt.from(amount); // 以太币的最小单位 Wei，这里表示转 1 ETH
+    // BigInt gasPriceInWei =
+    //     BigInt.from(20000000000); // 1 Gwei (1e9 Wei) 作为 gasPrice
+    // int gasLimit = 6721975; // gasLimit 是执行交易所需的 gas 数量，一般情况下转账的固定值为 21000
 
     Transaction transaction = Transaction(
       to: EthereumAddress.fromHex(
           '0xc645fF291d18203B0F6D2622656B5F894c44641d'), // 接收地址
-      gasPrice: EtherAmount.inWei(gasPriceInWei), // gasPrice
-      maxGas: gasLimit, // gasLimit
+      // gasPrice: EtherAmount.inWei(gasPriceInWei), // gasPrice
+      // maxGas: gasLimit, // gasLimit
       value: EtherAmount.inWei(amountInWei), // 转账金额
     );
     var signedTransaction =
@@ -213,8 +212,6 @@ class Dapp {
       }
     });
   }
-
- 
 }
 
 var dapp = Dapp();
