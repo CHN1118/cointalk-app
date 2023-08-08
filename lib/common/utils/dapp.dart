@@ -184,7 +184,8 @@ class Dapp {
       to: EthereumAddress.fromHex(to), //* 转账地址
       gasPrice: EtherAmount.inWei(BigInt.from(gasPrice)), //* 燃料价格
       maxGas: gasL, //* 燃料限制
-      value: EtherAmount.inWei(BigInt.from(amount)), //* 转账金额
+      value:
+          EtherAmount.inWei(BigInt.from(num.parse(amount.toString()))), //* 转账金额
     );
 
     try {
@@ -203,8 +204,10 @@ class Dapp {
         }
       });
       C.getWL(); //* 刷新钱包列表
+      return true;
     } catch (e) {
       print(e);
+      return false;
     }
   }
 }

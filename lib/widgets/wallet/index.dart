@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, deprecated_member_use
+// ignore_for_file: avoid_print, deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,6 +83,7 @@ class _WalletState extends State<Wallet> {
 
   double usd = 0.00000000;
   double gasFee = 0.00000000;
+  double gasPrice = 0.00000000;
 
   @override
   void initState() {
@@ -118,7 +119,9 @@ class _WalletState extends State<Wallet> {
             _amountController.text == '' ? '0' : _amountController.text));
     setState(() {
       gasFee = data['gasFeeWei'];
+      print(gasPrice);
       usd = data['Usd'] < 0 ? 0 : data['Usd'];
+      gasPrice = data['Eth'] < 0 ? 0 : data['Eth'];
     });
   }
 
@@ -1259,11 +1262,12 @@ class _WalletState extends State<Wallet> {
                                               fontWeight: FontWeight.w400,
                                               color: const Color(0xFF333333))),
                                       Text(
-                                        oCcy2.format(gasFee),
+                                        gasFee.toString(),
                                         style: TextStyle(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w500,
-                                            color: const Color(0xFF333333)),
+                                            color: const Color.fromARGB(
+                                                255, 55, 129, 44)),
                                       )
                                     ],
                                   ),
@@ -1281,7 +1285,7 @@ class _WalletState extends State<Wallet> {
                                               fontWeight: FontWeight.w400,
                                               color: const Color(0xFF333333))),
                                       Text(
-                                        '${oCcy!.format(98.1231)}\u00A0UDST',
+                                        '$gasPrice\u00A0UDST',
                                         style: TextStyle(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w500,
@@ -1308,12 +1312,17 @@ class _WalletState extends State<Wallet> {
                                             if (isYes) {
                                               String password =
                                                   await swi.getpassword();
-                                              dapp.transfer(
+                                              bool res = await dapp.transfer(
                                                   _toController.text,
                                                   num.parse(
                                                       _amountController.text),
                                                   password: password);
-                                              print(password);
+                                              if (res) {
+                                                Navigator.pop(context);
+                                                _amountController.clear();
+                                                _toController.clear();
+                                                
+                                              }
                                             }
                                           }
                                           setState(() {});

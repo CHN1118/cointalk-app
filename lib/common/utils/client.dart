@@ -48,10 +48,10 @@ class Client {
     // 将 actualAmountReceivedEth 转换为美元
     double actualAmountReceivedUsd = actualAmountReceivedEth * ethToUsdRate;
 
-    print('燃料费用（Wei）: ${gasFeeWei / BigInt.from(10).pow(18)}');
-    print('实际到账金额（Wei）: $actualAmountReceivedWei');
-    print('实际到账金额（ETH）: $actualAmountReceivedEth');
-    print('实际到账金额（美元）: $actualAmountReceivedUsd');
+    // print('燃料费用（Wei）: ${gasFeeWei / BigInt.from(10).pow(18)}');
+    // print('实际到账金额（Wei）: $actualAmountReceivedWei');
+    // print('实际到账金额（ETH）: $actualAmountReceivedEth');
+    // print('实际到账金额（美元）: $actualAmountReceivedUsd');
 
 //gasFeeWei 除以 10 的 18 次方，就是 gasFeeEth
 
