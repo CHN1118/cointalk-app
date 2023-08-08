@@ -59,8 +59,9 @@ class Controller extends GetxController {
 
   getPrice() async {
     var price = await getCoinPrice();
-    usdprice.value = price['USD'];
+    usdprice.value = double.parse(price['USD'].toString());
     print('当前价格：$usdprice');
+    await getUSDTPrice();
   }
 }
 

@@ -10,6 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/common/utils/biometricauthentication.dart';
+import 'package:wallet/common/utils/client.dart';
 import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/components/op_click.dart';
@@ -79,6 +81,9 @@ class _WalletState extends State<Wallet> {
   final FocusNode _toFocusNode = FocusNode();
   final FocusNode _amountFocusNode = FocusNode();
 
+  double usd = 0.00000000;
+  double gasFee = 0.00000000;
+
   @override
   void initState() {
     super.initState();
@@ -97,8 +102,24 @@ class _WalletState extends State<Wallet> {
         isFocus1 = _amountFocusNode.hasFocus;
       });
     });
+    getPrice();
+    // 监听输入框
+    _amountController.addListener(() {
+      getPrice();
+    });
     // print(C.walletList);
     // print(C.currentWallet);
+  }
+
+  // *获取gas费用
+  getPrice() {
+    var data = CL.calculateGasFee(
+        amount: num.parse(
+            _amountController.text == '' ? '0' : _amountController.text));
+    setState(() {
+      gasFee = data['gasFeeWei'];
+      usd = data['Usd'] < 0 ? 0 : data['Usd'];
+    });
   }
 
   //销毁
@@ -316,7 +337,10 @@ class _WalletState extends State<Wallet> {
                                                           maxLines:
                                                               1, // 限制文本显示为一行
                                                           oCcy.format(
-                                                              C.balance.value),
+                                                            double.parse(C
+                                                                .balance.value
+                                                                .toString()),
+                                                          ),
                                                           style: TextStyle(
                                                               fontSize: 28.sp,
                                                               fontWeight:
@@ -1235,7 +1259,7 @@ class _WalletState extends State<Wallet> {
                                               fontWeight: FontWeight.w400,
                                               color: const Color(0xFF333333))),
                                       Text(
-                                        '3\u00A0UDST',
+                                        oCcy2.format(gasFee),
                                         style: TextStyle(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w500,
@@ -1274,11 +1298,24 @@ class _WalletState extends State<Wallet> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       OpClick(
-                                        onTap: () {
-                                          dapp.transfer(
-                                              _toController.text,
-                                              num.parse(
-                                                  _amountController.text));
+                                        onTap: () async {
+                                          if (_amountController.text.isEmpty) {
+                                            return;
+                                          }
+                                          if (CL.isEBV) {
+                                            bool isYes =
+                                                await Bio.authenticate(); //生物识别
+                                            if (isYes) {
+                                              String password =
+                                                  await swi.getpassword();
+                                              dapp.transfer(
+                                                  _toController.text,
+                                                  num.parse(
+                                                      _amountController.text),
+                                                  password: password);
+                                              print(password);
+                                            }
+                                          }
                                           setState(() {});
                                         },
                                         child: Container(

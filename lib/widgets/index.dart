@@ -31,7 +31,6 @@ class _IndexState extends State<Index> {
   void initState() {
     super.initState();
     C.getWL();
-    
   }
 
   @override
