@@ -9,14 +9,12 @@ import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:wallet/common/utils/client.dart';
 import 'package:wallet/common/utils/log.dart';
-import 'package:wallet/common/utils/symbol_arr.dart';
 import 'package:wallet/components/custom_dialog.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/database/index.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:hex/hex.dart';
-import 'package:http/http.dart' as http;
 
 class Dapp {
   /// 助记词 生成钱包
