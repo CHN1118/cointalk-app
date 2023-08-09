@@ -29,8 +29,8 @@ class Wallet extends StatefulWidget {
 
 class _WalletState extends State<Wallet> {
   Future<void> _handleRefresh() async {
-    HapticFeedback.heavyImpact(); // 震动
-    await C.getPrice(); // 延迟1秒
+    HapticFeedback.selectionClick(); // 震动
+    await C.getWL();
   }
 
   //~只显示前五位和后六位
@@ -1320,7 +1320,6 @@ class _WalletState extends State<Wallet> {
                                                 Navigator.pop(context);
                                                 _amountController.clear();
                                                 _toController.clear();
-
                                               }
                                             }
                                           }

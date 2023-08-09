@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, unused_element
 
 import 'package:wallet/common/utils/symbol_arr.dart';
 import 'package:wallet/controller/index.dart';
@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 class Client {
   /// *获取当前网络的信息
-  var client = Web3Client(
+  Web3Client client = Web3Client(
       blockchainInfo.where((element) => element['active'] == true).toList()[0]
           ['rpcUrl'][0],
       http.Client());
@@ -52,8 +52,6 @@ class Client {
     // print('实际到账金额（Wei）: $actualAmountReceivedWei');
     // print('实际到账金额（ETH）: $actualAmountReceivedEth');
     // print('实际到账金额（美元）: $actualAmountReceivedUsd');
-
-//gasFeeWei 除以 10 的 18 次方，就是 gasFeeEth
 
     return {
       'gasFeeWei': gasFeeWei / BigInt.from(10).pow(18),

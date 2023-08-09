@@ -424,7 +424,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
   }
 
   setFiceID() async {
-    HapticFeedback.heavyImpact(); //震动
+    HapticFeedback.selectionClick(); //震动
     FocusScope.of(context).requestFocus(FocusNode());
     if (isEBV) {
       isEBV = false; //关闭生物识别

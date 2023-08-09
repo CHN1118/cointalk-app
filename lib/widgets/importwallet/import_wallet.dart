@@ -84,7 +84,7 @@ class WImportWState extends State<ImportW> {
                     child: OpClick(
                   onTap: () {
                     // 震动
-                    HapticFeedback.heavyImpact();
+                    HapticFeedback.selectionClick();
                     setState(() {
                       wallet_text.text = '';
                       isWalletShow = !isWalletShow;

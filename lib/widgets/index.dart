@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/browser/index.dart';
@@ -31,6 +32,7 @@ class _IndexState extends State<Index> {
   void initState() {
     super.initState();
     C.getWL();
+    // dapp.subscribeToTransferEvents();
   }
 
   @override

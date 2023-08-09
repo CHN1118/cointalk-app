@@ -65,7 +65,7 @@ class ISuccessState extends State<Success> {
                   child: OpClick(
                     onTap: () {
                       //震动
-                      HapticFeedback.mediumImpact();
+                      HapticFeedback.selectionClick();
                       setState(() {
                         isAgree = !isAgree;
                       });
