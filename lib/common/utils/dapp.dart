@@ -248,7 +248,7 @@ class StoreWalletInformation {
       //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 存储加密后的助记词
       walletInformation['mnemonic'] = encryptmnemonic;
     }
-    //* 不论如何都要使用密码加密keystore
+    //* 不论如何都要使用密码加密keystore                                           
     //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 使用密码加密keystore
     String encryptkeystore = dapp.encryptString(
         walletInformation['keystore'], walletInformation['password']);
@@ -304,3 +304,4 @@ class StoreWalletInformation {
 }
 
 var swi = StoreWalletInformation();
+

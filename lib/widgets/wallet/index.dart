@@ -119,7 +119,6 @@ class _WalletState extends State<Wallet> {
             _amountController.text == '' ? '0' : _amountController.text));
     setState(() {
       gasFee = data['gasFeeWei'];
-      print(gasPrice);
       usd = data['Usd'] < 0 ? 0 : data['Usd'];
       gasPrice = data['Eth'] < 0 ? 0 : data['Eth'];
     });
@@ -1321,7 +1320,7 @@ class _WalletState extends State<Wallet> {
                                                 Navigator.pop(context);
                                                 _amountController.clear();
                                                 _toController.clear();
-                                                
+
                                               }
                                             }
                                           }
