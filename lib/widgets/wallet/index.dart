@@ -353,7 +353,7 @@ class _WalletState extends State<Wallet> {
                                                         )),
                                                   ),
                                                 ),
-                                                Text('BNB',
+                                                Text('USDT',
                                                     style: TextStyle(
                                                         fontSize: 16.sp,
                                                         fontWeight:
@@ -457,7 +457,7 @@ class _WalletState extends State<Wallet> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  'BNB',
+                                                  'USDT',
                                                   style: TextStyle(
                                                       fontSize: 16.sp,
                                                       fontWeight:
