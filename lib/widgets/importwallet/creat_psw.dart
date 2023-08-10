@@ -14,9 +14,13 @@ import 'package:wallet/database/index.dart';
 import 'package:wallet/widgets/importwallet/import_wallet.dart';
 
 class CreatPsw extends StatefulWidget {
-  CreatPsw({super.key, this.title = '创建登录密码'});
+  CreatPsw({
+    super.key,
+    this.title = '创建登录密码',
+    this.import = false,
+  });
   String title;
-
+  bool? import;
   @override
   State<CreatPsw> createState() => ICreatPswState();
 }
@@ -467,13 +471,14 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
         strength > 0.3) {
       final Map<String, dynamic> arguments = {
         'walletPassword': _setPswtext.text,
-        'isEBV': isEBV
+        'isEBV': isEBV,
+        'import': widget.import,
       };
       await EasyLoading.dismiss();
       if (widget.title == '创建钱包密码') {
-        Get.to(() => const ImportW(), arguments: arguments);
+        Get.off(() => const ImportW(), arguments: arguments);
       } else {
-        Get.toNamed(
+        Get.offNamed(
           '/walletname',
           arguments: arguments,
         );

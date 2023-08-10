@@ -358,7 +358,13 @@ class WImportWState extends State<ImportW> {
               active: true);
           var res = await swi.addWalletInfo(context, walletInfo);
           if (res != null) {
-            Get.offAll(() => const Success(), transition: Transition.topLevel);
+            if (Get.arguments['import'] == true) {
+              Get.back();
+              return;
+            } else {
+              Get.offAll(() => const Success(),
+                  transition: Transition.topLevel);
+            }
           }
         } else {
           await EasyLoading.dismiss();

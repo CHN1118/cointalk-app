@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/components/op_click.dart';
+import 'package:wallet/widgets/importwallet/success.dart';
 
 class BackupMnemonic extends StatefulWidget {
   const BackupMnemonic({super.key});
@@ -374,5 +375,11 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
         mnemonic, walletName, walletPassword, isEBV,
         active: true);
     await swi.addWalletInfo(context, walletInfo);
+    if (Get.arguments['import'] == true) {
+      Get.back();
+      return;
+    } else {
+      Get.offAll(() => const Success(), transition: Transition.topLevel);
+    }
   }
 }

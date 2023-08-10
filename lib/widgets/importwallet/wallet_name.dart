@@ -179,10 +179,11 @@ class WwalletnameState extends State<Walletname> {
       String walletName = _walletNametext.text; // 钱包名称
       String walletPassword = Get.arguments['walletPassword']; // 钱包密码
       bool isEBV = Get.arguments['isEBV']; // 是否是生物识别验证
-      Get.offAllNamed('/mnemonic', arguments: {
+      Get.offNamed('/mnemonic', arguments: {
         'walletName': walletName,
         'walletPassword': walletPassword,
         'isEBV': isEBV,
+        'import': Get.arguments['import']
       });
     }
   }

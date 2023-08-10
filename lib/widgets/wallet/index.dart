@@ -499,8 +499,8 @@ class _WalletState extends State<Wallet> {
                                                         children: [
                                                           Text(
                                                             formatText(
-                                                                text:
-                                                                    '0xs12ehfkddjfh21fd4aj'),
+                                                                text: C.currentWallet[
+                                                                    'address']),
                                                             style: TextStyle(
                                                                 fontSize: 15.sp,
                                                                 fontWeight:
