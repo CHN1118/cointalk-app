@@ -1,7 +1,9 @@
 // ignore_for_file: deprecated_member_use, avoid_print, prefer_interpolation_to_compose_strings, depend_on_referenced_packages
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:bip32/bip32.dart' as bip32;
@@ -9,6 +11,7 @@ import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:wallet/common/utils/client.dart';
 import 'package:wallet/common/utils/log.dart';
+import 'package:wallet/common/utils/symbol_arr.dart';
 import 'package:wallet/components/custom_dialog.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/database/index.dart';
@@ -17,7 +20,7 @@ import 'package:web3dart/web3dart.dart';
 import 'package:hex/hex.dart';
 
 class Dapp {
-  /// 助记词 生成钱包
+  /// *助记词 生成钱包
   Future<dynamic> importMnemonic(
       String mnemonic, String walletname, String password, bool isEBV,
       {bool active = false}) async {
@@ -58,7 +61,7 @@ class Dapp {
     };
   }
 
-  /// keystore 生成钱包
+  /// *keystore 生成钱包
   Future<dynamic> importKetystore(
       String keystore, String walletname, String password, bool isEBV,
       {bool active = false}) async {
@@ -88,7 +91,7 @@ class Dapp {
     }
   }
 
-  ///导入私钥 生成钱包
+  ///*导入私钥 生成钱包
   Future<dynamic> importPrivate(
       String mprivate, String walletname, String password, bool isEBV,
       {bool active = false}) async {
@@ -109,7 +112,7 @@ class Dapp {
     };
   }
 
-  /// 通过密码加密 明文
+  /// *通过密码加密 明文
   String encryptString(String plainText, String password) {
     String psw = '';
     var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
@@ -118,7 +121,7 @@ class Dapp {
           ? (password + timestamp).padRight(32, ' ')
           : (password + timestamp).substring(0, 32);
     } else {
-      // 截取钱19位加上时间戳
+      // *截取钱19位加上时间戳
       psw = password.substring(0, 19) + timestamp;
     }
     final key = Key.fromUtf8(psw);
@@ -131,7 +134,7 @@ class Dapp {
     return encrypted.base64 + '@$timestamp'; // 将加密结果转换为Base64格式返回
   }
 
-  /// 通过密码解密 密文
+  /// *通过密码解密 密文
   String decryptString(String encryptedString, String password) {
     String psw = '';
     var timestamp = encryptedString.split('@')[1];
@@ -159,13 +162,13 @@ class Dapp {
     }
   }
 
-  /// 获取余额
+  /// *获取余额
   connect() async {
     EtherAmount balance = await CL.client.getBalance(CL.address);
     return balance.getValueInUnit(EtherUnit.ether);
   }
 
-  /// 转账
+  /// *转账
   Future<dynamic> transfer(String to, var amount,
       {int gasPrice = 2000000000, int gasL = 21000, String? password}) async {
     //* 1.通过密码解密keystore
@@ -190,11 +193,13 @@ class Dapp {
       //* 6.签名交易
       var signedTransaction = await CL.client
           .signTransaction(credentials, transaction, chainId: 1337);
+      print(signedTransaction);
       //* 7.发送交易
-      var res = await CL.client.sendRawTransaction(signedTransaction);
+      var thash = await CL.client.sendRawTransaction(signedTransaction);
       //* 8.监听交易状态
+      print('交易hash: $thash');
       Timer.periodic(const Duration(seconds: 1), (timer) async {
-        var receipt = await CL.client.getTransactionReceipt(res);
+        var receipt = await CL.client.getTransactionReceipt(thash);
         print(receipt?.status); //* 交易状态
         if (receipt != null) {
           timer.cancel();
@@ -207,6 +212,73 @@ class Dapp {
       print(e);
       return false;
     }
+  }
+
+  /// *扫链，传入起始块和结束块，扫描指定地址的交易
+  void scanBlocksForAddress(
+      int startBlock, int endBlock, String address) async {
+    for (int i = startBlock; i <= endBlock; i++) {
+      final block = await getBlockByNumber(i);
+      for (var transaction in block['transactions']) {
+        var from = transaction['from'] ?? '0x';
+        var to = transaction['to'] ?? '0x';
+        if (from.toLowerCase() == address.toLowerCase() ||
+            to.toLowerCase() == address.toLowerCase()) {
+          print('Transaction found in block $i: $transaction');
+        }
+      }
+    }
+  }
+
+  /// *获取指定块的信息
+  Future<Map<String, dynamic>> getBlockByNumber(int blockNumber) async {
+    final body = {
+      'jsonrpc': '2.0',
+      'method': 'eth_getBlockByNumber',
+      'params': ['0x${blockNumber.toRadixString(16)}', true],
+      'id': 1,
+    };
+    var rpcUrl = blockchainInfo
+        .where((element) => element['active'] == true)
+        .toList()[0]['rpcUrl'][0]; // Ganache 默认 RPC 地址
+    final response = await http.post(
+      Uri.parse(rpcUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(body),
+    );
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body)['result'];
+    } else {
+      throw Exception('Failed to fetch block');
+    }
+  }
+
+  final message = 'Hello Ethereum!';
+
+  /// *签名消息
+  Future<dynamic> signMessage(
+      {String? message = 'login', String? password = 'Chn1023.'}) async {
+    //* 1.通过密码解密keystore
+    var keystore = decryptString(
+        DB.box
+            .read('WalletList')
+            .firstWhere((e) => e['active'] == true)['keystore'],
+        password!);
+    //* 2.通过keystore获取钱包的实例
+    Wallet wallet = Wallet.fromJson(keystore, password);
+    //* 3.通过钱包实例的私钥获取钱包的凭证
+    Credentials credentials =
+        EthPrivateKey.fromHex(HEX.encode(wallet.privateKey.privateKey));
+    //* 4.签名消息
+    var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    var signedMessage = credentials.signPersonalMessageToUint8List(
+        utf8.encode('${message!}$timestamp') as Uint8List,
+        chainId: 1); //* 签名消息
+    //* 5.验证签名
+    print('0x${HEX.encode(signedMessage)}');
+    print(CL.address);
+    print('$message$timestamp');
   }
 }
 
@@ -246,7 +318,7 @@ class StoreWalletInformation {
       //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 存储加密后的助记词
       walletInformation['mnemonic'] = encryptmnemonic;
     }
-    //* 不论如何都要使用密码加密keystore                                           
+    //* 不论如何都要使用密码加密keystore
     //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 使用密码加密keystore
     String encryptkeystore = dapp.encryptString(
         walletInformation['keystore'], walletInformation['password']);
@@ -302,4 +374,3 @@ class StoreWalletInformation {
 }
 
 var swi = StoreWalletInformation();
-

@@ -32,7 +32,9 @@ class _IndexState extends State<Index> {
   void initState() {
     super.initState();
     C.getWL();
-    // dapp.subscribeToTransferEvents();
+    dapp.scanBlocksForAddress(
+        217, 219, '0x21955B44449fA90Dd389bdc736c2Ab3b523d965F');
+        dapp.signMessage();
   }
 
   @override
