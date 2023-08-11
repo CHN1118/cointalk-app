@@ -20,6 +20,9 @@ import 'package:web3dart/web3dart.dart';
 import 'package:hex/hex.dart';
 
 class Dapp {
+  /// *获取区块高度定时器
+  Timer? _timer;
+
   /// *助记词 生成钱包
   Future<dynamic> importMnemonic(
       String mnemonic, String walletname, String password, bool isEBV,
@@ -228,7 +231,9 @@ class Dapp {
         var to = transaction['to'] ?? '0x';
         if (from.toLowerCase() == address.toLowerCase() ||
             to.toLowerCase() == address.toLowerCase()) {
-          print('Transaction found in block $i: $transaction');
+          final confirmationTimestamp = block['timestamp'];
+          transaction['confirmationTimestamp'] = confirmationTimestamp;
+          swi.addTransaction(transaction);
         }
       }
     }
@@ -285,18 +290,23 @@ class Dapp {
 
   /// *定时获取区块高度16秒
   void getBlockNumber() {
-    Timer.periodic(const Duration(seconds: 16), (timer) async {
+    _timer = Timer.periodic(const Duration(seconds: 16), (timer) async {
       var blockNumber = await CL.client.getBlockNumber();
       // *扫描上一个区块
-      scanBlocksForAddress(blockNumber - 1, blockNumber - 1,
-          '0x21955B44449fA90Dd389bdc736c2Ab3b523d965F');
+      scanBlocksForAddress(
+          blockNumber - 1, blockNumber - 1, CL.address.toString());
     });
+  }
+
+  /// *清除定时器
+  void clearTimer() {
+    _timer?.cancel();
   }
 }
 
 var dapp = Dapp();
 
-// 存储钱包信息的构造函数
+/// *存储钱包信息的构造函数
 class StoreWalletInformation {
   /// *加密后 存储钱包信息
   Future<dynamic> addWalletInfo(material.BuildContext context,
@@ -387,6 +397,32 @@ class StoreWalletInformation {
     // * 使用加密后的钱包地址解密密码
     String password = dapp.decryptString(C.currentWallet['password'], address!);
     return password;
+  }
+
+  /// *钱包相关的交易存储
+  Future<dynamic> addTransaction(Map<String, dynamic> transaction) async {
+    // *获取交易数组
+    List<dynamic> transactionList = DB.box.read(CL.address.hex) ?? [];
+    // *判断交易数组是已经存在该交易
+    var isExist = false;
+    for (var i = 0; i < transactionList.length; i++) {
+      if (transactionList[i]['hash'] == transaction['hash']) {
+        isExist = true;
+      }
+    }
+    if (isExist) {
+      return null; //* 如果存在该交易则返回 null
+    }
+    var receipt = await CL.client.getTransactionReceipt(transaction['hash']);
+    print(receipt?.status); //* 交易状态
+    if (receipt != null) {
+      transaction['status'] = receipt.status;
+      transactionList.add(transaction);
+      await DB.box.write(CL.address.hex, transactionList); // *存储交易信息数组
+      var transactionInfo = await DB.box.read(CL.address.hex); // *获取交易信息数组
+      LLogger.d('存储到普通缓存的数据：$transactionInfo\n');
+      return transaction;
+    }
   }
 }
 

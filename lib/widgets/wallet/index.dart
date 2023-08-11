@@ -734,12 +734,8 @@ class _WalletState extends State<Wallet> {
                                     ),
                                   ),
                                 ),
-                                // Lottie.asset(
-                                //   'assets/images/login_logo.json',
-                                // ),
-
                                 //* 账单列表
-                                for (int i = 0; i < 5; i++)
+                                for (int i = 0; i < 1; i++)
                                   Column(
                                     children: [
                                       OpClick(
@@ -749,8 +745,6 @@ class _WalletState extends State<Wallet> {
                                         },
                                         child: Items(
                                           title: '接收',
-                                          // 'assets/svgs/shuffle.svg',
-                                          // 'assets/svgs/upload.svg',
                                           iconurl: 'assets/svgs/upload.svg',
                                           walletAddress: '0x123cdgt4567890',
                                           price: 335.76,
@@ -762,8 +756,6 @@ class _WalletState extends State<Wallet> {
                                       ),
                                       Items(
                                         title: '转账',
-                                        // 'assets/svgs/shuffle.svg',
-                                        // 'assets/svgs/upload.svg',
                                         iconurl: 'assets/svgs/shuffle.svg',
                                         walletAddress: '0x123cdgt4567890',
                                         price: 335.76,
