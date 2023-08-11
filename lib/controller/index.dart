@@ -53,6 +53,7 @@ class Controller extends GetxController {
     currentWallet.value = await list.firstWhere((e) => e['active'] == true);
     balance.value = await dapp.connect();
     print('当前钱包信息：$currentWallet');
+    print('钱包信息数组Z:$walletList');
     print('当前钱包余额：${balance.value}');
     getPrice();
   }

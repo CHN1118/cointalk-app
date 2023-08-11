@@ -164,6 +164,9 @@ class Dapp {
 
   /// *获取余额
   connect() async {
+    CL.address = EthereumAddress.fromHex(DB.box
+        .read('WalletList')
+        .firstWhere((e) => e['active'] == true)['address']);
     EtherAmount balance = await CL.client.getBalance(CL.address);
     return balance.getValueInUnit(EtherUnit.ether);
   }
@@ -357,9 +360,14 @@ class StoreWalletInformation {
       for (var i = 0; i < walletList.length; i++) {
         if (walletList[i]['address'] == walletInformation['address']) {
           walletList[i] = walletInformation;
+        } else {
+          walletList[i]['active'] = false;
         }
       }
     } else {
+      walletList.forEach((wallet) {
+        wallet['active'] = false;
+      });
       walletList.add(walletInformation);
     }
     await DB.box.write('WalletList', walletList); // *存储钱包信息数组

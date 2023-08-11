@@ -10,7 +10,9 @@ import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/common/utils/log.dart';
 import 'package:wallet/components/op_click.dart';
+import 'package:wallet/controller/index.dart';
 import 'package:wallet/database/index.dart';
+import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/importwallet/success.dart';
 
 class ImportW extends StatefulWidget {
@@ -337,7 +339,15 @@ class WImportWState extends State<ImportW> {
               active: true);
           var res = await swi.addWalletInfo(context, walletInfo);
           if (res != null) {
-            Get.offAll(() => const Success(), transition: Transition.topLevel);
+            if (Get.arguments['import'] == true) {
+              Get.back();
+              C.getWL();
+              bus.emit('updateWalletList');
+              return;
+            } else {
+              Get.offAll(() => const Success(),
+                  transition: Transition.topLevel);
+            }
           }
         } else {
           await EasyLoading.dismiss();
@@ -352,13 +362,26 @@ class WImportWState extends State<ImportW> {
         if (wallet_text.text.length == 64 ||
             (wallet_text.text.length == 66 &&
                 wallet_text.text.substring(0, 2) == '0x')) {
-          await EasyLoading.dismiss();
+          await EasyLoading.dismiss(); // 关闭加载
           var walletInfo = await dapp.importPrivate(
               wallet_text.text, walletName, password, isEBV,
-              active: true);
+              active: true); // 导入私钥
           var res = await swi.addWalletInfo(context, walletInfo);
           if (res != null) {
-            Get.offAll(() => const Success(), transition: Transition.topLevel);
+            if (Get.arguments['import'] == true) {
+              Get.back();
+              C.getWL();
+              bus.emit('updateWalletList');
+              return;
+            } else {
+              var isAgree = DB.box.read('isAgree');
+              if (isAgree == null || isAgree == false) {
+                Get.offAll(() => const Success(),
+                    transition: Transition.topLevel);
+                return;
+              }
+              Get.offAllNamed('/');
+            }
           }
         } else {
           await EasyLoading.dismiss();

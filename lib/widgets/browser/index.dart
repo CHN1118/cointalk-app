@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -5,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/components/op_click.dart';
+import 'package:wallet/database/index.dart';
 
 import 'package:wallet/widgets/browser/share.dart';
 
@@ -15,8 +18,8 @@ class Browser extends StatefulWidget {
   State<Browser> createState() => _BrowserState();
 }
 
+List<dynamic> historyList = DB.box.read('historyList') ?? []; // 历史记录列表
 //~收藏弹框
-// ignore: non_constant_identifier_names
 Future<bool?> showSnackBar({String? msg}) {
   return Fluttertoast.showToast(
       msg: msg!,
@@ -28,9 +31,17 @@ Future<bool?> showSnackBar({String? msg}) {
       fontSize: 14.sp);
 }
 
-class _BrowserState extends State<Browser> {
-  bool isCollect = false; //是否收藏
+//~判断点击选择了哪个收藏按钮
+handleItemClick(int index, List list) {
+  for (int i = 0; i < list.length; i++) {
+    if (i == index) {
+      list[i] = !list[i];
+    }
+  }
+}
 
+//主体部分
+class _BrowserState extends State<Browser> {
   bool isRecommendedPage = true; // 是否为推荐
   bool isExplorePage = false; // 是否为探索
   bool isFavoritesPage = false; // 是否为收藏
@@ -82,14 +93,16 @@ class _BrowserState extends State<Browser> {
     }
   }
 
-  List<String> historyList = []; // 历史记录列表
-
   void addToHistory(String item) {
     setState(() {
       historyList.insert(0, item); // 将项添加到历史记录列表
+      DB.box.write('historyList', historyList); // 将历史记录列表写入数据库
     });
   }
 
+  List experienceList = [for (int i = 0; i < 10; i++) false]; //* 立即体验列表数据
+
+//&主体部分
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -179,6 +192,8 @@ class _BrowserState extends State<Browser> {
 
                               if (_searchText.isNotEmpty) {
                                 addToHistory(_searchText); // 将搜索内容添加到历史记录列表
+                                //将搜索内容保存到本地
+                                DB.box.write('_searchText', _searchText);
                               }
                             });
                             _handleSearchSubmit();
@@ -226,10 +241,10 @@ class _BrowserState extends State<Browser> {
               ),
               //^ 历史记录
               if (_focussearchNode.hasFocus && _searchText.isEmpty)
-                HistoricalRecord(historyList: historyList),
+                const HistoricalRecord(),
               //^ 搜索结果
               if (_searchText.isNotEmpty) const SearchResults(),
-              //^ 推荐
+              //^ 推荐 探索  收藏
               if (!_focussearchNode.hasFocus && _searchText.isEmpty)
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
@@ -253,7 +268,7 @@ class _BrowserState extends State<Browser> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     for (String i in btns)
-                                      //& 推荐探索收藏列表
+                                      //& 推荐探索收藏
                                       OpClick(
                                         onTap: () {
                                           setState(() {
@@ -343,7 +358,9 @@ class _BrowserState extends State<Browser> {
                                           ],
                                         ),
                                       ),
-                                      for (int i = 0; i < 10; i++)
+                                      for (int i = 0;
+                                          i < experienceList.length;
+                                          i++)
                                         GestureDetector(
                                           onTap: () {
                                             //跳转到 SharePage 页面
@@ -369,7 +386,7 @@ class _BrowserState extends State<Browser> {
                                                 Container(
                                                   width: 245.w,
                                                   margin: EdgeInsets.only(
-                                                      left: 20.w),
+                                                      left: 15.w, right: 15.w),
                                                   child: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
@@ -385,8 +402,9 @@ class _BrowserState extends State<Browser> {
                                                                 0xff000000)),
                                                       ),
                                                       Text(
-                                                        // maxLines: null, // 设置为null或者大于1的整数，表示不限制行数
-                                                        softWrap: true,
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         'A protocol for trading and automated liquidity provision on Ethereum',
                                                         style: TextStyle(
                                                           fontSize: 14.sp,
@@ -403,9 +421,11 @@ class _BrowserState extends State<Browser> {
                                                   child: OpClick(
                                                     onTap: () {
                                                       setState(() {
-                                                        isCollect = !isCollect;
+                                                        handleItemClick(
+                                                            i, experienceList);
                                                         showSnackBar(
-                                                            msg: isCollect
+                                                            msg: experienceList[
+                                                                    i]
                                                                 ? '收藏成功'
                                                                 : '取消收藏');
                                                       });
@@ -415,7 +435,7 @@ class _BrowserState extends State<Browser> {
                                                       width: 24.w,
                                                       height: 24.w,
                                                       // ignore: deprecated_member_use
-                                                      color: isCollect
+                                                      color: experienceList[i]
                                                           ? const Color(
                                                               0xffF3D11C)
                                                           : const Color(
@@ -451,7 +471,7 @@ class _BrowserState extends State<Browser> {
   }
 }
 
-//~搜索结果
+//~搜索结果 ---start
 class SearchResults extends StatefulWidget {
   const SearchResults({super.key});
 
@@ -460,7 +480,7 @@ class SearchResults extends StatefulWidget {
 }
 
 class _SearchResultsState extends State<SearchResults> {
-  bool isCollect1 = false; //是否收藏
+  List SearchResultsList = [for (int i = 0; i < 10; i++) false];
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -506,15 +526,17 @@ class _SearchResultsState extends State<SearchResults> {
                                       ],
                                     ),
                                   ])),
-                          for (int i = 0; i < 10; i++)
+                          for (int i = 0; i < SearchResultsList.length; i++)
                             CustomListItem(
                                 svgPath: 'assets/svgs/xingxing.svg',
-                                isCollect1: isCollect1,
+                                isCollect: SearchResultsList[i],
                                 onTapIncident: () {
                                   setState(() {
-                                    isCollect1 = !isCollect1;
+                                    handleItemClick(i, SearchResultsList);
                                     showSnackBar(
-                                        msg: isCollect1 ? '收藏成功' : '取消收藏');
+                                        msg: SearchResultsList[i]
+                                            ? '收藏成功'
+                                            : '取消收藏');
                                   });
                                 })
                         ],
@@ -526,12 +548,13 @@ class _SearchResultsState extends State<SearchResults> {
     );
   }
 }
+//~搜索结果 ---end
 
-//~历史记录
+//~历史记录 ---start
 class HistoricalRecord extends StatefulWidget {
-  final List<String> historyList;
-
-  const HistoricalRecord({super.key, required this.historyList});
+  const HistoricalRecord({
+    super.key,
+  });
 
   @override
   State<HistoricalRecord> createState() => _HistoricalRecordState();
@@ -540,15 +563,22 @@ class HistoricalRecord extends StatefulWidget {
 }
 
 class _HistoricalRecordState extends State<HistoricalRecord> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void deleteItem(int index) {
     setState(() {
-      widget.historyList.removeAt(index); // 删除对应的列表项
+      historyList.removeAt(index); // 删除对应的列表项
+      DB.box.write('historyList', historyList); // 将历史记录列表写入数据库
     });
   }
 
   void clearList() {
     setState(() {
-      widget.historyList.clear(); // 清空列表
+      historyList.clear(); // 清空列表
+      DB.box.write('historyList', historyList); // 将历史记录列表写入数据库
     });
   }
 
@@ -618,10 +648,10 @@ class _HistoricalRecordState extends State<HistoricalRecord> {
                                     ),
                                   ])),
                           // for (int i = 0; i < 10; i++)
-                          for (int i = 0; i < widget.historyList.length; i++)
+                          for (int i = 0; i < historyList.length; i++)
                             CustomListItem(
                               svgPath: 'assets/svgs/del2.svg',
-                              title: widget.historyList[i],
+                              title: historyList[i],
                               onTapIncident: () {
                                 deleteItem(i); // 点击删除按钮时调用删除函数
                               },
@@ -638,8 +668,9 @@ class _HistoricalRecordState extends State<HistoricalRecord> {
     );
   }
 }
+//~历史记录 ---end
 
-//~搜索结果和历史记录的自定义列表项
+//~搜索结果和历史记录的自定义列表项 ---start
 class CustomListItem extends StatefulWidget {
   final String svgPath; //SVG路径
   final String imagePath; //图片路径
@@ -649,7 +680,7 @@ class CustomListItem extends StatefulWidget {
   final double height; //高
   final int color1; //高
   final GestureTapCallback? onTapIncident; //点击事件
-  final bool isCollect1; //是否收藏
+  final bool isCollect; //是否收藏
 
   const CustomListItem(
       {super.key,
@@ -658,7 +689,7 @@ class CustomListItem extends StatefulWidget {
       this.onTapIncident,
       this.title = 'Uniswap',
       this.content = 'https://app.uniswap.org/',
-      this.isCollect1 = false,
+      this.isCollect = false,
       this.width = 24,
       this.height = 24,
       this.color1 = 0xffEDEFF5});
@@ -729,7 +760,7 @@ class _CustomListItemState extends State<CustomListItem> {
                     width: widget.width.w,
                     height: widget.height.w,
                     // ignore: deprecated_member_use
-                    color: widget.isCollect1
+                    color: widget.isCollect
                         ? const Color(0xffF3D11C)
                         : Color(widget.color1),
                   ),
@@ -742,8 +773,9 @@ class _CustomListItemState extends State<CustomListItem> {
     );
   }
 }
+//~搜索结果和历史记录的自定义列表项  ----end
 
-//~ 探索页面  isExplorePage
+//~ 探索页面  isExplorePage  ----start
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
 
@@ -760,8 +792,7 @@ class ExplorePageState extends State<ExplorePage> {
     '市场',
     '工具',
   ];
-  bool isCollect = false; //是否收藏
-  List explorePageList = []; //探索列表
+  List explorePageList = [for (int i = 0; i < 10; i++) false]; //探索列表
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -818,7 +849,7 @@ class ExplorePageState extends State<ExplorePage> {
                     )
                   ],
                 )),
-            explorePageList.isEmpty
+            explorePageList.isNotEmpty
                 ? Positioned(
                     top: 86.h,
                     left: 0,
@@ -836,10 +867,17 @@ class ExplorePageState extends State<ExplorePage> {
                               margin: EdgeInsets.only(bottom: 0.w),
                               child: Column(
                                 children: [
-                                  for (int i = 1; i < 3; i++)
+                                  for (int i = 1;
+                                      i < explorePageList.length;
+                                      i++)
                                     Container(
                                       margin: EdgeInsets.only(bottom: 16.w),
+                                      padding: EdgeInsets.only(right: 6.w),
                                       child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             i.toString(),
@@ -851,7 +889,7 @@ class ExplorePageState extends State<ExplorePage> {
                                           Container(
                                             width: 45.w,
                                             height: 45.w,
-                                            margin: EdgeInsets.only(left: 15.w),
+                                            // margin: EdgeInsets.only(left: 10.w),
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(
@@ -861,9 +899,9 @@ class ExplorePageState extends State<ExplorePage> {
                                                   'assets/images/colt.png'),
                                             ),
                                           ),
-                                          Container(
+                                          SizedBox(
                                             width: 232.w,
-                                            margin: EdgeInsets.only(left: 15.w),
+                                            // margin: EdgeInsets.only(left: 15.w),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -879,7 +917,8 @@ class ExplorePageState extends State<ExplorePage> {
                                                 ),
                                                 Text(
                                                   // maxLines: null, // 设置为null或者大于1的整数，表示不限制行数
-                                                  softWrap: true,
+                                                  softWrap:
+                                                      true, // 设置为true，表示文本将在换行符处中断，如果为false，文本将在宽度处中断。
                                                   'A protocol for trading and automated liquidity provision on Ethereum',
                                                   style: TextStyle(
                                                     fontSize: 12.sp,
@@ -890,27 +929,25 @@ class ExplorePageState extends State<ExplorePage> {
                                               ],
                                             ),
                                           ),
-                                          Container(
-                                            margin: EdgeInsets.only(left: 7.w),
-                                            child: OpClick(
-                                              onTap: () {
-                                                setState(() {
-                                                  isCollect = !isCollect;
-                                                  showSnackBar(
-                                                      msg: isCollect
-                                                          ? '收藏成功'
-                                                          : '取消收藏');
-                                                });
-                                              },
-                                              child: SvgPicture.asset(
-                                                'assets/svgs/xingxing.svg', // 设置SVG图标的路径
-                                                width: 22.w,
-                                                height: 22.w,
-                                                // ignore: deprecated_member_use
-                                                color: isCollect
-                                                    ? const Color(0xffF3D11C)
-                                                    : const Color(0xffEDEFF5),
-                                              ),
+                                          OpClick(
+                                            onTap: () {
+                                              setState(() {
+                                                handleItemClick(
+                                                    i, explorePageList);
+                                                showSnackBar(
+                                                    msg: explorePageList[i]
+                                                        ? '收藏成功'
+                                                        : '取消收藏');
+                                              });
+                                            },
+                                            child: SvgPicture.asset(
+                                              'assets/svgs/xingxing.svg', // 设置SVG图标的路径
+                                              width: 22.w,
+                                              height: 22.w,
+                                              // ignore: deprecated_member_use
+                                              color: explorePageList[i]
+                                                  ? const Color(0xffF3D11C)
+                                                  : const Color(0xffEDEFF5),
                                             ),
                                           )
                                         ],
@@ -939,8 +976,9 @@ class ExplorePageState extends State<ExplorePage> {
         ));
   }
 }
+//~探索页面  isExplorePage -----end
 
-//~收藏页面  isFavoritesPage
+//~收藏页面  isFavoritesPage -----start
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
 
@@ -949,13 +987,10 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class FavoritesPageState extends State<FavoritesPage> {
-  bool isCollect = false; //是否收藏
-  // ignore: non_constant_identifier_names
-  List FavoritesList = [];
+  List FavoritesList = [for (int i = 0; i < 10; i++) false]; //&收藏列表
   @override
   Widget build(BuildContext context) {
-    // FavoritesList.length == 0
-    return FavoritesList.isEmpty
+    return FavoritesList.isNotEmpty
         ? Stack(
             children: [
               Positioned(
@@ -1024,9 +1059,10 @@ class FavoritesPageState extends State<FavoritesPage> {
                                           child: OpClick(
                                             onTap: () {
                                               setState(() {
-                                                isCollect = !isCollect;
+                                                handleItemClick(
+                                                    i, FavoritesList);
                                                 showSnackBar(
-                                                    msg: isCollect
+                                                    msg: FavoritesList[i]
                                                         ? '收藏成功'
                                                         : '取消收藏');
                                               });
@@ -1036,7 +1072,7 @@ class FavoritesPageState extends State<FavoritesPage> {
                                               width: 24.w,
                                               height: 24.w,
                                               // ignore: deprecated_member_use
-                                              color: isCollect
+                                              color: FavoritesList[i]
                                                   ? const Color(0xffF3D11C)
                                                   : const Color(0xffEDEFF5),
                                             ),
@@ -1070,3 +1106,4 @@ class FavoritesPageState extends State<FavoritesPage> {
             ));
   }
 }
+//~收藏页面  isFavoritesPage -----end

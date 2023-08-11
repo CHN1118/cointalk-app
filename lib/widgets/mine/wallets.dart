@@ -1,11 +1,18 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/components/op_click.dart';
+import 'package:wallet/controller/index.dart';
+import 'package:wallet/database/index.dart';
+import 'package:wallet/event/index.dart';
+import 'package:wallet/widgets/importwallet/creat_psw.dart';
 
 // ignore: must_be_immutable
 class WalletMan extends StatefulWidget {
@@ -17,15 +24,21 @@ class WalletMan extends StatefulWidget {
 }
 
 //钱包数据
-class ListItem {
-  String text;
-  bool isMarkers;
+// class ListItem {
+//   String text;
+//   bool active;
 
-  ListItem({required this.text, this.isMarkers = false});
-}
+//   ListItem({required this.text, this.active = false});
+// }
 
 //&钱包管理
 class _WalletManState extends State<WalletMan> {
+  //初始化
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,8 +59,20 @@ class WalletBody extends StatefulWidget {
 }
 
 class _WalletBodyState extends State<WalletBody> {
+  //初始化
+  @override
+  void initState() {
+    super.initState();
+    bus.on('updateWalletList', (arg) {
+      setState(() {});
+    });
+  }
+
 //~删除钱包的 底部弹窗
-  void _delBottomSheet1(BuildContext context, int index) {
+  void _delBottomSheet1(
+    BuildContext context,
+    int index,
+  ) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: false, //设置为true，此时将会跟随键盘的弹出而弹出
@@ -134,7 +159,8 @@ class _WalletBodyState extends State<WalletBody> {
                             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '钱包1号',
+                                formatText(
+                                    text: C.walletList[index]['walletname']),
                                 style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w600),
@@ -148,7 +174,7 @@ class _WalletBodyState extends State<WalletBody> {
                                   onTap: () {
                                     //&复制到剪切板
                                     copyToClipboard(
-                                        text: '0xwarashiuggfjkfiddijsc9DP');
+                                        text: C.walletList[index]['address']);
                                   },
                                   child: Row(
                                     children: [
@@ -157,8 +183,8 @@ class _WalletBodyState extends State<WalletBody> {
                                         child: Text(
                                           //&只显示前五位和后六位
                                           formatText(
-                                              text:
-                                                  '0xwarashiuggfjkfiddijsc9DP'),
+                                              text: C.walletList[index]
+                                                  ['address']),
                                           style: TextStyle(
                                             fontSize: 15.sp,
                                           ),
@@ -190,10 +216,23 @@ class _WalletBodyState extends State<WalletBody> {
                       OpClick(
                         onTap: () {
                           setState(() {
-                            //删除items的数据
-                            items.removeAt(index);
+                            //&删除钱包
+                            //todo 删除钱包
+                            //删除C.walletList的数据
+                            C.walletList.removeAt(index);
+                            DB.box.write(
+                                'WalletList', C.walletList.value); // *存储钱包信息数组
+                            C.getWL();
                             showSnackBar(msg: '删除成功');
                             Navigator.pop(context); // 关闭底部弹框
+                            if (C.walletList.isEmpty) {
+                              //跳转到创建钱包页面
+                              setState(() {
+                                Get.offNamed(
+                                  '/importwallet',
+                                );
+                              });
+                            }
                           });
                         },
                         child: Container(
@@ -296,37 +335,60 @@ class _WalletBodyState extends State<WalletBody> {
                 margin: EdgeInsets.only(top: 42.w),
                 child: Column(
                   children: [
-                    Container(
-                        width: 325.w,
-                        height: 44.w,
-                        decoration: BoxDecoration(
-                          color: AppTheme.themeColor,
-                          borderRadius: BorderRadius.circular(4.w),
-                        ),
-                        child: Center(
-                          child: Text('创建钱包',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17.sp,
-                                  fontWeight: FontWeight.w600)),
-                        )),
-                    Container(
-                        margin: EdgeInsets.only(top: 22.w),
-                        width: 325.w,
-                        height: 44.w,
-                        decoration: BoxDecoration(
-                          // color: AppTheme.themeColor,
-                          border: Border.all(
-                              color: AppTheme.themeColor, width: 1.w),
-                          borderRadius: BorderRadius.circular(4.w),
-                        ),
-                        child: Center(
-                          child: Text('导入钱包',
-                              style: TextStyle(
-                                  color: AppTheme.themeColor,
-                                  fontSize: 17.sp,
-                                  fontWeight: FontWeight.w600)),
-                        ))
+                    OpClick(
+                      onTap: () {
+                        //关闭
+                        Navigator.pop(context); // 关闭底部弹框
+                        Get.to(
+                          () => CreatPsw(
+                            import: true,
+                          ),
+                        );
+                      },
+                      child: Container(
+                          width: 325.w,
+                          height: 44.w,
+                          decoration: BoxDecoration(
+                            color: AppTheme.themeColor,
+                            borderRadius: BorderRadius.circular(4.w),
+                          ),
+                          child: Center(
+                            child: Text('创建钱包',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17.sp,
+                                    fontWeight: FontWeight.w600)),
+                          )),
+                    ),
+                    OpClick(
+                      onTap: () {
+                        //关闭
+                        Navigator.pop(context); // 关闭底部弹框
+                        Get.to(
+                          () => CreatPsw(
+                            title: '创建钱包密码',
+                            import: true,
+                          ),
+                        );
+                      },
+                      child: Container(
+                          margin: EdgeInsets.only(top: 22.w),
+                          width: 325.w,
+                          height: 44.w,
+                          decoration: BoxDecoration(
+                            // color: AppTheme.themeColor,
+                            border: Border.all(
+                                color: AppTheme.themeColor, width: 1.w),
+                            borderRadius: BorderRadius.circular(4.w),
+                          ),
+                          child: Center(
+                            child: Text('导入钱包',
+                                style: TextStyle(
+                                    color: AppTheme.themeColor,
+                                    fontSize: 17.sp,
+                                    fontWeight: FontWeight.w600)),
+                          )),
+                    )
                   ],
                 ),
               )
@@ -338,7 +400,7 @@ class _WalletBodyState extends State<WalletBody> {
   }
 
   double isBtns = 0; //是否选中
-//~左侧的四个图标
+  //~左侧的四个图标
   List<String> btns = [
     'assets/svgs/purse_icon1.svg',
     'assets/svgs/purse_icon2.svg',
@@ -346,19 +408,22 @@ class _WalletBodyState extends State<WalletBody> {
     'assets/svgs/purse_icon4.svg',
   ];
   //~钱包数据
-  List<ListItem> items = [
-    for (int i = 0; i < 3; i++) ListItem(text: '项1'),
-  ];
+  // List C.walletList = [1, 2, 3];
   //~判断点击选择了哪个钱包
-  void handleItemClick(int index) {
+  handleItemClick(int index) {
     setState(() {
-      for (int i = 0; i < items.length; i++) {
+      for (int i = 0; i < C.walletList.length; i++) {
         if (i == index) {
-          items[i].isMarkers = true;
+          if (C.walletList[i]['active'] == true) {
+            return;
+          }
+          C.walletList[i]['active'] = true;
         } else {
-          items[i].isMarkers = false;
+          C.walletList[i]['active'] = false;
         }
       }
+      DB.box.write('WalletList', C.walletList.value); // *存储钱包信息数组
+      C.getWL();
     });
   }
 
@@ -461,7 +526,7 @@ class _WalletBodyState extends State<WalletBody> {
                       ],
                     ),
                   ),
-                  for (int index = 0; index < items.length; index++)
+                  for (int index = 0; index < C.walletList.length; index++)
                     ClipRect(
                       child: GestureDetector(
                         onTap: () {
@@ -474,7 +539,7 @@ class _WalletBodyState extends State<WalletBody> {
                               height: 67.w,
                               margin: EdgeInsets.only(bottom: 10.w),
                               child: Slidable(
-                                key: Key(items[index].text),
+                                key: Key(index.toString()),
                                 endActionPane: ActionPane(
                                   extentRatio: 0.35, // 控制滑动项widget的大小
                                   motion: const ScrollMotion(), //滑动动画
@@ -500,7 +565,7 @@ class _WalletBodyState extends State<WalletBody> {
                                     padding: EdgeInsets.only(
                                         left: 10.w, right: 15.w),
                                     decoration: BoxDecoration(
-                                      color: items[index].isMarkers
+                                      color: C.walletList[index]['active']
                                           ? AppTheme.purseTheme
                                           : const Color(0xffF1F1F1),
                                       borderRadius: BorderRadius.circular(8.w),
@@ -514,12 +579,14 @@ class _WalletBodyState extends State<WalletBody> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              '钱包1号',
+                                              formatText(
+                                                  text: C.walletList[index]
+                                                      ['walletname']),
                                               style: TextStyle(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600),
                                             ),
-                                            if (items[index].isMarkers)
+                                            if (C.walletList[index]['active'])
                                               SvgPicture.asset(
                                                 'assets/svgs/markers.svg', // 设置SVG图标的路径
                                                 width: 18.w,
@@ -537,8 +604,8 @@ class _WalletBodyState extends State<WalletBody> {
                                                 onTap: () {
                                                   //&复制到剪切板
                                                   copyToClipboard(
-                                                      text:
-                                                          '0xwarashiuggfjkfiddijsc9DP');
+                                                      text: C.walletList[index]
+                                                          ['address']);
                                                 },
                                                 child: Row(
                                                   children: [
@@ -548,8 +615,9 @@ class _WalletBodyState extends State<WalletBody> {
                                                       child: Text(
                                                         //&只显示前五位和后六位
                                                         formatText(
-                                                            text:
-                                                                '0xwarashiuggfjkfiddijsc9DP'),
+                                                          text: C.walletList[
+                                                              index]['address'],
+                                                        ),
                                                         style: TextStyle(
                                                           fontSize: 15.sp,
                                                         ),

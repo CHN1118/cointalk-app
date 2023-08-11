@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/components/custom_dialog.dart';
@@ -179,11 +180,25 @@ class WwalletnameState extends State<Walletname> {
       String walletName = _walletNametext.text; // 钱包名称
       String walletPassword = Get.arguments['walletPassword']; // 钱包密码
       bool isEBV = Get.arguments['isEBV']; // 是否是生物识别验证
-      Get.offAllNamed('/mnemonic', arguments: {
+      showSnackBar(msg: '钱包名称设置成功');
+      Get.offNamed('/mnemonic', arguments: {
         'walletName': walletName,
         'walletPassword': walletPassword,
         'isEBV': isEBV,
+        'import': Get.arguments['import']
       });
     }
+  }
+
+  //~提示弹框
+  Future<bool?> showSnackBar({String? msg}) {
+    return Fluttertoast.showToast(
+        msg: msg!,
+        toastLength: Toast.LENGTH_SHORT, // 消息框持续的时间
+        gravity: ToastGravity.TOP, // 消息框弹出的位置
+        timeInSecForIosWeb: 1, // ios
+        backgroundColor: const Color(0xffF2F8F5).withOpacity(1),
+        textColor: const Color(0xff000000),
+        fontSize: 14.sp);
   }
 }

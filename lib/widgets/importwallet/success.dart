@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/components/op_click.dart';
+import 'package:wallet/database/index.dart';
 
 class Success extends StatefulWidget {
   const Success({super.key});
@@ -124,6 +126,14 @@ class ISuccessState extends State<Success> {
             //* 开始
             OpClick(
               onTap: () async {
+                isAgree = DB.box.read('isAgree');
+                if (!isAgree) {
+                  showSnackBar(msg: '请先同意服务及隐私条款');
+                  return;
+                }
+                //把isAgree存到本地
+                DB.box.write('isAgree', isAgree);
+                print('isAgree: $isAgree');
                 Get.offAllNamed('/');
               },
               child: Container(
@@ -154,5 +164,17 @@ class ISuccessState extends State<Success> {
         ),
       ),
     );
+  }
+
+  //~提示弹框
+  Future<bool?> showSnackBar({String? msg}) {
+    return Fluttertoast.showToast(
+        msg: msg!,
+        toastLength: Toast.LENGTH_SHORT, // 消息框持续的时间
+        gravity: ToastGravity.TOP, // 消息框弹出的位置
+        timeInSecForIosWeb: 1, // ios
+        backgroundColor: const Color(0xffF2F8F5).withOpacity(1),
+        textColor: const Color(0xff000000),
+        fontSize: 14.sp);
   }
 }

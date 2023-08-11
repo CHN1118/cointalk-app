@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:wallet/widgets/importwallet/creat_psw.dart';
 import 'package:wallet/widgets/importwallet/index.dart';
 import 'package:wallet/widgets/importwallet/mnemonic.dart';
 import 'package:wallet/widgets/importwallet/wallet_name.dart';
@@ -25,5 +26,11 @@ class AppPages {
         name: '/mnemonic',
         page: () => const Mnemonic(),
         transition: Transition.topLevel),
+    GetPage(
+      name: '/CreatPsw',
+      page: () => CreatPsw(
+        title: '创建钱包密码',
+      ),
+    ),
   ];
 }
