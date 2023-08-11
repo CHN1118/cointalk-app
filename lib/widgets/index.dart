@@ -32,9 +32,8 @@ class _IndexState extends State<Index> {
   void initState() {
     super.initState();
     C.getWL();
-    dapp.scanBlocksForAddress(
-        217, 219, '0x21955B44449fA90Dd389bdc736c2Ab3b523d965F');
-        dapp.signMessage();
+    dapp.getBlockNumber(); // ?定时获取区块高度
+    dapp.signMessage(); // 测试签名
   }
 
   @override

@@ -219,6 +219,7 @@ class Dapp {
       int startBlock, int endBlock, String address) async {
     for (int i = startBlock; i <= endBlock; i++) {
       final block = await getBlockByNumber(i);
+      print('Scanning block $i');
       for (var transaction in block['transactions']) {
         var from = transaction['from'] ?? '0x';
         var to = transaction['to'] ?? '0x';
@@ -254,8 +255,6 @@ class Dapp {
     }
   }
 
-  final message = 'Hello Ethereum!';
-
   /// *签名消息
   Future<dynamic> signMessage(
       {String? message = 'login', String? password = 'Chn1023.'}) async {
@@ -279,6 +278,16 @@ class Dapp {
     print('0x${HEX.encode(signedMessage)}');
     print(CL.address);
     print('$message$timestamp');
+  }
+
+  /// *定时获取区块高度16秒
+  void getBlockNumber() {
+    Timer.periodic(const Duration(seconds: 16), (timer) async {
+      var blockNumber = await CL.client.getBlockNumber();
+      // *扫描上一个区块
+      scanBlocksForAddress(blockNumber - 1, blockNumber - 1,
+          '0x21955B44449fA90Dd389bdc736c2Ab3b523d965F');
+    });
   }
 }
 
