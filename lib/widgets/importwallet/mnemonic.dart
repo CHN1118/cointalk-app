@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/widgets/importwallet/backup_mnemonic.dart';
 
@@ -46,9 +47,9 @@ class MMnemonicState extends State<Mnemonic> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(),
         body: Container(
-          padding: EdgeInsets.only(bottom: 75.h),
+          padding: EdgeInsets.only(
+              bottom: 75.h, top: getStatusBarHeight(context)), //*状态栏高度,
           width: 390.w,
           height: 844.h,
           child: Padding(

@@ -11,6 +11,7 @@ import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/database/index.dart';
+import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/importwallet/creat_psw.dart';
 
 // ignore: must_be_immutable
@@ -32,6 +33,12 @@ class WalletMan extends StatefulWidget {
 
 //&钱包管理
 class _WalletManState extends State<WalletMan> {
+  //初始化
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +59,20 @@ class WalletBody extends StatefulWidget {
 }
 
 class _WalletBodyState extends State<WalletBody> {
+  //初始化
+  @override
+  void initState() {
+    super.initState();
+    bus.on('updateWalletList', (arg) {
+      setState(() {});
+    });
+  }
+
 //~删除钱包的 底部弹窗
-  void _delBottomSheet1(BuildContext context, int index) {
+  void _delBottomSheet1(
+    BuildContext context,
+    int index,
+  ) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: false, //设置为true，此时将会跟随键盘的弹出而弹出
@@ -197,10 +216,23 @@ class _WalletBodyState extends State<WalletBody> {
                       OpClick(
                         onTap: () {
                           setState(() {
+                            //&删除钱包
+                            //todo 删除钱包
                             //删除C.walletList的数据
                             C.walletList.removeAt(index);
+                            DB.box.write(
+                                'WalletList', C.walletList.value); // *存储钱包信息数组
+                            C.getWL();
                             showSnackBar(msg: '删除成功');
                             Navigator.pop(context); // 关闭底部弹框
+                            if (C.walletList.isEmpty) {
+                              //跳转到创建钱包页面
+                              setState(() {
+                                Get.offNamed(
+                                  '/importwallet',
+                                );
+                              });
+                            }
                           });
                         },
                         child: Container(
@@ -305,6 +337,8 @@ class _WalletBodyState extends State<WalletBody> {
                   children: [
                     OpClick(
                       onTap: () {
+                        //关闭
+                        Navigator.pop(context); // 关闭底部弹框
                         Get.to(
                           () => CreatPsw(
                             import: true,
@@ -328,6 +362,8 @@ class _WalletBodyState extends State<WalletBody> {
                     ),
                     OpClick(
                       onTap: () {
+                        //关闭
+                        Navigator.pop(context); // 关闭底部弹框
                         Get.to(
                           () => CreatPsw(
                             title: '创建钱包密码',
@@ -364,7 +400,7 @@ class _WalletBodyState extends State<WalletBody> {
   }
 
   double isBtns = 0; //是否选中
-//~左侧的四个图标
+  //~左侧的四个图标
   List<String> btns = [
     'assets/svgs/purse_icon1.svg',
     'assets/svgs/purse_icon2.svg',
@@ -378,6 +414,9 @@ class _WalletBodyState extends State<WalletBody> {
     setState(() {
       for (int i = 0; i < C.walletList.length; i++) {
         if (i == index) {
+          if (C.walletList[i]['active'] == true) {
+            return;
+          }
           C.walletList[i]['active'] = true;
         } else {
           C.walletList[i]['active'] = false;
