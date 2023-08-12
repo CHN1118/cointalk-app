@@ -160,7 +160,7 @@ class _WalletState extends State<Wallet> {
               ),
               if (!isColdWallet)
                 Positioned(
-                  top: 75.w,
+                  top: 64.h,
                   left: 16.w,
                   child: OpClick(
                     onTap: () {
@@ -285,7 +285,7 @@ class _WalletState extends State<Wallet> {
                         Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20.w), // 设置左右边距为20
-                            height: 372.h - getStatusBarHeight(context),
+                            height: 372.w - getStatusBarHeight(context),
                             width: double.infinity,
                             child: Column(
                               children: [
@@ -703,7 +703,7 @@ class _WalletState extends State<Wallet> {
                               ],
                             )),
 
-                        SizedBox(height: 14.h),
+                        // SizedBox(height: 14.h),
                         //* 操作信息
                         Container(
                           constraints: BoxConstraints(
@@ -934,6 +934,8 @@ class _WalletState extends State<Wallet> {
   //* 转账底部弹窗 --- 热钱包  -------start
   void _transferShowBottomSheet(BuildContext context,
       {String? iconurl, String? title, NumberFormat? oCcy}) {
+
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true, //设置为true，此时将会跟随键盘的弹出而弹出
@@ -943,7 +945,7 @@ class _WalletState extends State<Wallet> {
       builder: (BuildContext context) {
         return GestureDetector(
           onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
+            FocusScope.of(context).requestFocus(FocusNode()); // 点击空白处收起键盘
           },
           child: Scaffold(
             backgroundColor: Colors.transparent,
@@ -997,7 +999,13 @@ class _WalletState extends State<Wallet> {
                                 ),
                                 OpClick(
                                   onTap: () {
-                                    Navigator.pop(context); // 关闭底部弹框
+
+                                    setState(() {
+                                      _amountController.clear(); // 清空输入框
+                                      _toController.clear(); // 清空输入框
+                                      Navigator.pop(context); // 关闭底部弹框
+                                    });
+
                                   },
                                   child: Padding(
                                     padding:
@@ -1055,9 +1063,9 @@ class _WalletState extends State<Wallet> {
                                           left: 15.w, right: 46.w),
                                       child: Center(
                                         child: TextFormField(
-                                          controller: _toController,
-                                          focusNode: _toFocusNode,
-                                          keyboardType: TextInputType.text,
+                                          controller: _toController, // 设置控制器
+                                          focusNode: _toFocusNode, // 设置焦点
+                                          keyboardType: TextInputType.text, // 设置键盘类型
                                           onChanged: (value) {
                                             String trimmedText = value
                                                 .replaceAll(' ', ''); // 去除空格
@@ -1341,7 +1349,11 @@ class _WalletState extends State<Wallet> {
                                       ),
                                       OpClick(
                                         onTap: () {
-                                          Navigator.pop(context); // 关闭底部弹框
+                                          setState(() {
+                                            _amountController.clear(); // 清空输入框
+                                            _toController.clear(); // 清空输入框
+                                            Navigator.pop(context); // 关闭底部弹框
+                                          });
                                         },
                                         child: Container(
                                           width: 146.w,
