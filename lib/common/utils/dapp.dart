@@ -15,6 +15,7 @@ import 'package:wallet/common/utils/symbol_arr.dart';
 import 'package:wallet/components/custom_dialog.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/database/index.dart';
+import 'package:wallet/event/index.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:hex/hex.dart';
@@ -417,15 +418,18 @@ class StoreWalletInformation {
       return null; //* 如果存在该交易则返回 null
     }
     var receipt = await CL.client.getTransactionReceipt(transaction['hash']);
-    print(receipt?.status); //* 交易状态
+    // print(receipt); //* 交易状态
     if (receipt != null) {
       transaction['status'] = receipt.status;
+
       transactionList.add(transaction);
       await DB.box
           .write(CL.address.hex.toLowerCase(), transactionList); // *存储交易信息数组
       var transactionInfo =
           await DB.box.read(CL.address.hex.toLowerCase()); // *获取交易信息数组
       LLogger.d('存储到普通缓存的数据：$transactionInfo\n');
+      C.getWL(); // *更新交易列表
+      bus.emit('updateTransactionList'); // *更新交易列表
       return transaction;
     }
   }

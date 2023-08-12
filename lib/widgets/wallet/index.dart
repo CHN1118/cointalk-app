@@ -33,17 +33,6 @@ class _WalletState extends State<Wallet> {
     await C.getWL();
   }
 
-  //~只显示前五位和后六位
-  String formatText({required String text}) {
-    if (text.length <= 11) {
-      return text;
-    } else {
-      String abbreviatedText =
-          "${text.substring(0, 5)}***${text.substring(text.length - 6, text.length)}";
-      return abbreviatedText;
-    }
-  }
-
   //~复制到剪切板
   void copyToClipboard({required String text}) {
     Clipboard.setData(ClipboardData(text: text));
@@ -107,6 +96,9 @@ class _WalletState extends State<Wallet> {
     // 监听输入框
     _amountController.addListener(() {
       getPrice();
+    });
+    bus.on('updateTransactionList', (arg) {
+      setState(() {});
     });
     // print(C.walletList);
     // print(C.currentWallet);
@@ -501,7 +493,7 @@ class _WalletState extends State<Wallet> {
                                                                 .center,
                                                         children: [
                                                           Text(
-                                                            formatText(
+                                                            utils.formatText(
                                                                 text: C.currentWallet[
                                                                     'address']),
                                                             style: TextStyle(
@@ -723,54 +715,81 @@ class _WalletState extends State<Wallet> {
                           child: Padding(
                             padding: EdgeInsets.only(
                                 top: 22.w, left: 20.w, right: 20.w),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Text(
-                                    '账单',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0xFF111111),
-                                    ),
-                                  ),
-                                ),
-                                //* 账单列表
-                                for (int i = 0; i < 1; i++)
-                                  Column(
-                                    children: [
-                                      OpClick(
-                                        onTap: () {
-                                          showCustomDialog(
-                                              context, '您收到一笔新的转账');
-                                        },
-                                        child: Items(
-                                          title: '接收',
-                                          iconurl: 'assets/svgs/upload.svg',
-                                          walletAddress: '0x123cdgt4567890',
-                                          price: 335.76,
-                                          time: '2023-03-12 06:24:45',
-                                          oCcy: oCcy,
-                                          color: const Color(0xFF45AAAF),
-                                          oCcy2: oCcy2,
+                            child: Obx(() => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 5.w),
+                                      child: Text(
+                                        '账单',
+                                        style: TextStyle(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: const Color(0xFF111111),
                                         ),
                                       ),
-                                      Items(
-                                        title: '转账',
-                                        iconurl: 'assets/svgs/shuffle.svg',
-                                        walletAddress: '0x123cdgt4567890',
-                                        price: 335.76,
-                                        time: '2023-03-12 06:24:45',
-                                        oCcy: oCcy,
-                                        color: const Color(0xFF0563B6),
-                                        oCcy2: oCcy2,
-                                      ),
-                                    ],
-                                  )
-                              ],
-                            ),
+                                    ),
+                                    //* 账单列表
+                                    for (int i = 0;
+                                        i < C.currentWalletTx.length;
+                                        i++)
+                                      Column(
+                                        children: [
+                                          if (C.currentWalletTx[i]['from']
+                                                  .toLowerCase() !=
+                                              CL.address.hex.toLowerCase())
+                                            OpClick(
+                                              onTap: () {
+                                                showCustomDialog(
+                                                    context,
+                                                    '您收到一笔新的转账',
+                                                    utils
+                                                        .formatBalance(
+                                                            C.currentWalletTx[i]
+                                                                ['value'])
+                                                        .toString(),
+                                                    C.currentWalletTx[i]
+                                                        ['from']);
+                                              },
+                                              child: Items(
+                                                title: '接收',
+                                                iconurl:
+                                                    'assets/svgs/upload.svg',
+                                                walletAddress: utils.formatText(
+                                                    text: C.currentWalletTx[i]
+                                                        ['from']),
+                                                price: utils.formatBalance(
+                                                    C.currentWalletTx[i]
+                                                        ['value']),
+                                                time: utils.formatTimestamp(C
+                                                        .currentWalletTx[i]
+                                                    ['confirmationTimestamp']),
+                                                oCcy: oCcy,
+                                                color: const Color(0xFF45AAAF),
+                                                oCcy2: oCcy2,
+                                              ),
+                                            )
+                                          else
+                                            Items(
+                                              title: '转账',
+                                              iconurl:
+                                                  'assets/svgs/shuffle.svg',
+                                              walletAddress: utils.formatText(
+                                                  text: C.currentWalletTx[i]
+                                                      ['from']),
+                                              price: utils.formatBalance(C
+                                                  .currentWalletTx[i]['value']),
+                                              time: utils.formatTimestamp(C
+                                                      .currentWalletTx[i]
+                                                  ['confirmationTimestamp']),
+                                              oCcy: oCcy,
+                                              color: const Color(0xFF0563B6),
+                                              oCcy2: oCcy2,
+                                            ),
+                                        ],
+                                      )
+                                  ],
+                                )),
                           ),
                         ),
                       ],
@@ -789,6 +808,8 @@ class _WalletState extends State<Wallet> {
   void showCustomDialog(
     BuildContext context,
     String title,
+    String price,
+    String walletAddress,
   ) {
     showDialog(
       context: context,
@@ -845,7 +866,7 @@ class _WalletState extends State<Wallet> {
                             borderRadius: BorderRadius.circular(4.w),
                           ),
                           child: Text(
-                            '0x123cdgt4567890152Wn7fAcgXiimmCUyNGwpyY5y',
+                            walletAddress,
                             overflow: TextOverflow.ellipsis, // 超出部分显示省略号
                             maxLines: 1, // 限制文本显示为一行
                             style: TextStyle(
@@ -857,7 +878,7 @@ class _WalletState extends State<Wallet> {
                         Padding(
                           padding: EdgeInsets.only(bottom: 4.h, top: 16.w),
                           child: Text(
-                            '发送金额',
+                            '到账金额',
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w400,
@@ -876,7 +897,7 @@ class _WalletState extends State<Wallet> {
                             children: [
                               SizedBox(
                                 child: Text(
-                                  '2300',
+                                  price,
                                   overflow: TextOverflow.ellipsis, // 超出部分显示省略号
                                   maxLines: 1, // 限制文本显示为一行
                                   style: TextStyle(

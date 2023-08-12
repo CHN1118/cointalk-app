@@ -15,6 +15,32 @@ class Utils {
       return const Locale('zh', 'CN');
     }
   }
+
+  /// 格式化时间
+  String formatTimestamp(String timestamp) {
+    var date = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(timestamp.split('0x')[1], radix: 16) * 1000);
+    return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}:${date.second.toString().padLeft(2, '0')}";
+  }
+
+  /// 金额格式化
+  double formatBalance(String balance) {
+    var balanceInt = BigInt.parse(balance.split('0x')[1], radix: 16);
+    var balanceDouble = balanceInt / BigInt.from(10).pow(18);
+    // 保留两位小数,不要四舍五入
+    return double.parse(balanceDouble.toStringAsFixed(2));
+  }
+
+  ///~只显示前五位和后六位
+  String formatText({required String text}) {
+    if (text.length <= 11) {
+      return text;
+    } else {
+      String abbreviatedText =
+          "${text.substring(0, 5)}xxx${text.substring(text.length - 6, text.length)}";
+      return abbreviatedText;
+    }
+  }
 }
 
 // 判断是否登录
