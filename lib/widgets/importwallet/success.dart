@@ -132,7 +132,6 @@ class ISuccessState extends State<Success> {
                 }
                 //把isAgree存到本地
                 DB.box.write('isAgree', isAgree);
-                print('isAgree: $isAgree');
                 Get.offAllNamed('/');
               },
               child: Container(

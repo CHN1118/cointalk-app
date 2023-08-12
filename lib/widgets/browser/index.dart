@@ -709,64 +709,68 @@ class _CustomListItemState extends State<CustomListItem> {
               bottom: BorderSide(width: 1.w, color: const Color(0xffDCDCDC)))),
       child: Column(
           children: List.generate(1, (index) {
-        return GestureDetector(
+        return OpClick(
           onTap: () {
             //跳转到SharePage页面
             Get.to(() => const SharePage());
           },
-          child: Row(
-            children: [
-              Container(
-                width: 60.w,
-                height: 60.w,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(10.w)),
-                child: Image(
-                  image: AssetImage(widget.imagePath),
-                ),
-              ),
-              Container(
-                width: 240.w,
-                margin: EdgeInsets.only(left: 20.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.title,
-                      style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xff000000)),
-                    ),
-                    Text(
-                      widget.content,
-                      softWrap: true,
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        color: AppTheme.browserColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 3.w),
-                child: OpClick(
-                  onTap: () {
-                    widget.onTapIncident!();
-                  },
-                  child: SvgPicture.asset(
-                    widget.svgPath, // 设置SVG图标的路径
-                    width: widget.width.w,
-                    height: widget.height.w,
-                    // ignore: deprecated_member_use
-                    color: widget.isCollect
-                        ? const Color(0xffF3D11C)
-                        : Color(widget.color1),
+          child: Container(
+            color: Colors.white,
+            child: Row(
+              children: [
+                Container(
+                  width: 60.w,
+                  height: 60.w,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10.w)),
+                  child: Image(
+                    image: AssetImage(widget.imagePath),
                   ),
                 ),
-              )
-            ],
+                Container(
+                  width: 240.w,
+                  margin: EdgeInsets.only(left: 20.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.title,
+                        style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xff000000)),
+                      ),
+                      Text(
+                        widget.content,
+                        softWrap: true,
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          color: AppTheme.browserColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  color: Colors.transparent,
+                  margin: EdgeInsets.only(left: 3.w),
+                  child: OpClick(
+                    onTap: () {
+                      widget.onTapIncident!();
+                    },
+                    child: SvgPicture.asset(
+                      widget.svgPath, // 设置SVG图标的路径
+                      width: widget.width.w,
+                      height: widget.height.w,
+                      // ignore: deprecated_member_use
+                      color: widget.isCollect
+                          ? const Color(0xffF3D11C)
+                          : Color(widget.color1),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         );
       })),

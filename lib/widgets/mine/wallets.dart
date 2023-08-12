@@ -501,7 +501,7 @@ class _WalletBodyState extends State<WalletBody> {
                 children: [
                   Container(
                     padding:
-                        EdgeInsets.only(left: 25.w, right: 28.w, bottom: 20.w),
+                        EdgeInsets.only(left: 25.w, right: 20.w, bottom: 20.w),
                     height: 48.w,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -515,12 +515,17 @@ class _WalletBodyState extends State<WalletBody> {
                           onTap: () {
                             _showBottomSheet(context);
                           },
-                          child: SvgPicture.asset(
-                            'assets/svgs/add.svg', // 设置SVG图标的路径
-                            width: 20.w,
-                            height: 20.w,
-                            // ignore: deprecated_member_use
-                            color: const Color(0xff45AAAF),
+                          child: Container(
+                            width: 35.w,
+                            height: 35.w,
+                            color: Colors.transparent,
+                            padding: EdgeInsets.all(4.w),
+                            child: SvgPicture.asset(
+                              'assets/svgs/add.svg', // 设置SVG图标的路径
+
+                              // ignore: deprecated_member_use
+                              color: const Color(0xff45AAAF),
+                            ),
                           ),
                         ),
                       ],
