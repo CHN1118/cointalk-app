@@ -8,3 +8,13 @@ class Global {
 
   static String syncUrl = "http://116.62.185.53:3330";
 }
+
+var globalContext;
+var globalBus;
+
+setGlobalContext(context) {
+  globalContext = context;
+}
+setGlobalBus(bus) {
+  globalBus = bus;
+}
