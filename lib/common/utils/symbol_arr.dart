@@ -36,6 +36,7 @@ List<Map<String, dynamic>> blockchainInfo = [
     'active': true,
     'networkName': 'CHN-XCZ',
     'rpcUrl': [
+      'http://192.168.10.186:1118',
       'http://192.168.0.114:1118',
       'http://192.168.1.73:1118',
     ],
