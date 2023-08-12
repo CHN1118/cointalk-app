@@ -160,20 +160,23 @@ class _WalletState extends State<Wallet> {
               ),
               if (!isColdWallet)
                 Positioned(
-                  top: 84.w,
-                  left: 25.w,
+                  top: 75.w,
+                  left: 16.w,
                   child: OpClick(
                     onTap: () {
                       _walletShowBottomSheet(context);
                     },
-                    child: SizedBox(
-                      width: 25.w,
-                      height: 14.w,
-                      child: SvgPicture.asset(
-                        'assets/svgs/menu.svg',
-                        fit: BoxFit.cover,
-                        width: 25.w,
-                        height: 14.w,
+                    child: Container(
+                      color: Colors.transparent,
+                      width: 50.w,
+                      height: 30.w,
+                      child: Center(
+                        child: SvgPicture.asset(
+                          'assets/svgs/menu.svg',
+                          fit: BoxFit.cover,
+                          width: 25.w,
+                          height: 14.w,
+                        ),
                       ),
                     ),
                   ),

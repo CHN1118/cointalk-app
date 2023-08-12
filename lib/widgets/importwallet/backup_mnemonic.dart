@@ -10,6 +10,7 @@ import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/controller/index.dart';
+import 'package:wallet/database/index.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/importwallet/success.dart';
 
@@ -383,7 +384,26 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
       bus.emit('updateWalletList');
       return;
     } else {
-      Get.offAll(() => const Success(), transition: Transition.topLevel);
+      showSnackBar(msg: '验证成功');
+      var isAgree = DB.box.read('isAgree');
+      if (isAgree == null || isAgree == false) {
+        Get.offAll(() => const Success(), transition: Transition.topLevel);
+        return;
+      } else {
+        Get.offAllNamed('/');
+      }
     }
+  }
+
+  //~提示弹框
+  Future<bool?> showSnackBar({String? msg}) {
+    return Fluttertoast.showToast(
+        msg: msg!,
+        toastLength: Toast.LENGTH_SHORT, // 消息框持续的时间
+        gravity: ToastGravity.TOP, // 消息框弹出的位置
+        timeInSecForIosWeb: 1, // ios
+        backgroundColor: const Color(0xffF2F8F5).withOpacity(1),
+        textColor: const Color(0xff000000),
+        fontSize: 14.sp);
   }
 }

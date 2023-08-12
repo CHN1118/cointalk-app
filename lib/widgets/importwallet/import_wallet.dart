@@ -13,6 +13,7 @@ import 'package:wallet/components/op_click.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/database/index.dart';
 import 'package:wallet/event/index.dart';
+import 'package:wallet/widgets/browser/index.dart';
 import 'package:wallet/widgets/importwallet/success.dart';
 
 class ImportW extends StatefulWidget {
@@ -339,14 +340,21 @@ class WImportWState extends State<ImportW> {
               active: true);
           var res = await swi.addWalletInfo(context, walletInfo);
           if (res != null) {
+            showSnackBar(msg: '导入成功');
             if (Get.arguments['import'] == true) {
               Get.back();
               C.getWL();
               bus.emit('updateWalletList');
               return;
             } else {
-              Get.offAll(() => const Success(),
-                  transition: Transition.topLevel);
+              var isAgree = DB.box.read('isAgree');
+              if (isAgree == null || isAgree == false) {
+                Get.offAll(() => const Success(),
+                    transition: Transition.topLevel);
+                return;
+              } else {
+                Get.offAllNamed('/');
+              }
             }
           }
         } else {
@@ -368,6 +376,7 @@ class WImportWState extends State<ImportW> {
               active: true); // 导入私钥
           var res = await swi.addWalletInfo(context, walletInfo);
           if (res != null) {
+            showSnackBar(msg: '导入成功');
             if (Get.arguments['import'] == true) {
               Get.back();
               C.getWL();
@@ -379,8 +388,9 @@ class WImportWState extends State<ImportW> {
                 Get.offAll(() => const Success(),
                     transition: Transition.topLevel);
                 return;
+              } else {
+                Get.offAllNamed('/');
               }
-              Get.offAllNamed('/');
             }
           }
         } else {

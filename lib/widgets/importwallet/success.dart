@@ -126,14 +126,14 @@ class ISuccessState extends State<Success> {
             //* 开始
             OpClick(
               onTap: () async {
-                isAgree = DB.box.read('isAgree');
-                if (!isAgree) {
+                DB.box.write('isAgree', isAgree); //把isAgree存到本地
+                var isAgree1 = DB.box.read('isAgree');
+                if (isAgree1 == false || isAgree1 == null) {
                   showSnackBar(msg: '请先同意服务及隐私条款');
                   return;
                 }
                 //把isAgree存到本地
                 DB.box.write('isAgree', isAgree);
-                print('isAgree: $isAgree');
                 Get.offAllNamed('/');
               },
               child: Container(

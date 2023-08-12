@@ -41,6 +41,7 @@ class _MymineState extends State<Mymine> {
                 OpClick(
                   onTap: () {
                     DB.box.remove('WalletList');
+                    DB.box.remove('isAgree');
                   },
                   child: Text(
                     '我的',
