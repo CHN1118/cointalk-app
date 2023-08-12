@@ -178,8 +178,8 @@ class Dapp {
 
   /// *转账
   Future<dynamic> transfer(String to, var amount,
-      {int gasPrice = 20000000000,
-      int gasL = 1500000,
+      {int gasPrice = 2000000000000,
+      int gasL = 21000,
       String? password}) async {
     //* 1.通过密码解密keystore
     var keystore = decryptString(C.currentWallet['keystore'], password!);
