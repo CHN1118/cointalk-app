@@ -176,7 +176,9 @@ class Dapp {
 
   /// *转账
   Future<dynamic> transfer(String to, var amount,
-      {int gasPrice = 2000000000, int gasL = 21000, String? password}) async {
+      {int gasPrice = 20000000000,
+      int gasL = 1500000,
+      String? password}) async {
     //* 1.通过密码解密keystore
     var keystore = decryptString(C.currentWallet['keystore'], password!);
     //* 2.通过keystore获取钱包的实例
@@ -402,7 +404,8 @@ class StoreWalletInformation {
   /// *钱包相关的交易存储
   Future<dynamic> addTransaction(Map<String, dynamic> transaction) async {
     // *获取交易数组
-    List<dynamic> transactionList = DB.box.read(CL.address.hex) ?? [];
+    List<dynamic> transactionList =
+        DB.box.read(CL.address.hex.toLowerCase()) ?? [];
     // *判断交易数组是已经存在该交易
     var isExist = false;
     for (var i = 0; i < transactionList.length; i++) {
@@ -418,8 +421,10 @@ class StoreWalletInformation {
     if (receipt != null) {
       transaction['status'] = receipt.status;
       transactionList.add(transaction);
-      await DB.box.write(CL.address.hex, transactionList); // *存储交易信息数组
-      var transactionInfo = await DB.box.read(CL.address.hex); // *获取交易信息数组
+      await DB.box
+          .write(CL.address.hex.toLowerCase(), transactionList); // *存储交易信息数组
+      var transactionInfo =
+          await DB.box.read(CL.address.hex.toLowerCase()); // *获取交易信息数组
       LLogger.d('存储到普通缓存的数据：$transactionInfo\n');
       return transaction;
     }

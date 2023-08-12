@@ -42,19 +42,27 @@ class Controller extends GetxController {
   /// 当前钱包信息
   var currentWallet = {}.obs;
 
+  /// 当前钱包的交易信息
+  var currentWalletTx = [].obs;
+
   /// 当前价格
   var usdprice = 0.0.obs;
 
   /// 获取钱包信息
   getWL() async {
-    var list = DB.box.read('WalletList') ?? [];
-    walletList.value = list;
+    var list = DB.box.read('WalletList') ?? []; // 读取钱包信息
+    walletList.value = list; // 更新钱包信息数组
     //* active为true的钱包为当前钱包
-    currentWallet.value = await list.firstWhere((e) => e['active'] == true);
-    balance.value = await dapp.connect();
-    print('当前钱包信息：$currentWallet');
-    print('钱包信息数组Z:$walletList');
-    print('当前钱包余额：${balance.value}');
+    currentWallet.value =
+        await list.firstWhere((e) => e['active'] == true); // 更新当前钱包信息
+    balance.value = await dapp.connect(); // 更新当前钱包余额
+    currentWalletTx.value =
+        DB.box.read(currentWallet['address'].toLowerCase()) ??
+            []; // 更新当前钱包的交易信息
+    print('当前钱包信息:$currentWallet');
+    print('钱包信息数组:$walletList');
+    print('当前钱包余额:${balance.value}');
+    print('当前钱包的交易信息:$currentWalletTx');
     getPrice();
   }
 

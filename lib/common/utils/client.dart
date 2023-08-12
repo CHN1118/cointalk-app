@@ -26,8 +26,8 @@ class Client {
   Map<dynamic, dynamic> calculateGasFee({
     required var amount, // 交易金额，以 Wei 为单位
   }) {
-    int gasPriceWei = 2000000000; // 以 Wei 为单位的 gas 价格
-    int gasLimit = 21000; // gas 上限
+    int gasPriceWei = 200000000; // 以 Wei 为单位的 gas 价格
+    int gasLimit = 1500000; // gas 上限
 
     // 计算燃料费用（以 Wei 为单位）
     BigInt gasFeeWei = BigInt.from(gasPriceWei) * BigInt.from(gasLimit);
