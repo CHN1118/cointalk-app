@@ -18,7 +18,7 @@ class Success extends StatefulWidget {
 }
 
 class ISuccessState extends State<Success> {
-  bool isAgree = false; //是否同意协议
+  bool isAgree = DB.box.read('isAgree') ?? false; //是否同意协议
 
   @override
   void initState() {
@@ -126,7 +126,6 @@ class ISuccessState extends State<Success> {
             //* 开始
             OpClick(
               onTap: () async {
-                isAgree = DB.box.read('isAgree');
                 if (!isAgree) {
                   showSnackBar(msg: '请先同意服务及隐私条款');
                   return;
