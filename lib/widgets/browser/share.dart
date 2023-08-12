@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 
 class SharePage extends StatefulWidget {
@@ -31,7 +32,6 @@ class SharePageState extends State<SharePage> {
       builder: (BuildContext context) {
         return Container(
           height: 198.h,
-          // EDEFF5
           decoration: BoxDecoration(
             color: const Color(0xffEDEFF5).withOpacity(1),
             borderRadius: BorderRadius.vertical(
@@ -184,9 +184,9 @@ class SharePageState extends State<SharePage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                  width: 89.w,
+                  width: 94.w,
                   height: 30.w,
-                  padding: EdgeInsets.only(left: 15.w, right: 15.w),
+                  padding: EdgeInsets.only(left: 15.w,),
                   decoration: BoxDecoration(
                       color: const Color(0xff45AAAF).withOpacity(0.3),
                       borderRadius: BorderRadius.circular(25.w)),
@@ -214,15 +214,27 @@ class SharePageState extends State<SharePage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pop(context);
+                          setState(() {
+                            Get.back();
+                          });
                         },
-                        child: SvgPicture.asset(
-                          'assets/svgs/del2.svg',
-                          width: 13.w,
-                          height: 17.w,
-                          // ignore: deprecated_member_use
-                          color: const Color(0xff292D32).withOpacity(0.3),
-                        ),
+                        child:Container(
+                          width: 25.w,
+                          height: 20.w,
+                          margin: EdgeInsets.only(right: 7.w, left: 0
+                          ),
+                          padding: EdgeInsets.only(right: 7.w,left: 2.w
+                          ),
+                          color: Colors.transparent,
+                  child:  SvgPicture.asset(
+                    'assets/svgs/del2.svg',
+                    width: 13.w,
+                    height: 17.w,
+                    // ignore: deprecated_member_use
+                    color: const Color(0xff292D32).withOpacity(0.3),
+                  ),
+                        )
+
                       ),
                     ],
                   )),

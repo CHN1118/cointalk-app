@@ -250,59 +250,63 @@ class _BrowserState extends State<Browser> {
                   width: MediaQuery.of(context).size.width,
                   child: Stack(
                     children: [
-                      Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.only(top: 129.w),
-                          color: Colors.white,
-                          padding: EdgeInsets.only(left: 15.w, right: 21.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 140.w,
-                                height: 22.w,
-                                margin: EdgeInsets.only(
-                                    top: 18.h, bottom: 15.h, left: 5.w),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    for (String i in btns)
-                                      //& 推荐探索收藏
-                                      OpClick(
-                                        onTap: () {
-                                          setState(() {
-                                            isBtns = btns.indexOf(i).toDouble();
-                                            i == btns[0]
-                                                ? isRecommendedPage = true
-                                                : isRecommendedPage = false;
-                                            i == btns[1]
-                                                ? isExplorePage = true
-                                                : isExplorePage = false;
-                                            i == btns[2]
-                                                ? isFavoritesPage = true
-                                                : isFavoritesPage = false;
-                                          });
-                                        },
-                                        child: Center(
-                                            child: Text(
-                                          i,
-                                          style: TextStyle(
-                                            fontSize: 18.sp,
-                                            fontWeight: FontWeight.w700,
-                                            color: isBtns == btns.indexOf(i)
-                                                ? AppTheme.themeColor
-                                                : AppTheme.browserColor,
-                                          ),
-                                        )),
-                                      )
-                                  ],
+                      Positioned(
+                        top: 120.h,
+                        child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            // margin: EdgeInsets.only(top: 106.w),
+                            color: Colors.white,
+                            padding: EdgeInsets.only(left: 15.w, right: 21.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  // color: Colors.blue,
+                                  width: 140.w,
+                                  height: 22.w,
+                                  margin: EdgeInsets.only(
+                                      top: 18.h, bottom: 15.h, left: 5.w),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      for (String i in btns)
+                                        //& 推荐探索收藏
+                                        OpClick(
+                                          onTap: () {
+                                            setState(() {
+                                              isBtns = btns.indexOf(i).toDouble();
+                                              i == btns[0]
+                                                  ? isRecommendedPage = true
+                                                  : isRecommendedPage = false;
+                                              i == btns[1]
+                                                  ? isExplorePage = true
+                                                  : isExplorePage = false;
+                                              i == btns[2]
+                                                  ? isFavoritesPage = true
+                                                  : isFavoritesPage = false;
+                                            });
+                                          },
+                                          child: Center(
+                                              child: Text(
+                                            i,
+                                            style: TextStyle(
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.w700,
+                                              color: isBtns == btns.indexOf(i)
+                                                  ? AppTheme.themeColor
+                                                  : AppTheme.browserColor,
+                                            ),
+                                          )),
+                                        )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          )),
+                              ],
+                            )),
+                      ),
 
-                      //^ 推荐：立即体验的列表
+                      //^ 推荐
                       if (isRecommendedPage)
                         Positioned(
                             top: 170.h,
@@ -321,7 +325,6 @@ class _BrowserState extends State<Browser> {
                                   return Column(
                                     children: [
                                       //^ 推荐：图片和立即体验
-
                                       Container(
                                         color: Colors.white,
                                         // padding: EdgeInsets.only(left: 13.w, right: 14.w),
@@ -335,7 +338,7 @@ class _BrowserState extends State<Browser> {
                                                 height: 149.h,
                                                 child: const Image(
                                                     image: AssetImage(
-                                                        'assets/images/shopping_online.png')),
+                                                        'assets/images/Shopping_Online.png')),
                                               ),
                                             ),
                                             Container(
@@ -358,6 +361,8 @@ class _BrowserState extends State<Browser> {
                                           ],
                                         ),
                                       ),
+
+                                      //^ 推荐：立即体验的列表
                                       for (int i = 0;
                                           i < experienceList.length;
                                           i++)
@@ -367,6 +372,7 @@ class _BrowserState extends State<Browser> {
                                             Get.to(() => const SharePage());
                                           },
                                           child: Container(
+                                            color: Colors.white,
                                             margin:
                                                 EdgeInsets.only(bottom: 14.w),
                                             child: Row(
@@ -712,7 +718,11 @@ class _CustomListItemState extends State<CustomListItem> {
         return OpClick(
           onTap: () {
             //跳转到SharePage页面
-            Get.to(() => const SharePage());
+            setState(() {
+              // ignore: deprecated_member_use
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const SharePage()));
+            });
           },
           child: Container(
             color: Colors.white,
@@ -991,7 +1001,7 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class FavoritesPageState extends State<FavoritesPage> {
-  List FavoritesList = [for (int i = 0; i < 10; i++) false]; //&收藏列表
+  List FavoritesList = [for (int i = 0; i < 10; i++) true]; //&收藏列表
   @override
   Widget build(BuildContext context) {
     return FavoritesList.isNotEmpty
