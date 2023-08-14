@@ -3,14 +3,12 @@ import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../api/account_api.dart';
-import '../../chat/chat_detail.dart';
-import '../../wallet/numeric_keyboard.dart';
-import '../../wallet/pay_success.dart';
-import '../global/global_key.dart';
-import '../style/common_style.dart';
-import '../util/loading_animation.dart';
-import '../util/modal_util.dart';
-import '../util/toast_print.dart';
+import '../common/global/global_key.dart';
+import '../common/style/common_style.dart';
+import '../common/utils/loading_animation.dart';
+import '../common/utils/modal_util.dart';
+import '../common/utils/toast_print.dart';
+import '../wallet/numeric_keyboard.dart';
 
 class PayPwdBottomController extends GetxController {
   RxString sourcePage = ''.obs;
@@ -189,7 +187,7 @@ class PayPwdBottomController extends GetxController {
         // ToastPrint.show("转账成功");
         Future.delayed(Duration(milliseconds: 250), () {
           if(source == GSourcePage.CHAT){
-            Get.to(() => PaySuccessPage(), arguments: {'source': source});
+            // Get.to(() => PaySuccessPage(), arguments: {'source': source});
           }else if(source == GSourcePage.CHAT_RED){
             Get.back(result: GKey.SUCCESS);
             Get.back();

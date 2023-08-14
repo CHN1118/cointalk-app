@@ -8,29 +8,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:ispay/chat/address/add_people.dart';
-import 'package:ispay/chat/chat_detail.dart';
-import 'package:ispay/common/style/common_color.dart';
 import 'package:lpinyin/lpinyin.dart';
 
+import '../../../../centre/centre.dart';
+import '../../../../common/global/global_url.dart';
 import '../../../../common/style/common_color.dart';
 import '../../../../common/style/common_style.dart';
 import '../../../../db/channel.dart';
 import '../../../../db/consumer.dart';
 import '../../../../db/kv_box.dart';
 import '../../../../db/relation.dart';
-import '../../../../spec/chat.dart';
-import '../../centre/centre.dart';
-import '../../common/component/click_wgt.dart';
-import '../../common/global/global_url.dart';
-import '../../common/style/common_style.dart';
-import '../../db/channel.dart';
-import '../../db/consumer.dart';
-import '../../db/kv_box.dart';
-import '../../db/relation.dart';
-import '../../event/notify_event.dart';
-import '../../spec/chat/chat.dart';
-import '../../spec/chat/sync_db_ret.dart';
+import '../../../../event/notify_event.dart';
+import '../../../../spec/chat/chat.dart';
+import '../../../../spec/chat/sync_db_ret.dart';
+import '../chat_detail.dart';
 import 'add_people.dart';
 
 class ContactsPage extends StatefulWidget {

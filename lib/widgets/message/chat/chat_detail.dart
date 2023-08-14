@@ -10,16 +10,16 @@ import 'package:get_storage/get_storage.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:ispay/chat/chat_transfer.dart';
-import 'package:ispay/chat/red/red_open.dart';
-import 'package:ispay/chat/send_red_pack.dart';
-import 'package:ispay/common/style/common_color.dart';
-import 'package:ispay/common/style/common_style.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:ispay/common/util/toast_print.dart';
-import 'package:ispay/spec/chat/chat.dart';
+import 'package:wallet/widgets/message/chat/red/red_open.dart';
+import 'package:wallet/widgets/message/chat/send_red_pack.dart';
+import '../../../api/centre_api.dart';
 import '../../../centre/centre.dart';
 import '../../../common/global/global_key.dart';
+import '../../../common/global/global_url.dart';
+import '../../../common/style/common_color.dart';
+import '../../../common/style/common_style.dart';
+import '../../../common/utils/hash.dart';
 import '../../../common/utils/toast_print.dart';
 import '../../../components/pay_pwd_controller.dart';
 import '../../../db/channel.dart';
@@ -27,19 +27,9 @@ import '../../../db/kv_box.dart';
 import '../../../db/relation.dart';
 import '../../../event/notify_event.dart';
 import '../../../spec/chat/chat.dart';
-import '../api/centre_api.dart';
-import '../centre/centre.dart';
-import '../common/component/pay_pwd_controller.dart';
-import '../common/global/global_key.dart';
-import '../common/global/global_url.dart';
-import '../common/util/hash.dart';
-import '../db/channel.dart';
-import '../db/kv_box.dart';
-import '../db/relation.dart';
-import '../event/notify_event.dart';
-import '../spec/chat/consumer.dart';
-import '../spec/chat/sync_db_ret.dart';
-import 'edit_page.dart';
+import '../../../spec/chat/consumer.dart';
+import '../../../spec/chat/sync_db_ret.dart';
+import 'chat_transfer.dart';
 
 class ChatDetailPage extends StatefulWidget {
   ChatDetailPage({Key? key}) : super(key: key);
@@ -300,7 +290,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 final result = await Get.to(() => SendRedPack(), arguments: {"consumer": consumer});
                 // print("红包 result = ${result}");
                 if (result == GKey.SUCCESS) {
-                  String amount = Get.find<PayPwdBottomController>().amountValue.value;
+                  String amount = Get.find< PayPwdBottomController>().amountValue.value;
                   String remark = Get.find<PayPwdBottomController>().remarkValue.value;
                   // print("红包 amount = ${amount}");
                   // print("红包 remark = ${remark}");
@@ -601,9 +591,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               .toList(),
           value: selectedValue,
           onChanged: (value) {
-            if (value == "设置备注") {
-              Get.to(() => EditNamePage(), arguments: channelId);
-            }
+            // if (value == "设置备注") {
+            //   Get.to(() => EditNamePage(), arguments: channelId);
+            // }
           },
           dropdownStyleData: DropdownStyleData(
             maxHeight: 200,

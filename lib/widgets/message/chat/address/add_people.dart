@@ -4,15 +4,15 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ispay/db/kv_box.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import '../../api/contact_api.dart';
-import '../../common/global/global_url.dart';
-import '../../common/style/common_color.dart';
-import '../../common/style/common_style.dart';
-import '../../common/util/index.dart';
-import '../../common/util/toast_print.dart';
-import '../../event/notify_event.dart';
+import '../../../../api/contact_api.dart';
+import '../../../../common/global/global_url.dart';
+import '../../../../common/style/common_color.dart';
+import '../../../../common/style/common_style.dart';
+import '../../../../common/utils/index.dart';
+import '../../../../common/utils/toast_print.dart';
+import '../../../../db/kv_box.dart';
+import '../../../../event/notify_event.dart';
 import '../chat_detail.dart';
 
 class AddPeopleDetail extends StatefulWidget {

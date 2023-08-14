@@ -241,7 +241,7 @@ class _MessagePageState extends State<MessagePage> {
                                 onTap: () {
                                   //跳转到  ChatPage 页面
 
-                                  Get.to(const ChatTransfer());
+                                  Get.to(ChatTransfer());
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
