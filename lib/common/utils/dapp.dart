@@ -9,6 +9,7 @@ import 'package:bip39/bip39.dart' as bip39;
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart' as material;
+import 'package:wallet/api/index.dart';
 import 'package:wallet/common/utils/client.dart';
 import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/common/utils/log.dart';
@@ -168,11 +169,12 @@ class Dapp {
   }
 
   /// *获取余额
-  connect() async {
+  connect({EthereumAddress? address}) async {
+    // *切换钱包的时候需要重新赋值钱包地址
     CL.address = EthereumAddress.fromHex(DB.box
         .read('WalletList')
         .firstWhere((e) => e['active'] == true)['address']);
-    EtherAmount balance = await CL.client.getBalance(CL.address);
+    EtherAmount balance = await CL.client.getBalance(address ?? CL.address);
     return balance.getValueInUnit(EtherUnit.ether);
   }
 
@@ -267,7 +269,7 @@ class Dapp {
     }
   }
 
-  /// *签名消息
+  /// *签名消息 并且登录
   Future<dynamic> signMessage(
       {String? message = 'login', String? password = 'Chn1023.'}) async {
     //* 1.通过密码解密keystore
@@ -287,9 +289,29 @@ class Dapp {
         utf8.encode('${message!}$timestamp') as Uint8List,
         chainId: 1); //* 签名消息
     //* 5.验证签名
-    print('0x${HEX.encode(signedMessage)}');
-    print(CL.address);
-    print('$message$timestamp');
+    print('签名哈希0x${HEX.encode(signedMessage)}');
+    print('签名地址:${CL.address.hex}');
+    print('签名消息$message$timestamp');
+
+    // 调用登录接口
+    var res = await request.post('user/login', data: {
+      'sign': '0x${HEX.encode(signedMessage)}',
+      'name': CL.address.hex,
+      'msg': '$message$timestamp',
+      "password": "nisi"
+    });
+    if (res['code'] == 0) {
+      LLogger.d('登录成功:$res');
+      DB.box.write(
+          'token', {'token': res['data']['token'], 'address': CL.address.hex});
+      LLogger.d('存储的token${DB.box.read('token')}');
+    }
+
+    return {
+      'sign': '0x${HEX.encode(signedMessage)}',
+      'name': CL.address,
+      'msg': '$message$timestamp'
+    };
   }
 
   /// *定时获取区块高度16秒

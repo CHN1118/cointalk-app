@@ -8,11 +8,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/database/index.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/importwallet/creat_psw.dart';
+import 'package:web3dart/web3dart.dart';
 
 // ignore: must_be_immutable
 class WalletMan extends StatefulWidget {
@@ -640,7 +642,15 @@ class _WalletBodyState extends State<WalletBody> {
                                                 ),
                                               ),
                                               Text(
-                                                '0 BNB',
+                                                C.walletList[index]
+                                                            ['balance'] ==
+                                                        null
+                                                    ? '0 BNB'
+                                                    : C.walletList[index]
+                                                                ['balance']
+                                                            .toStringAsFixed(
+                                                                4) +
+                                                        ' BNB',
                                                 style: TextStyle(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,

@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet/common/style/app_theme.dart';
+import 'package:wallet/common/utils/client.dart';
 import 'package:wallet/common/utils/dapp.dart';
+import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/browser/index.dart';
@@ -33,7 +35,6 @@ class _IndexState extends State<Index> {
     super.initState();
     C.getWL();
     dapp.getBlockNumber(); // ?定时获取区块高度
-    dapp.signMessage(); // 测试签名
   }
 
   @override

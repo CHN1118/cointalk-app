@@ -1,10 +1,13 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, invalid_use_of_protected_member
 
 import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:wallet/api/getcurrencyrate.dart';
+import 'package:wallet/common/utils/client.dart';
 import 'package:wallet/common/utils/dapp.dart';
+import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/database/index.dart';
+import 'package:web3dart/web3dart.dart';
 
 class Controller extends GetxController {
   bool isLogin = false;
@@ -51,6 +54,13 @@ class Controller extends GetxController {
   /// 获取钱包信息
   getWL() async {
     var list = DB.box.read('WalletList') ?? []; // 读取钱包信息
+    if (list.length == 0) {
+      return;
+    }
+    list.forEach((e) async {
+      e['balance'] =
+          await dapp.connect(address: EthereumAddress.fromHex(e['address']));
+    });
     walletList.value = list; // 更新钱包信息数组
     //* active为true的钱包为当前钱包
     currentWallet.value =
@@ -64,13 +74,25 @@ class Controller extends GetxController {
     print('当前钱包余额:${balance.value}');
     print('当前钱包的交易信息:$currentWalletTx');
     getPrice();
+    // dapp.signMessage(); // ?定时获取签名
+    bool islogin =
+        await utils.isSameAddress(address: currentWallet.value['address']);
+    print(islogin);
+    if (islogin) {
+      print('已登录');
+    } else {
+      dapp.signMessage();
+    }
   }
 
   getPrice() async {
     var price = await getCoinPrice();
-    usdprice.value = double.parse(price['USD'].toString());
-    print('当前价格：$usdprice');
-    await getUSDTPrice();
+    if (price != null) {
+      print(price);
+      usdprice.value = double.parse(price['USD'].toString());
+      print('当前价格：$usdprice');
+      await getUSDTPrice();
+    }
   }
 }
 
