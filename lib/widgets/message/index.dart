@@ -4,7 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/components/op_click.dart';
-import 'package:wallet/widgets/message/chat/chat_transfer.dart';
+import 'package:wallet/widgets/message/chat/chat_transfer_page.dart';
+
+import 'chat/chat_transfer.dart';
 
 class MessagePage extends StatefulWidget {
   const MessagePage({super.key});

@@ -24,6 +24,26 @@ linter:
   rules:
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    prefer_const_constructors: false
+    prefer_const_constructors_in_immutables: false
+    prefer_const_literals_to_create_immutables: false
+    avoid_print: false
+    prefer_typing_uninitialized_variables: false
+    file_names: true # 文件使用 下划线命名法
+    void_checks: true # 检查 void 无效使用
+    unnecessary_new: true # 不要使用 new 关键字
+    unnecessary_parenthesis: true # 不要使用无效的 ()
+    unnecessary_statements: true # 避免不必要的语句
+    unnecessary_this: true
+    slash_for_doc_comments: true # 推荐使用 /// 而不是 /** 添加文档注释
+    prefer_null_aware_operators: true # 推荐使用 ?. 空检查
+    prefer_final_fields: true # 推荐使用 final 定义私有变量
+    prefer_const_declarations: true # 推荐使用 const , const 对热加载更加友好
+    prefer_conditional_assignment: true # 使用 ??= 判 null
+    non_constant_identifier_names: flase # 使用小驼峰命名 变量
+    constant_identifier_names: false
+    use_to_and_as_if_applicable: true
+    use_string_buffers: true
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

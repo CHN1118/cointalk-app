@@ -29,7 +29,7 @@ import '../../../event/notify_event.dart';
 import '../../../spec/chat/chat.dart';
 import '../../../spec/chat/consumer.dart';
 import '../../../spec/chat/sync_db_ret.dart';
-import 'chat_transfer.dart';
+import 'chat_transfer_page.dart';
 
 class ChatDetailPage extends StatefulWidget {
   ChatDetailPage({Key? key}) : super(key: key);

@@ -277,7 +277,7 @@ class _WalletState extends State<Wallet> {
                         Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20.w), // 设置左右边距为20
-                            height: 372.w - getStatusBarHeight(context),
+                            // height: 372.w - getStatusBarHeight(context),
                             width: double.infinity,
                             child: Column(
                               children: [

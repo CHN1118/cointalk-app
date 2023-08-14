@@ -3,7 +3,6 @@ import 'package:flutter_pickers/time_picker/model/date_mode.dart';
 import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../common/style/common_color.dart';
@@ -245,8 +244,8 @@ class _TransferRecordState extends State<TransferRecord> {
             margin: EdgeInsets.only(right: 10),
             child: TextButton(
               //文字按钮
-              onPressed: () => showMaterialModalBottomSheet(
-                  expand: false,
+              onPressed: () => showModalBottomSheet(
+                  // expand: false,
                   context: context,
                   backgroundColor: Colors.transparent,
                   builder: (context) => SwitchScreen()),

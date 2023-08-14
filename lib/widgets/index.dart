@@ -11,6 +11,8 @@ import 'package:wallet/widgets/message/index.dart';
 import 'package:wallet/widgets/mine/index.dart';
 import 'package:wallet/widgets/wallet/index.dart' as wallet;
 
+import 'message/chat/chat.dart';
+
 class Index extends StatefulWidget {
   const Index({super.key});
 
@@ -23,7 +25,7 @@ class _IndexState extends State<Index> {
 
   final List<Widget> _pages = [
     const wallet.Wallet(),
-    const MessagePage(),
+    const ChatPage(),
     const Browser(),
     const Mymine(),
   ];
