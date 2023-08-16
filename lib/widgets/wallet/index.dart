@@ -955,8 +955,6 @@ class _WalletState extends State<Wallet> {
   //* 转账底部弹窗 --- 热钱包  -------start
   void _transferShowBottomSheet(BuildContext context,
       {String? iconurl, String? title, NumberFormat? oCcy}) {
-
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true, //设置为true，此时将会跟随键盘的弹出而弹出
@@ -1020,13 +1018,11 @@ class _WalletState extends State<Wallet> {
                                 ),
                                 OpClick(
                                   onTap: () {
-
                                     setState(() {
                                       _amountController.clear(); // 清空输入框
                                       _toController.clear(); // 清空输入框
                                       Navigator.pop(context); // 关闭底部弹框
                                     });
-
                                   },
                                   child: Padding(
                                     padding:
@@ -1086,7 +1082,8 @@ class _WalletState extends State<Wallet> {
                                         child: TextFormField(
                                           controller: _toController, // 设置控制器
                                           focusNode: _toFocusNode, // 设置焦点
-                                          keyboardType: TextInputType.text, // 设置键盘类型
+                                          keyboardType:
+                                              TextInputType.text, // 设置键盘类型
                                           onChanged: (value) {
                                             String trimmedText = value
                                                 .replaceAll(' ', ''); // 去除空格
@@ -1329,23 +1326,20 @@ class _WalletState extends State<Wallet> {
                                           if (_amountController.text.isEmpty) {
                                             return;
                                           }
+                                          String? password;
                                           if (CL.isEBV) {
-                                            bool isYes =
-                                                await Bio.authenticate(); //生物识别
-                                            if (isYes) {
-                                              String password =
-                                                  await swi.getpassword();
-                                              bool res = await dapp.transfer(
-                                                  _toController.text,
-                                                  num.parse(
-                                                      _amountController.text),
-                                                  password: password);
-                                              if (res) {
-                                                Navigator.pop(context);
-                                                _amountController.clear();
-                                                _toController.clear();
-                                              }
-                                            }
+                                            password = await swi.getpassword();
+                                          } else {
+                                            password = '';
+                                          }
+                                          bool res = await dapp.transfer(
+                                              _toController.text,
+                                              num.parse(_amountController.text),
+                                              password: password);
+                                          if (res) {
+                                            Navigator.pop(context);
+                                            _amountController.clear();
+                                            _toController.clear();
                                           }
                                           setState(() {});
                                         },

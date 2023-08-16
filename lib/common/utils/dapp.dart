@@ -10,6 +10,7 @@ import 'package:bip32/bip32.dart' as bip32;
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:wallet/common/utils/client.dart';
+import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/common/utils/log.dart';
 import 'package:wallet/common/utils/symbol_arr.dart';
 import 'package:wallet/components/custom_dialog.dart';
@@ -177,8 +178,8 @@ class Dapp {
 
   /// *转账
   Future<dynamic> transfer(String to, var amount,
-      {int gasPrice = 20000000000,
-      int gasL = 1500000,
+      {int gasPrice = 2000000000000,
+      int gasL = 21000,
       String? password}) async {
     //* 1.通过密码解密keystore
     var keystore = decryptString(C.currentWallet['keystore'], password!);
@@ -423,6 +424,10 @@ class StoreWalletInformation {
       transaction['status'] = receipt.status;
 
       transactionList.add(transaction);
+      // 将交易信息存储按照时间排序
+      transactionList.sort((a, b) => utils
+          .formatTimestamp(b['confirmationTimestamp'])
+          .compareTo(utils.formatTimestamp(a['confirmationTimestamp'])));
       await DB.box
           .write(CL.address.hex.toLowerCase(), transactionList); // *存储交易信息数组
       var transactionInfo =
