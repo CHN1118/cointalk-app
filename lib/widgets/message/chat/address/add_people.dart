@@ -114,11 +114,12 @@ class _AddPeopleDetailState extends State<AddPeopleDetail> {
                   height: MediaQuery.of(context).size.height,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/image/chat_bg.png'),
+                      image: AssetImage('assets/images/chat_bg.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
+
                 // Positioned(
                 //   top: 0,
                 //   right: 0,

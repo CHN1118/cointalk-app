@@ -160,7 +160,7 @@ class PayPwdBottomController extends GetxController {
                     }
                   },
                   rightIcon: Image.asset(
-                    "assets/image/pay_keyboard_delete.png",
+                    "assets/images/pay_keyboard_delete.png",
                     width: 30,
                     height: 20,
                   ),

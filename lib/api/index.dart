@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:wallet/common/global/global_url.dart';
 import 'package:wallet/common/utils/log.dart';
 
 class CustomHttpClient {
@@ -10,9 +11,7 @@ class CustomHttpClient {
 
   CustomHttpClient({required this.baseUrl, this.defaultHeaders = const {}});
 
-  Future<dynamic> post(String endpoint,
-      {Map<String, dynamic>? data,
-      Map<String, String>? additionalHeaders}) async {
+  Future<dynamic> post(String endpoint, {Map<String, dynamic>? data, Map<String, String>? additionalHeaders}) async {
     _requestInterceptor();
 
     Map<String, String> allHeaders = {...defaultHeaders};
@@ -45,5 +44,6 @@ class CustomHttpClient {
 }
 
 final request = CustomHttpClient(
-  baseUrl: 'http://192.168.1.73:3010/app/',
+  // baseUrl: 'http://192.168.1.73:3010/app/',
+  baseUrl: Global.serviceUrl + '/app/',
 );

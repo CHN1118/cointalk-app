@@ -21,8 +21,10 @@ import 'centre/centre.dart';
 void main() async {
   WidgetsBinding widgetsBinding =
       WidgetsFlutterBinding.ensureInitialized(); //*初始化
+
   await GetStorage.init(); //*初始化本地存储
   await Centre.prepare();
+
   Get.put(Controller()).setLanguage(); //*初始化语言
   C = Get.find(); //*获取控制器
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding); //*启动图

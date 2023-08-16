@@ -347,7 +347,7 @@ class _TransferRecordState extends State<TransferRecord> {
                 margin:
                     EdgeInsets.only(left: 20, right: 10, top: 16, bottom: 16),
                 child: Image.asset(
-                  'assets/image/chat_def_head.png',
+                  'assets/images/chat_def_head.png',
                   width: 40,
                   height: 40,
                 ),

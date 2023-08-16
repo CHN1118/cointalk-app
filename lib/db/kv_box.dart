@@ -18,6 +18,7 @@ class BoxKey {
   static const String ChannelIndex = "channelIndex";
   static const String SupportChannelId = "supportChannelId"; //客服频道id
   static const String SupportCid = "supportCid"; //客服cid
+  static const String Address = "address"; //地址
 }
 
 class KVBox {
@@ -230,5 +231,19 @@ class KVBox {
   static SetSupportCid(int sCid) {
     GetStorage ubox = GetUserBox();
     ubox.write(BoxKey.SupportCid, sCid);
+  }
+
+  // 获取地址
+  static String GetAddress() {
+    GetStorage ubox = GetUserBox();
+    String add = ubox.read(BoxKey.Address) ?? "";
+    print("GetAddress add = ${add}");
+    return add;
+  }
+
+  // 存入地址
+  static SetAddress(String address) {
+    GetStorage ubox = GetUserBox();
+    ubox.write(BoxKey.Address, address);
   }
 }

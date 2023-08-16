@@ -292,7 +292,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-          image: AssetImage("assets/image/chat_bg.png"),
+          image: AssetImage("assets/images/chat_bg.png"),
           fit: BoxFit.cover,
         )),
         child: SafeArea(
@@ -326,7 +326,11 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                                       // 通讯录页面
                                       Get.to(() => ContactsPage());
                                     },
-                                    icon: Image.asset("assets/image/chat_address_book.png"),
+                                    icon: Image.asset(
+                                      "assets/images/chat_address_book.png",
+                                      width: 28,
+                                      height: 28,
+                                    ),
                                   ),
                                 ),
                                 Container(),
@@ -390,7 +394,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                 ),
                 SizedBox(height: 10),
                 // 登录用户为客服自己时，隐藏客服对话框
-                cid == sCid ? Offstage() : _supportChat(),
+                // cid == sCid ? Offstage() : _supportChat(),
                 Expanded(
                     flex: 1,
                     child: (chat_list.length == 0)
@@ -659,7 +663,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
       child: DropdownButtonHideUnderline(
         child: DropdownButton2(
           customButton: Image.asset(
-            "assets/image/chat_add.png",
+            "assets/images/chat_add.png",
             width: 28,
             height: 28,
           ),

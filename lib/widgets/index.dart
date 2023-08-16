@@ -65,38 +65,52 @@ class _IndexState extends State<Index> {
       ),
       BottomNavigationBarItem(
         label: "消息",
-        icon: badges.Badge(
-          position: badges.BadgePosition.topEnd(top: -8, end: -10),
-          showBadge: true,
-          ignorePointer: false,
-          badgeAnimation: const badges.BadgeAnimation.size(toAnimate: false),
-          badgeStyle: badges.BadgeStyle(padding: EdgeInsets.all(4.w)),
-          badgeContent: Text('99',
-              style: TextStyle(color: Colors.white, fontSize: 12.sp)),
-          child: SizedBox(
-            height: 25.w,
-            child: SvgPicture.asset(
-              height: 18.w,
-              'assets/svgs/msg.svg',
-            ),
+        icon: SizedBox(
+          height: 25.w,
+          child: SvgPicture.asset(
+            height: 22.w,
+            'assets/svgs/msg.svg',
           ),
         ),
-        activeIcon: badges.Badge(
-          position: badges.BadgePosition.topEnd(top: -8, end: -10),
-          showBadge: true,
-          ignorePointer: false,
-          badgeAnimation: const badges.BadgeAnimation.size(toAnimate: false),
-          badgeStyle: badges.BadgeStyle(padding: EdgeInsets.all(4.w)),
-          badgeContent: Text('99',
-              style: TextStyle(color: Colors.white, fontSize: 12.sp)),
-          child: SizedBox(
-            height: 28.w,
-            child: SvgPicture.asset(
-              height: 22.w,
-              'assets/svgs/msg_active.svg',
-            ),
+        activeIcon: SizedBox(
+          height: 28.w,
+          child: SvgPicture.asset(
+            height: 26.w,
+            'assets/svgs/msg_active.svg',
           ),
         ),
+        // icon: badges.Badge(
+        //   position: badges.BadgePosition.topEnd(top: -8, end: -10),
+        //   showBadge: true,
+        //   ignorePointer: false,
+        //   badgeAnimation: const badges.BadgeAnimation.size(toAnimate: false),
+        //   badgeStyle: badges.BadgeStyle(padding: EdgeInsets.all(4.w)),
+        //   badgeContent: Text('99',
+        //       style: TextStyle(color: Colors.white, fontSize: 12.sp)),
+        //   child: SizedBox(
+        //     height: 25.w,
+        //     child: SvgPicture.asset(
+        //       height: 18.w,
+        //       'assets/svgs/msg.svg',
+        //     ),
+        //   ),
+        // ),
+        // activeIcon: badges.Badge(
+        //   position: badges.BadgePosition.topEnd(top: -8, end: -10),
+        //   showBadge: true,
+        //   ignorePointer: false,
+        //   badgeAnimation: const badges.BadgeAnimation.size(toAnimate: false),
+        //   badgeStyle: badges.BadgeStyle(padding: EdgeInsets.all(4.w)),
+        //   badgeContent: Text('99',
+        //       style: TextStyle(color: Colors.white, fontSize: 12.sp)),
+        //   child: SizedBox(
+        //     height: 28.w,
+        //     child: SvgPicture.asset(
+        //       height: 22.w,
+        //       'assets/svgs/msg_active.svg',
+        //     ),
+        //   ),
+        // ),
       ),
       BottomNavigationBarItem(
         label: "浏览器",

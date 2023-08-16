@@ -136,7 +136,7 @@ class _ContactsPageState extends State<ContactsPage> {
               height: double.infinity,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/image/chat_bg.png'),
+                  image: AssetImage('assets/images/chat_bg.png'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -279,7 +279,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                     indexHintHeight: 100 / 2,
                                     indexHintDecoration: const BoxDecoration(
                                       image: DecorationImage(
-                                        image: AssetImage('assets/image/punctuation.jpg'),
+                                        image: AssetImage('assets/images/punctuation.jpg'),
                                         fit: BoxFit.contain,
                                       ),
                                     ),

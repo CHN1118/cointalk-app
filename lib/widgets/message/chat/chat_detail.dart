@@ -267,7 +267,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _chatAttachmentItem("photo".tr, "assets/image/chat_attachment_image.png", tapFunc: () async {
+              _chatAttachmentItem("photo".tr, "assets/images/chat_attachment_image.png", tapFunc: () async {
 
                 ToastPrint.show("not_open_yet".tr);
 
@@ -277,7 +277,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 //   Get.back(result: pickedFile);
                 // }
               }),
-              _chatAttachmentItem("shoot".tr, "assets/image/chat_attachment_shoot.png", tapFunc: () async {
+              _chatAttachmentItem("shoot".tr, "assets/images/chat_attachment_shoot.png", tapFunc: () async {
                 ToastPrint.show("not_open_yet".tr);
 
                 // final XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
@@ -286,7 +286,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 //   Get.back(result: pickedFile);
                 // }
               }),
-              _chatAttachmentItem("red_envelope".tr, "assets/image/chat_attachment_red.png", tapFunc: () async {
+              _chatAttachmentItem("red_envelope".tr, "assets/images/chat_attachment_red.png", tapFunc: () async {
                 final result = await Get.to(() => SendRedPack(), arguments: {"consumer": consumer});
                 // print("红包 result = ${result}");
                 if (result == GKey.SUCCESS) {
@@ -297,7 +297,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                   _handleRed(num.parse(amount), remark);
                 }
               }),
-              _chatAttachmentItem("transfer".tr, "assets/image/chat_attachment_transfer.png", tapFunc: () async {
+              _chatAttachmentItem("transfer".tr, "assets/images/chat_attachment_transfer.png", tapFunc: () async {
                 final result = await Get.to(() => ChatTransferPage(), arguments: {"consumer": consumer});
                 if (result == GKey.SUCCESS) {
                   String amount = Get.find<PayPwdBottomController>().amountValue.value;
@@ -737,7 +737,7 @@ Widget RedPacketBuilder(types.CustomMessage message, String cid) {
                 right: 10,
               ),
               child: Image.asset(
-                "assets/image/red_packet.png",
+                "assets/images/red_packet.png",
                 width: 40,
                 height: 40,
               ),

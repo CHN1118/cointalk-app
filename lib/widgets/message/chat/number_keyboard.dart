@@ -108,7 +108,7 @@ class _NumberKeyboardState extends State<NumberKeyboard> {
                                 color: Color(0xFFE6E6E6),
                                 onPressed: widget.onDel,
                                 child: Image.asset(
-                                  "assets/image/keyboard_delete.png",
+                                  "assets/images/keyboard_delete.png",
                                   width: 29,
                                   height: 19,
                                 ),

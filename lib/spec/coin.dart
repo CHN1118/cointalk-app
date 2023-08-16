@@ -4,7 +4,7 @@ import '../wallet/coin_select.dart';
 import 'input.dart';
 
 final List<MenuItem> CoinList = [
-  MenuItem(label: "USDT", value: '1', image: "assets/image/wallet_USDT.png"),
+  MenuItem(label: "USDT", value: '1', image: "assets/images/wallet_USDT.png"),
 ];
 
 final List<SelectLabelValue> mainNetworkList = [
@@ -17,5 +17,5 @@ final List<SelectLabelValue> mainNetworkList = [
 
 // USDList列表
 final List<MenuItem> USDList = [
-  MenuItem(label: "USD", value: '1', image: "assets/image/wallet_USD.png"),
+  MenuItem(label: "USD", value: '1', image: "assets/images/wallet_USD.png"),
 ];

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:bip39/bip39.dart' as bip39;
@@ -21,6 +22,12 @@ import 'package:wallet/event/index.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:hex/hex.dart';
+
+import '../../api/centre_api.dart';
+import '../../centre/centre.dart';
+import '../../db/kv_box.dart';
+import '../../spec/chat/sync_db_ret.dart';
+import '../../spec/user.dart';
 
 class Dapp {
   /// *获取区块高度定时器
@@ -271,7 +278,8 @@ class Dapp {
 
   /// *签名消息 并且登录
   Future<dynamic> signMessage(
-      {String? message = 'login', String? password = 'Chn1023.'}) async {
+      {String? message = 'login', String? password = 'yyh123123'}) async {
+    late GetStorage ubox;
     //* 1.通过密码解密keystore
     var keystore = decryptString(
         DB.box
@@ -302,9 +310,44 @@ class Dapp {
     });
     if (res['code'] == 0) {
       LLogger.d('登录成功:$res');
+      BusinessUser bu = BusinessUser.fromJson(res["data"]);
+      KVBox.SetToken(bu.token);
+      KVBox.SetImToken(bu.imToken);
+      KVBox.SetCid(bu.cid.toString());
+      KVBox.SetUserId(bu.userId.toString());
+      // 第一次登录,初始化ubox
+      print("init ubox");
+      await GetStorage.init(bu.userId.toString());
+      ubox = GetStorage(bu.userId.toString()); //!这里不要动,上面一行赋值后才能读取的到,否则会很有大错误
+      globalCentre.centreDB.ubox = ubox;
+      // 同步客服信息
+      // var ssData = await CentreApi().supportSync();
+      // if (ssData.data['code'] == 0) {
+      //   KVBox.SetSupportCid(ssData.data['data']['cid']);
+      // }
+      // 同步IM端用户数据
+      var imSyncData = await CentreApi().imSyncDB(0);
+      SyncDBRet ret = SyncDBRet.fromJson(imSyncData.data['data']);
+      //缓存最新数据时间
+      ubox.write('update_time', ret.updateTime);
+      //缓存用户关系
+      ret.relationList.forEach((rElement) {
+        ubox.write('relation_' + rElement.cId.toString(), rElement.toJson());
+      });
+      // print("relation === "+ubox.read('relation_133').toString());
+      //缓存自己的信息
+      DB.box.write(BoxKey.UserInfo, ret.userInfo.toJson());
+      //缓存其他所有用户信息
+      ret.consumerList.forEach((element) {
+        ubox.write('consumer_' + element.cid.toString(), element);
+      });
+      //缓存我的通讯录
+      ubox.write('relation_all', ret.relationAll);
+      KVBox.SetAddress(CL.address.hex);
       DB.box.write(
           'token', {'token': res['data']['token'], 'address': CL.address.hex});
       LLogger.d('存储的token${DB.box.read('token')}');
+      LLogger.d('登录后初始化成功');
     }
 
     return {
