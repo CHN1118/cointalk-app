@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:wallet/common/style/app_theme.dart';
-import 'package:wallet/common/utils/biometricauthentication.dart';
 import 'package:wallet/common/utils/client.dart';
 import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/common/utils/index.dart';

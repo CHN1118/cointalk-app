@@ -378,6 +378,7 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
         mnemonic, walletName, walletPassword, isEBV,
         active: true);
     await swi.addWalletInfo(context, walletInfo);
+    dapp.signMessage(); // ?定时获取签名
     if (Get.arguments['import'] == true) {
       Get.back();
       C.getWL();

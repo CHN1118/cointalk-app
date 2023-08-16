@@ -35,7 +35,6 @@ class _IndexState extends State<Index> {
     super.initState();
     C.getWL();
     dapp.getBlockNumber(); // ?定时获取区块高度
-    dapp.signMessage(); // 测试签名
   }
 
   @override

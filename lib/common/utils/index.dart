@@ -41,6 +41,21 @@ class Utils {
       return abbreviatedText;
     }
   }
+
+  /// 判断本地的存储的token 对应的地址和当前的地址是否一致
+  Future<bool> isSameAddress({required String address}) async {
+    var token = await DB.box.read('token');
+
+    if (token == null || token['token'] == null || token['address'] == null) {
+      return false;
+    } else {
+      if (token['address'].toLowerCase() == address.toLowerCase()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 }
 
 // 判断是否登录
