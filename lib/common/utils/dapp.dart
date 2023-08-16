@@ -317,6 +317,7 @@ class Dapp {
       KVBox.SetUserId(bu.userId.toString());
       // 第一次登录,初始化ubox
       print("init ubox");
+      late GetStorage ubox;
       await GetStorage.init(bu.userId.toString());
       ubox = GetStorage(bu.userId.toString()); //!这里不要动,上面一行赋值后才能读取的到,否则会很有大错误
       globalCentre.centreDB.ubox = ubox;
