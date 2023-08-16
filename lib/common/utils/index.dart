@@ -63,7 +63,7 @@ String checkLoginStatus() {
   var isLogin = DB.box.read('WalletList') ?? [];
   // 延迟一段时间模拟登录状态检查
   if (isLogin.length > 0) {
-    return '/';
+    return '/LogBackIn';
   } else {
     return '/importwallet';
   }

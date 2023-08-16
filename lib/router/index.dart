@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:wallet/widgets/importwallet/creat_psw.dart';
 import 'package:wallet/widgets/importwallet/index.dart';
+import 'package:wallet/widgets/importwallet/log_back_in.dart';
 import 'package:wallet/widgets/importwallet/mnemonic.dart';
 import 'package:wallet/widgets/importwallet/wallet_name.dart';
 import 'package:wallet/widgets/index.dart';
@@ -31,6 +32,10 @@ class AppPages {
       page: () => CreatPsw(
         title: '创建钱包密码',
       ),
+    ),
+    GetPage(
+      name: '/LogBackIn',
+      page: () => const LogBackIn(),
     ),
   ];
 }

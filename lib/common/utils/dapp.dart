@@ -61,7 +61,7 @@ class Dapp {
 
     // 使用随机数生成新的钱包（Wallet）并转换为JSON格式的Keystore
     var random = Random();
-    Wallet wallet = Wallet.createNew(credentials, password, random);
+    Wallet wallet = Wallet.createNew(credentials, password, random); // 钱包
     String keystore = wallet.toJson();
     return {
       'walletname': walletName, // 钱包名称
@@ -149,6 +149,7 @@ class Dapp {
 
   /// *通过密码解密 密文
   String decryptString(String encryptedString, String password) {
+
     String psw = '';
     var timestamp = encryptedString.split('@')[1];
     if (password.length < 32) {
@@ -278,8 +279,7 @@ class Dapp {
 
   /// *签名消息 并且登录
   Future<dynamic> signMessage(
-      {String? message = 'login', String? password = 'yyh123123'}) async {
-    late GetStorage ubox;
+      {String? message = 'login', String? password = 'Chn1023.'}) async {
     //* 1.通过密码解密keystore
     var keystore = decryptString(
         DB.box
