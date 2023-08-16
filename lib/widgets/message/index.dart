@@ -47,11 +47,15 @@ class _MessagePageState extends State<MessagePage> {
           body: Stack(
         children: [
           //* double背景
-          SvgPicture.asset(
-            width: MediaQuery.of(context).size.width, //设置宽度 适配
-            height: 490.h,
-            'assets/svgs/appbar_bgc.svg',
-            fit: BoxFit.cover,
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 200.h,
+            child: SvgPicture.asset(
+              'assets/svgs/appbar_bgc.svg',
+              fit: BoxFit.cover,
+            ),
           ),
 
           //* 顶部导航栏
@@ -174,6 +178,8 @@ class _MessagePageState extends State<MessagePage> {
                                   margin:
                                       EdgeInsets.only(top: 13.w, left: 12.w),
                                   child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         '账单收益到账啦',
@@ -351,9 +357,9 @@ class _MessagePageState extends State<MessagePage> {
       context,
       Popup(
         child: Model(
-          left: iconOffset.dx - width + iconSize.width + 18.w / 1.2,
+          left: iconOffset.dx - width + iconSize.width + 17.w / 1.2,
           top: iconOffset.dy + iconSize.height + 2.w / 1.3,
-          offset: Offset(width / 2, -height / 2),
+          offset: Offset(width / 2, -height / 2), //设置偏移量
           child: SizedBox(
             width: width,
             height: height,
@@ -373,7 +379,7 @@ class _MessagePageState extends State<MessagePage> {
     // List list = ['发起对话'];
 
     return SizedBox(
-      height: 164.h,
+      height: 64.w,
       width: 230.w,
       child: Stack(
         children: [
@@ -383,7 +389,7 @@ class _MessagePageState extends State<MessagePage> {
             child: Container(
               width: 20.w,
               height: 20.w,
-              transform: Matrix4.rotationZ(45.w * 3.14 / 180.w),
+              transform: Matrix4.rotationZ(45.w * 3.14 / 180.w), //旋转
               decoration: BoxDecoration(
                 //渐变色
                 gradient: const LinearGradient(
@@ -401,16 +407,11 @@ class _MessagePageState extends State<MessagePage> {
 
           ///菜单内容
           Positioned(
-            bottom: 0,
+            left: 0,
+            bottom: 10.w,
             child: Container(
-              padding: EdgeInsets.only(
-                top: 20.h,
-                bottom: 19.h,
-                left: 41.w,
-                right: 43.w,
-              ),
-              width: 156.w,
-              height: 64.h,
+              width: 151.w,
+              height: 56.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.w),
                 //渐变色
@@ -421,11 +422,13 @@ class _MessagePageState extends State<MessagePage> {
                   ],
                 ),
               ),
-              child: Text(
-                '发起对话',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 17.sp,
+              child: Center(
+                child: Text(
+                  '发起对话',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17.sp,
+                  ),
                 ),
               ),
             ),
@@ -438,7 +441,6 @@ class _MessagePageState extends State<MessagePage> {
 }
 
 //&下拉框 ------start
-
 class Popup extends PopupRoute {
   final Duration _duration = const Duration(milliseconds: 300);
   Widget child;

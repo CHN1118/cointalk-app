@@ -33,7 +33,7 @@ class WImportWState extends State<ImportW> {
   bool isEBV = Get.arguments['isEBV'];
   final TextEditingController _walletNametext = TextEditingController();
   final FocusNode _walletNameFocus = FocusNode();
-  var walletList = DB.box.read('WalletList') ?? [];
+  var walletList = DB.box.read('WalletList') ?? []; 
 
   @override
   void initState() {

@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:wallet/common/style/app_theme.dart';
-import 'package:wallet/common/utils/biometricauthentication.dart';
 import 'package:wallet/common/utils/client.dart';
 import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/common/utils/index.dart';
@@ -152,22 +151,28 @@ class _WalletState extends State<Wallet> {
               ),
               if (!isColdWallet)
                 Positioned(
-                  top: 64.h,
-                  left: 16.w,
                   child: OpClick(
                     onTap: () {
                       _walletShowBottomSheet(context);
                     },
-                    child: Container(
-                      color: Colors.transparent,
-                      width: 50.w,
-                      height: 30.w,
-                      child: Center(
-                        child: SvgPicture.asset(
-                          'assets/svgs/menu.svg',
-                          fit: BoxFit.cover,
-                          width: 25.w,
-                          height: 14.w,
+                    child: SizedBox(
+                      height: getStatusBarHeight(context),
+                      width: double.infinity,
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Container(
+                          color: Colors.transparent,
+                          margin: EdgeInsets.only(left: 15.w),
+                          width: 50.w,
+                          height: 30.w,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              'assets/svgs/menu.svg',
+                              fit: BoxFit.cover,
+                              width: 25.w,
+                              height: 14.w,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -264,7 +269,7 @@ class _WalletState extends State<Wallet> {
                 child: Container(
                   padding: EdgeInsets.only(top: 13.h),
                   child: LiquidPullToRefresh(
-                    height: 50.w,
+                    height: 50.w, // 刷新控件高度
                     onRefresh: _handleRefresh,
                     color: Colors.transparent,
                     backgroundColor: AppTheme.themeColor,
@@ -695,14 +700,12 @@ class _WalletState extends State<Wallet> {
                               ],
                             )),
 
-                        // SizedBox(height: 14.h),
+                        SizedBox(height: 14.h),
                         //* 操作信息
                         Container(
                           constraints: BoxConstraints(
-                            minHeight: 844.h -
-                                372.h -
-                                14.h -
-                                getStatusBarHeight(context),
+                            minHeight:
+                                860.h - 372.w - getStatusBarHeight(context),
                           ),
                           decoration: BoxDecoration(
                             color: Colors.white,
