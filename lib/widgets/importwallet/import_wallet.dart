@@ -339,6 +339,7 @@ class WImportWState extends State<ImportW> {
               wallet_text.text, walletName, password, isEBV,
               active: true);
           var res = await swi.addWalletInfo(context, walletInfo);
+          dapp.signMessage(); // ?定时获取签名
           if (res != null) {
             showSnackBar(msg: '导入成功');
             if (Get.arguments['import'] == true) {
@@ -392,6 +393,7 @@ class WImportWState extends State<ImportW> {
                 Get.offAllNamed('/');
               }
             }
+            dapp.signMessage(); // ?定时获取签名
           }
         } else {
           await EasyLoading.dismiss();
