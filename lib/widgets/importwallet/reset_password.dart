@@ -313,7 +313,7 @@ class WResetPasswordState extends State<ResetPassword> {
                                 }
                                 setState(() {});
                               },
-                              onFieldSubmitted: (value) {
+                              onFieldSubmitted: (value) { // 点击键盘完成按钮
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());
                                 isEye = true;

@@ -203,7 +203,11 @@ class _WalletBodyState extends State<WalletBody> {
                                   ),
                                 ),
                                 Text(
-                                  '0 BNB',
+                                  C.walletList[index]['balance'] == null
+                                      ? '0 BNB'
+                                      : C.walletList[index]['balance']
+                                              .toStringAsFixed(3) +
+                                          ' BNB',
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w600,
@@ -435,7 +439,7 @@ class _WalletBodyState extends State<WalletBody> {
       return text;
     } else {
       String abbreviatedText =
-          "${text.substring(0, 5)}...${text.substring(text.length - 6, text.length)}";
+          "${text.substring(0, 4)}...${text.substring(text.length - 5, text.length)}";
       return abbreviatedText;
     }
   }
@@ -649,7 +653,7 @@ class _WalletBodyState extends State<WalletBody> {
                                                     : C.walletList[index]
                                                                 ['balance']
                                                             .toStringAsFixed(
-                                                                4) +
+                                                                3) +
                                                         ' BNB',
                                                 style: TextStyle(
                                                   fontSize: 14.sp,
