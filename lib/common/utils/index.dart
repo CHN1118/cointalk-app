@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:wallet/database/index.dart';
+import 'package:wallet/db/kv_box.dart';
 
 // 语言
 class Utils {
@@ -18,8 +19,7 @@ class Utils {
 
   /// 格式化时间
   String formatTimestamp(String timestamp) {
-    var date = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(timestamp.split('0x')[1], radix: 16) * 1000);
+    var date = DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp.split('0x')[1], radix: 16) * 1000);
     return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}:${date.second.toString().padLeft(2, '0')}";
   }
 
@@ -36,25 +36,31 @@ class Utils {
     if (text.length <= 11) {
       return text;
     } else {
-      String abbreviatedText =
-          "${text.substring(0, 5)}xxx${text.substring(text.length - 6, text.length)}";
+      String abbreviatedText = "${text.substring(0, 5)}xxx${text.substring(text.length - 6, text.length)}";
       return abbreviatedText;
     }
   }
 
   /// 判断本地的存储的token 对应的地址和当前的地址是否一致
+  // Future<bool> isSameAddress({required String address}) async {
+  //   var token = await DB.box.read('token');
+  //
+  //   if (token == null || token['token'] == null || token['address'] == null) {
+  //     return false;
+  //   } else {
+  //     if (token['address'].toLowerCase() == address.toLowerCase()) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   }
+  // }
   Future<bool> isSameAddress({required String address}) async {
-    var token = await DB.box.read('token');
-
-    if (token == null || token['token'] == null || token['address'] == null) {
-      return false;
-    } else {
-      if (token['address'].toLowerCase() == address.toLowerCase()) {
-        return true;
-      } else {
-        return false;
-      }
+    var kvAddress = await KVBox.GetAddress();
+    if (kvAddress != "" && (kvAddress.toLowerCase() == address.toLowerCase())) {
+      return true;
     }
+    return false;
   }
 }
 

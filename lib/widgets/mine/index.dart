@@ -42,6 +42,9 @@ class _MymineState extends State<Mymine> {
                   onTap: () {
                     DB.box.remove('WalletList');
                     DB.box.remove('isAgree');
+                    DB.box.remove('token');
+                    DB.box.remove('im_token');
+                    DB.box.remove('userId');
                   },
                   child: Text(
                     '我的',

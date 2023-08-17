@@ -24,7 +24,6 @@ class AccountApi {
     Response res = await dio.post('/app/account/transfer', data: {
       "account": account,
       "amount": amount,
-      "currentName": currentName,
       "payPwd": payPwd
     });
     return Future(() => res);

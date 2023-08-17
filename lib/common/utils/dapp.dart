@@ -279,7 +279,7 @@ class Dapp {
 
   /// *签名消息 并且登录
   Future<dynamic> signMessage(
-      {String? message = 'login', String? password = 'Chn1023.'}) async {
+      {String? message = 'login', String? password = 'yyh123123'}) async {
     //* 1.通过密码解密keystore
     var keystore = decryptString(
         DB.box
@@ -306,7 +306,7 @@ class Dapp {
       'sign': '0x${HEX.encode(signedMessage)}',
       'name': CL.address.hex,
       'msg': '$message$timestamp',
-      "password": "nisi"
+      "password": password
     });
     if (res['code'] == 0) {
       LLogger.d('登录成功:$res');
@@ -315,6 +315,7 @@ class Dapp {
       KVBox.SetImToken(bu.imToken);
       KVBox.SetCid(bu.cid.toString());
       KVBox.SetUserId(bu.userId.toString());
+      KVBox.SetAddress(CL.address.hex);
       // 第一次登录,初始化ubox
       print("init ubox");
       late GetStorage ubox;
@@ -344,9 +345,8 @@ class Dapp {
       });
       //缓存我的通讯录
       ubox.write('relation_all', ret.relationAll);
-      KVBox.SetAddress(CL.address.hex);
-      DB.box.write(
-          'token', {'token': res['data']['token'], 'address': CL.address.hex});
+      // DB.box.write(
+      //     'token', {'token': res['data']['token'], 'address': CL.address.hex});
       LLogger.d('存储的token${DB.box.read('token')}');
       LLogger.d('登录后初始化成功');
     }

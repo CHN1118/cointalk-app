@@ -83,7 +83,8 @@ class Controller extends GetxController {
     print(islogin);
     if (islogin) {
       print('已登录');
-      print('当前钱包地址:${DB.box.read('token')}');
+      // print('当前钱包地址:${DB.box.read('token')}');
+      print('当前钱包地址:${KVBox.GetAddress()}');
     } else {
       dapp.signMessage();
     }

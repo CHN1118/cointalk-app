@@ -235,15 +235,15 @@ class KVBox {
 
   // 获取地址
   static String GetAddress() {
-    GetStorage ubox = GetUserBox();
-    String add = ubox.read(BoxKey.Address) ?? "";
+    GetStorage box = GetBox();
+    String add = box.read(BoxKey.Address) ?? "";
     print("GetAddress add = ${add}");
     return add;
   }
 
   // 存入地址
   static SetAddress(String address) {
-    GetStorage ubox = GetUserBox();
-    ubox.write(BoxKey.Address, address);
+    GetStorage box = GetBox();
+    box.write(BoxKey.Address, address);
   }
 }
