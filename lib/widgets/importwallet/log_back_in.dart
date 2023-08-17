@@ -12,6 +12,7 @@ import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/components/custom_dialog.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/controller/index.dart';
+import 'package:wallet/database/index.dart';
 import 'package:wallet/widgets/importwallet/reset_password.dart';
 
 // LogBackIn
@@ -26,6 +27,7 @@ class ILogBackInState extends State<LogBackIn> {
   final TextEditingController _walletNametext = TextEditingController();
   final FocusNode _walletNameFocus = FocusNode();
   bool isFocus = false; //是否聚焦
+  bool isEye = true; //是否显示密码
   @override
   void dispose() {
     _walletNametext.dispose();
@@ -41,6 +43,11 @@ class ILogBackInState extends State<LogBackIn> {
         isFocus = _walletNameFocus.hasFocus; //是否聚焦
       });
     });
+    // DB.box.remove('WalletList');
+    // DB.box.remove('isAgree');
+    // DB.box.remove('token');
+    // DB.box.remove('im_token');
+    // DB.box.remove('userId');
     Biometric(); //检测生物识别
   }
 
@@ -68,6 +75,7 @@ class ILogBackInState extends State<LogBackIn> {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode()); // 点击空白处隐藏键盘
+        isEye = true;
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -129,6 +137,9 @@ class ILogBackInState extends State<LogBackIn> {
                                 child: TextFormField(
                                   controller: _walletNametext,
                                   focusNode: _walletNameFocus,
+                                  obscureText: isEye, //隐藏输入内容
+                                  obscuringCharacter: '*', //密码替换符号
+
                                   onChanged: (value) {
                                     String trimmedText =
                                         value.replaceAll(' ', ''); // 去除空格
@@ -153,6 +164,7 @@ class ILogBackInState extends State<LogBackIn> {
                                   onFieldSubmitted: (value) {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
+                                    isEye = true;
                                     setState(() {});
                                   },
                                   cursorHeight: 18.w, // 设置光标高度
@@ -172,6 +184,27 @@ class ILogBackInState extends State<LogBackIn> {
                             ),
                           ),
                         ),
+                        if (isFocus)
+                          Positioned(
+                              right: 20.w,
+                              top: 0,
+                              bottom: 0,
+                              child: OpClick(
+                                onTap: () {
+                                  isEye = !isEye;
+                                  setState(() {});
+                                },
+                                child: SizedBox(
+                                  width: 60.w,
+                                  child: Icon(
+                                    color: const Color(0xFF7F8391),
+                                    size: 16.sp,
+                                    isEye
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                ),
+                              )),
                       ],
                     ),
                   ],

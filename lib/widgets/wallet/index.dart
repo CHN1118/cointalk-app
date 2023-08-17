@@ -602,7 +602,7 @@ class _WalletState extends State<Wallet> {
                                       ),
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     OpClick(
                                       onTap: () {
@@ -615,11 +615,11 @@ class _WalletState extends State<Wallet> {
                                         );
                                       },
                                       child: Container(
-                                        width: 141.w,
+                                        width: 65.w,
                                         height: 44.w,
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(10.w),
+                                              BorderRadius.circular(8.w),
                                           color: const Color(0xFF9BAED2)
                                               .withOpacity(0.35),
                                           boxShadow: AppTheme.cardShow,
@@ -630,17 +630,17 @@ class _WalletState extends State<Wallet> {
                                           children: [
                                             SvgPicture.asset(
                                               'assets/svgs/shuffle.svg',
-                                              width: 22.w,
-                                              height: 22.w,
+                                              width: 16.w,
+                                              height: 16.w,
                                               color: const Color(0xFF292D32),
                                             ),
                                             Padding(
                                               padding:
-                                                  EdgeInsets.only(left: 12.w),
+                                                  EdgeInsets.only(left: 4.w),
                                               child: Text(
                                                 '转账',
                                                 style: TextStyle(
-                                                    fontSize: 16.sp,
+                                                    fontSize: 14.sp,
                                                     fontWeight: FontWeight.w600,
                                                     color: const Color(
                                                         0xFF292D32)),
@@ -660,11 +660,11 @@ class _WalletState extends State<Wallet> {
                                         );
                                       },
                                       child: Container(
-                                        width: 141.w,
+                                        width: 65.w,
                                         height: 44.w,
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(10.w),
+                                              BorderRadius.circular(8.w),
                                           color: const Color(0xFF5F9396)
                                               .withOpacity(0.3),
                                           boxShadow: AppTheme.cardShow,
@@ -675,17 +675,91 @@ class _WalletState extends State<Wallet> {
                                           children: [
                                             SvgPicture.asset(
                                               'assets/svgs/upload.svg',
-                                              width: 22.w,
-                                              height: 22.w,
+                                              width: 16.w,
+                                              height: 16.w,
                                               color: const Color(0xFF292D32),
                                             ),
                                             Padding(
                                               padding:
-                                                  EdgeInsets.only(left: 12.w),
+                                                  EdgeInsets.only(left: 4.w),
                                               child: Text(
                                                 '接收',
                                                 style: TextStyle(
-                                                    fontSize: 16.sp,
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: const Color(
+                                                        0xFF292D32)),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    OpClick(
+                                      onTap: () {},
+                                      child: Container(
+                                        width: 65.w,
+                                        height: 44.w,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.w),
+                                          color: const Color(0xFF9BAED2)
+                                              .withOpacity(0.35),
+                                          boxShadow: AppTheme.cardShow,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.system_update_alt_outlined,
+                                              size: 18.sp,
+                                              color: const Color(0xFF292D32),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 4.w),
+                                              child: Text(
+                                                '充值',
+                                                style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: const Color(
+                                                        0xFF292D32)),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    OpClick(
+                                      onTap: () {},
+                                      child: Container(
+                                        width: 65.w,
+                                        height: 44.w,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.w),
+                                          color: const Color(0xFF5F9396)
+                                              .withOpacity(0.3),
+                                          boxShadow: AppTheme.cardShow,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.input_outlined,
+                                              size: 18.sp,
+                                              color: const Color(0xFF292D32),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 4.w),
+                                              child: Text(
+                                                '提现',
+                                                style: TextStyle(
+                                                    fontSize: 14.sp,
                                                     fontWeight: FontWeight.w600,
                                                     color: const Color(
                                                         0xFF292D32)),
