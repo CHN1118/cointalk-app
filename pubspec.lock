@@ -105,6 +105,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.0"
+  azlistview:
+    dependency: "direct main"
+    description:
+      name: azlistview
+      sha256: "93e865f11777a271b439f0d6b00799c0797e9daeec2e082a2e01373809c4b90d"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   badges:
     dependency: "direct main"
     description:
@@ -281,6 +289,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.0"
+  dio:
+    dependency: "direct main"
+    description:
+      name: dio
+      sha256: ce75a1b40947fea0a0e16ce73337122a86762e38b982e1ccb909daa3b9bc4197
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.3.2"
   draggable_home:
     dependency: "direct main"
     description:
@@ -293,10 +309,10 @@ packages:
     dependency: "direct main"
     description:
       name: dropdown_button2
-      sha256: "9c4f30b2d1506fe171e807f15d69e4f70ab48359de350663dbde69015d7c1454"
+      sha256: bee4103caa1517fcc623bd5efbe1743956a276b3db3738aa9342afe23be48b48
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.3.7"
+    version: "2.3.8"
   eip1559:
     dependency: transitive
     description:
@@ -329,6 +345,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.5"
+  event_bus:
+    dependency: "direct main"
+    description:
+      name: event_bus
+      sha256: "44baa799834f4c803921873e7446a2add0f3efa45e101a054b1f0ab9b95f8edc"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -495,10 +519,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_native_splash
-      sha256: ba45d8cfbd778478a74696b012f33ffb6b1760c9bc531b21e2964444a4870dae
+      sha256: ecff62b3b893f2f665de7e4ad3de89f738941fcfcaaba8ee601e749efafa4698
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.3.1"
+    version: "2.3.2"
   flutter_parsed_text:
     dependency: transitive
     description:
@@ -507,6 +531,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.2.1"
+  flutter_pickers:
+    dependency: "direct main"
+    description:
+      name: flutter_pickers
+      sha256: f38a9d9229afed75f76bae64e628b78b9c20194873e3c141783523cf21ac8a95
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.9"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -637,6 +669,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.1"
+  grouped_list:
+    dependency: "direct main"
+    description:
+      name: grouped_list
+      sha256: fef106470186081c32636aa055492eee7fc7fe8bf0921a48d31ded24821af19f
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.1.2"
   hex:
     dependency: "direct main"
     description:
@@ -861,6 +901,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.6.0"
+  lpinyin:
+    dependency: "direct main"
+    description:
+      name: lpinyin
+      sha256: "0bb843363f1f65170efd09fbdfc760c7ec34fc6354f9fcb2f89e74866a0d814a"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.3"
   matcher:
     dependency: transitive
     description:
@@ -901,14 +949,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.4.1"
-  modal_bottom_sheet:
-    dependency: "direct main"
-    description:
-      name: modal_bottom_sheet
-      sha256: ef533916a2c3089571c32bd34e410faca77a6849a3f28f748e0794525c5658a0
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.1.2"
   password_strength:
     dependency: "direct main"
     description:
@@ -997,14 +1037,22 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.14.0"
+  pin_code_fields:
+    dependency: "direct main"
+    description:
+      name: pin_code_fields
+      sha256: c8652519d14688f3fe2a8288d86910a46aa0b9046d728f292d3bf6067c31b4c7
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "7.4.0"
   platform:
     dependency: transitive
     description:
       name: platform
-      sha256: "4a451831508d7d6ca779f7ac6e212b4023dd5a7d08a27a63da33756410e32b76"
+      sha256: "57c07bf82207aee366dfaa3867b3164e4f03a238a461a11b0e8a3a510d51203d"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.1"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -1021,6 +1069,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.7.3"
+  pull_to_refresh:
+    dependency: "direct main"
+    description:
+      name: pull_to_refresh
+      sha256: bbadd5a931837b57739cf08736bea63167e284e71fb23b218c8c9a6e042aad12
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   qr:
     dependency: transitive
     description:
@@ -1045,6 +1101,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.2.1"
+  rounded_loading_button:
+    dependency: "direct main"
+    description:
+      name: rounded_loading_button
+      sha256: ec4af194330ba688527749059b7c1a3d1ddda6c18794ec4b0696f0cb3b9784ff
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.0"
   rxdart:
     dependency: transitive
     description:
@@ -1061,6 +1125,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.1"
+  scrollable_positioned_list:
+    dependency: transitive
+    description:
+      name: scrollable_positioned_list
+      sha256: "9566352ab9ba05794ee6c8864f154afba5d36c5637d0e3e32c615ba4ceb92772"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
   sec:
     dependency: transitive
     description:

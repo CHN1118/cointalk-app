@@ -2,12 +2,15 @@
 
 import 'dart:ui';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:wallet/api/getcurrencyrate.dart';
 import 'package:wallet/common/utils/client.dart';
 import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/database/index.dart';
 import 'package:web3dart/web3dart.dart';
+
+import '../db/kv_box.dart';
 
 class Controller extends GetxController {
   bool isLogin = false;
@@ -80,7 +83,8 @@ class Controller extends GetxController {
     print(islogin);
     if (islogin) {
       print('已登录');
-      print('当前钱包地址:${DB.box.read('token')}');
+      // print('当前钱包地址:${DB.box.read('token')}');
+      print('当前钱包地址:${KVBox.GetAddress()}');
     } else {
       dapp.signMessage();
     }

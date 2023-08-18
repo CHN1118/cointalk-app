@@ -26,10 +26,10 @@ class CreatPsw extends StatefulWidget {
 }
 
 class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
-  final TextEditingController _setPswtext = TextEditingController();
-  final FocusNode _setPswFocus = FocusNode();
-  final TextEditingController _confirmPswtext = TextEditingController();
-  final FocusNode _confirmPswFocus = FocusNode();
+  final TextEditingController _setPswtext = TextEditingController(); //设置密码
+  final FocusNode _setPswFocus = FocusNode(); //设置密码
+  final TextEditingController _confirmPswtext = TextEditingController(); //确认密码
+  final FocusNode _confirmPswFocus = FocusNode(); //确认密码
 
   var Bio = Biometric();
 
@@ -146,8 +146,9 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                           obscuringCharacter: '*',
                           maxLength: 18, // 最大长度为18位
                           onEditingComplete: () {
+                            // 点击键盘完成按钮
                             FocusScope.of(context)
-                                .requestFocus(_confirmPswFocus);
+                                .requestFocus(_confirmPswFocus); // 聚焦确认密码
                           },
                           onChanged: (String value) {
                             strength = estimatePasswordStrength(value);
@@ -155,7 +156,8 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                                 value.replaceAll(' ', ''); // 去除空格
                             if (trimmedText != value) {
                               final int cursorPosition =
-                                  _setPswtext.selection.baseOffset - 1;
+                                  _setPswtext.selection.baseOffset -
+                                      1; // 获取光标位置
                               final TextSelection newSelection =
                                   TextSelection.collapsed(
                                       offset: cursorPosition);
@@ -163,7 +165,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
                                 _setPswtext.value = TextEditingValue(
                                   text: trimmedText,
                                   selection: newSelection,
-                                );
+                                ); // 设置新的值
                               });
                             }
                             setState(() {});

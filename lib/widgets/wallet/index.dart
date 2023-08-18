@@ -18,6 +18,8 @@ import 'package:wallet/components/qr_code_scanner.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/mine/wallets.dart';
+import 'package:wallet/widgets/wallet/top_up.dart';
+import 'package:wallet/widgets/wallet/withdraw.dart';
 
 class Wallet extends StatefulWidget {
   const Wallet({super.key});
@@ -151,22 +153,28 @@ class _WalletState extends State<Wallet> {
               ),
               if (!isColdWallet)
                 Positioned(
-                  top: 64.h,
-                  left: 16.w,
                   child: OpClick(
                     onTap: () {
                       _walletShowBottomSheet(context);
                     },
-                    child: Container(
-                      color: Colors.transparent,
-                      width: 50.w,
-                      height: 30.w,
-                      child: Center(
-                        child: SvgPicture.asset(
-                          'assets/svgs/menu.svg',
-                          fit: BoxFit.cover,
-                          width: 25.w,
-                          height: 14.w,
+                    child: SizedBox(
+                      height: getStatusBarHeight(context),
+                      width: double.infinity,
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Container(
+                          color: Colors.transparent,
+                          margin: EdgeInsets.only(left: 15.w),
+                          width: 50.w,
+                          height: 30.w,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              'assets/svgs/menu.svg',
+                              fit: BoxFit.cover,
+                              width: 25.w,
+                              height: 14.w,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -263,7 +271,7 @@ class _WalletState extends State<Wallet> {
                 child: Container(
                   padding: EdgeInsets.only(top: 13.h),
                   child: LiquidPullToRefresh(
-                    height: 50.w,
+                    height: 50.w, // 刷新控件高度
                     onRefresh: _handleRefresh,
                     color: Colors.transparent,
                     backgroundColor: AppTheme.themeColor,
@@ -276,7 +284,7 @@ class _WalletState extends State<Wallet> {
                         Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20.w), // 设置左右边距为20
-                            height: 372.w - getStatusBarHeight(context),
+                            // height: 372.w - getStatusBarHeight(context),
                             width: double.infinity,
                             child: Column(
                               children: [
@@ -594,114 +602,304 @@ class _WalletState extends State<Wallet> {
                                           ),
                                         ),
                                       ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    OpClick(
-                                      onTap: () {
-                                        _transferShowBottomSheet(
-                                          context, //上下文
-                                          iconurl:
-                                              'assets/svgs/shuffle.svg', //图标
-                                          title: '转账', //标题
-                                          oCcy: oCcy, //格式化
-                                        );
-                                      },
-                                      child: Container(
-                                        width: 141.w,
-                                        height: 44.w,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.w),
-                                          color: const Color(0xFF9BAED2)
-                                              .withOpacity(0.35),
-                                          boxShadow: AppTheme.cardShow,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              'assets/svgs/shuffle.svg',
-                                              width: 22.w,
-                                              height: 22.w,
-                                              color: const Color(0xFF292D32),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 12.w),
-                                              child: Text(
-                                                '转账',
-                                                style: TextStyle(
-                                                    fontSize: 16.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: const Color(
-                                                        0xFF292D32)),
+                                isColdWallet
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          OpClick(
+                                            onTap: () {
+                                              _transferShowBottomSheet(
+                                                context, //上下文
+                                                iconurl:
+                                                    'assets/svgs/shuffle.svg', //图标
+                                                title: '转账', //标题
+                                                oCcy: oCcy, //格式化
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 65.w,
+                                              height: 44.w,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.w),
+                                                color: const Color(0xFF9BAED2)
+                                                    .withOpacity(0.35),
+                                                boxShadow: AppTheme.cardShow,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    'assets/svgs/shuffle.svg',
+                                                    width: 16.w,
+                                                    height: 16.w,
+                                                    color:
+                                                        const Color(0xFF292D32),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 4.w),
+                                                    child: Text(
+                                                      '转账',
+                                                      style: TextStyle(
+                                                          fontSize: 14.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: const Color(
+                                                              0xFF292D32)),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    OpClick(
-                                      onTap: () {
-                                        _receiveShowBottomSheet(
-                                          context,
-                                          iconurl: 'assets/svgs/upload.svg',
-                                          title: '接收',
-                                          oCcy: oCcy,
-                                        );
-                                      },
-                                      child: Container(
-                                        width: 141.w,
-                                        height: 44.w,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.w),
-                                          color: const Color(0xFF5F9396)
-                                              .withOpacity(0.3),
-                                          boxShadow: AppTheme.cardShow,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              'assets/svgs/upload.svg',
-                                              width: 22.w,
-                                              height: 22.w,
-                                              color: const Color(0xFF292D32),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 12.w),
-                                              child: Text(
-                                                '接收',
-                                                style: TextStyle(
-                                                    fontSize: 16.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: const Color(
-                                                        0xFF292D32)),
+                                          ),
+                                          OpClick(
+                                            onTap: () {
+                                              _receiveShowBottomSheet(
+                                                context,
+                                                iconurl:
+                                                    'assets/svgs/upload.svg',
+                                                title: '接收',
+                                                oCcy: oCcy,
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 65.w,
+                                              height: 44.w,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.w),
+                                                color: const Color(0xFF5F9396)
+                                                    .withOpacity(0.3),
+                                                boxShadow: AppTheme.cardShow,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    'assets/svgs/upload.svg',
+                                                    width: 16.w,
+                                                    height: 16.w,
+                                                    color:
+                                                        const Color(0xFF292D32),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 4.w),
+                                                    child: Text(
+                                                      '接收',
+                                                      style: TextStyle(
+                                                          fontSize: 14.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: const Color(
+                                                              0xFF292D32)),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
+                                          ),
+                                          OpClick(
+                                            onTap: () {
+                                              Get.to(() => TopUp());
+                                            },
+                                            child: Container(
+                                              width: 65.w,
+                                              height: 44.w,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.w),
+                                                color: const Color(0xFF9BAED2)
+                                                    .withOpacity(0.35),
+                                                boxShadow: AppTheme.cardShow,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Icons
+                                                        .system_update_alt_outlined,
+                                                    size: 18.sp,
+                                                    color:
+                                                        const Color(0xFF292D32),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 4.w),
+                                                    child: Text(
+                                                      '充值',
+                                                      style: TextStyle(
+                                                          fontSize: 14.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: const Color(
+                                                              0xFF292D32)),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          OpClick(
+                                            onTap: () {
+                                              // WithdrawPage
+                                              Get.to(() => WithdrawPage());
+                                            },
+                                            child: Container(
+                                              width: 65.w,
+                                              height: 44.w,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.w),
+                                                color: const Color(0xFF5F9396)
+                                                    .withOpacity(0.3),
+                                                boxShadow: AppTheme.cardShow,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Icons.input_outlined,
+                                                    size: 18.sp,
+                                                    color:
+                                                        const Color(0xFF292D32),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 4.w),
+                                                    child: Text(
+                                                      '提现',
+                                                      style: TextStyle(
+                                                          fontSize: 14.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: const Color(
+                                                              0xFF292D32)),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          OpClick(
+                                            onTap: () {
+                                              _transferShowBottomSheet(
+                                                context, //上下文
+                                                iconurl:
+                                                    'assets/svgs/shuffle.svg', //图标
+                                                title: '转账', //标题
+                                                oCcy: oCcy, //格式化
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 141.w,
+                                              height: 44.w,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.w),
+                                                color: const Color(0xFF9BAED2)
+                                                    .withOpacity(0.35),
+                                                boxShadow: AppTheme.cardShow,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    'assets/svgs/shuffle.svg',
+                                                    width: 22.w,
+                                                    height: 22.w,
+                                                    color:
+                                                        const Color(0xFF292D32),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 12.w),
+                                                    child: Text(
+                                                      '转账',
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: const Color(
+                                                              0xFF292D32)),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          OpClick(
+                                            onTap: () {
+                                              _receiveShowBottomSheet(
+                                                context,
+                                                iconurl:
+                                                    'assets/svgs/upload.svg',
+                                                title: '接收',
+                                                oCcy: oCcy,
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 141.w,
+                                              height: 44.w,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.w),
+                                                color: const Color(0xFF5F9396)
+                                                    .withOpacity(0.3),
+                                                boxShadow: AppTheme.cardShow,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    'assets/svgs/upload.svg',
+                                                    width: 22.w,
+                                                    height: 22.w,
+                                                    color:
+                                                        const Color(0xFF292D32),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 12.w),
+                                                    child: Text(
+                                                      '接收',
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: const Color(
+                                                              0xFF292D32)),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      )
                               ],
                             )),
 
-                        // SizedBox(height: 14.h),
+                        SizedBox(height: 14.h),
                         //* 操作信息
                         Container(
                           constraints: BoxConstraints(
-                            minHeight: 844.h -
-                                372.h -
-                                14.h -
-                                getStatusBarHeight(context),
+                            minHeight:
+                                860.h - 372.w - getStatusBarHeight(context),
                           ),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -1430,7 +1628,7 @@ class _WalletState extends State<Wallet> {
       ),
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.only(left: 19.w, right: 19.w, top: 17.w),
+          padding: EdgeInsets.only(left: 19.w, right: 19.w, top: 17.h),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(
@@ -1454,7 +1652,7 @@ class _WalletState extends State<Wallet> {
                     children: [
                       SvgPicture.asset(
                         iconurl,
-                        width: 22.sp,
+                        width: 22.w,
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 8.w),
@@ -1470,7 +1668,7 @@ class _WalletState extends State<Wallet> {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(top: 50.w),
+                margin: EdgeInsets.only(top: 35.h),
                 child: Column(children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1478,17 +1676,17 @@ class _WalletState extends State<Wallet> {
                       QrImageView(
                         data: '1234567890', // 二维码数据
                         version: QrVersions.auto, // 二维码版本
-                        size: 175.438.w, // 二维码大小
+                        size: 170.w, // 二维码大小
                       ),
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 35.w), // 设置上下边距为35
+                    padding: EdgeInsets.symmetric(vertical: 25.h), // 设置上下边距为35
                     child: Container(
                       height: 61.h,
                       width: 345.w,
                       padding:
-                          EdgeInsets.only(left: 30.w, top: 7.w, bottom: 7.w),
+                          EdgeInsets.only(left: 30.w, top: 7.h, bottom: 7.h),
                       decoration: BoxDecoration(
                         color: const Color(0xffF1F1F1),
                         borderRadius: BorderRadius.circular(12.w),

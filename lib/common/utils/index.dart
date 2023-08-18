@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:wallet/database/index.dart';
+import 'package:wallet/db/kv_box.dart';
 
 // 语言
 class Utils {
@@ -43,18 +44,25 @@ class Utils {
   }
 
   /// 判断本地的存储的token 对应的地址和当前的地址是否一致
+  // Future<bool> isSameAddress({required String address}) async {
+  //   var token = await DB.box.read('token');
+  //
+  //   if (token == null || token['token'] == null || token['address'] == null) {
+  //     return false;
+  //   } else {
+  //     if (token['address'].toLowerCase() == address.toLowerCase()) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   }
+  // }
   Future<bool> isSameAddress({required String address}) async {
-    var token = await DB.box.read('token');
-
-    if (token == null || token['token'] == null || token['address'] == null) {
-      return false;
-    } else {
-      if (token['address'].toLowerCase() == address.toLowerCase()) {
-        return true;
-      } else {
-        return false;
-      }
+    var kvAddress = await KVBox.GetAddress();
+    if (kvAddress != "" && (kvAddress.toLowerCase() == address.toLowerCase())) {
+      return true;
     }
+    return false;
   }
 }
 
@@ -64,6 +72,7 @@ String checkLoginStatus() {
   // 延迟一段时间模拟登录状态检查
   if (isLogin.length > 0) {
     return '/';
+    // LogBackIn
   } else {
     return '/importwallet';
   }
