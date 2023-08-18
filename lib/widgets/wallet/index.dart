@@ -1628,7 +1628,7 @@ class _WalletState extends State<Wallet> {
       ),
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.only(left: 19.w, right: 19.w, top: 17.w),
+          padding: EdgeInsets.only(left: 19.w, right: 19.w, top: 17.h),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(
@@ -1652,7 +1652,7 @@ class _WalletState extends State<Wallet> {
                     children: [
                       SvgPicture.asset(
                         iconurl,
-                        width: 22.sp,
+                        width: 22.w,
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 8.w),
@@ -1668,7 +1668,7 @@ class _WalletState extends State<Wallet> {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(top: 50.w),
+                margin: EdgeInsets.only(top: 35.h),
                 child: Column(children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1676,17 +1676,17 @@ class _WalletState extends State<Wallet> {
                       QrImageView(
                         data: '1234567890', // 二维码数据
                         version: QrVersions.auto, // 二维码版本
-                        size: 175.438.w, // 二维码大小
+                        size: 170.w, // 二维码大小
                       ),
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 35.w), // 设置上下边距为35
+                    padding: EdgeInsets.symmetric(vertical: 25.h), // 设置上下边距为35
                     child: Container(
                       height: 61.h,
                       width: 345.w,
                       padding:
-                          EdgeInsets.only(left: 30.w, top: 7.w, bottom: 7.w),
+                          EdgeInsets.only(left: 30.w, top: 7.h, bottom: 7.h),
                       decoration: BoxDecoration(
                         color: const Color(0xffF1F1F1),
                         borderRadius: BorderRadius.circular(12.w),
