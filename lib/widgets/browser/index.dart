@@ -275,7 +275,8 @@ class _BrowserState extends State<Browser> {
                                         OpClick(
                                           onTap: () {
                                             setState(() {
-                                              isBtns = btns.indexOf(i).toDouble();
+                                              isBtns =
+                                                  btns.indexOf(i).toDouble();
                                               i == btns[0]
                                                   ? isRecommendedPage = true
                                                   : isRecommendedPage = false;
@@ -338,7 +339,7 @@ class _BrowserState extends State<Browser> {
                                                 height: 149.h,
                                                 child: const Image(
                                                     image: AssetImage(
-                                                        'assets/images/Shopping_Online.png')),
+                                                        'assets/images/shopping_online.png')),
                                               ),
                                             ),
                                             Container(
@@ -720,8 +721,8 @@ class _CustomListItemState extends State<CustomListItem> {
             //跳转到SharePage页面
             setState(() {
               // ignore: deprecated_member_use
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const SharePage()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const SharePage()));
             });
           },
           child: Container(
