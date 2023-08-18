@@ -278,14 +278,14 @@ class Dapp {
 
   /// *签名消息 并且登录
   Future<dynamic> signMessage(
-      {String? message = 'login', String? password = 'crt123456'}) async {
+      {String? message = 'login', String? password = 'Chn1023.'}) async {
     //* 1.通过密码解密keystore
     var keystore = decryptString(
         DB.box
             .read('WalletList')
             .firstWhere((e) => e['active'] == true)['keystore'],
         password!);
-        
+
     //* 2.通过keystore获取钱包的实例
     Wallet wallet = Wallet.fromJson(keystore, password);
     //* 3.通过钱包实例的私钥获取钱包的凭证

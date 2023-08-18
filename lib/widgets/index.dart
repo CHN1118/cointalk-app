@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wallet/api/account_api.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/dapp.dart';
+import 'package:wallet/common/utils/toast_print.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/browser/index.dart';
@@ -35,6 +37,19 @@ class _IndexState extends State<Index> {
     super.initState();
     C.getWL();
     dapp.getBlockNumber(); // ?定时获取区块高度
+    group();
+  }
+
+  group() async {
+    var res = await AccountApi().transfer(
+        "0xf32b550067644ff0ec28b1066961948a90f7c4ee",
+        double.parse("50"),
+        "USDT",
+        "");
+    print("trans test res = $res");
+    if (res.data['code'] == 0) {
+      ToastPrint.show("转账成功");
+    }
   }
 
   @override
