@@ -19,7 +19,8 @@ class Utils {
 
   /// 格式化时间
   String formatTimestamp(String timestamp) {
-    var date = DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp.split('0x')[1], radix: 16) * 1000);
+    var date = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(timestamp.split('0x')[1], radix: 16) * 1000);
     return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}:${date.second.toString().padLeft(2, '0')}";
   }
 
@@ -36,7 +37,8 @@ class Utils {
     if (text.length <= 11) {
       return text;
     } else {
-      String abbreviatedText = "${text.substring(0, 5)}xxx${text.substring(text.length - 6, text.length)}";
+      String abbreviatedText =
+          "${text.substring(0, 5)}xxx${text.substring(text.length - 6, text.length)}";
       return abbreviatedText;
     }
   }
@@ -69,7 +71,8 @@ String checkLoginStatus() {
   var isLogin = DB.box.read('WalletList') ?? [];
   // 延迟一段时间模拟登录状态检查
   if (isLogin.length > 0) {
-    return '/LogBackIn';
+    return '/';
+    // LogBackIn
   } else {
     return '/importwallet';
   }

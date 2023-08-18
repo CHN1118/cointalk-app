@@ -18,6 +18,8 @@ import 'package:wallet/components/qr_code_scanner.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/mine/wallets.dart';
+import 'package:wallet/widgets/wallet/top_up.dart';
+import 'package:wallet/widgets/wallet/withdraw.dart';
 
 class Wallet extends StatefulWidget {
   const Wallet({super.key});
@@ -696,7 +698,9 @@ class _WalletState extends State<Wallet> {
                                       ),
                                     ),
                                     OpClick(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Get.to(() => TopUp());
+                                      },
                                       child: Container(
                                         width: 65.w,
                                         height: 44.w,
@@ -733,7 +737,10 @@ class _WalletState extends State<Wallet> {
                                       ),
                                     ),
                                     OpClick(
-                                      onTap: () {},
+                                      onTap: () {
+                                        // WithdrawPage
+                                        Get.to(() => WithdrawPage());
+                                      },
                                       child: Container(
                                         width: 65.w,
                                         height: 44.w,
