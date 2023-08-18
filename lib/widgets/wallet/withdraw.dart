@@ -23,7 +23,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
         title: Text("提币",
             style: TextStyle(
               color: Colors.black,
-              fontSize: 18.w,
+              fontSize: 18.sp,
             )),
         leading: GestureDetector(
           onTap: () => Get.back(),
@@ -52,18 +52,19 @@ class _WithdrawPageState extends State<WithdrawPage> {
               children: [
                 // 充值 手续费
                 Container(
-                  margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                  margin:
+                      EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
                   child: rechargeViewBuilder(),
                 ),
 
                 Container(
                   color: Color(0xFFF9FAFC),
-                  height: 10,
+                  height: 10.h,
                 ),
                 // 手续费
                 Container(
                   margin: EdgeInsets.only(
-                      left: 20.w, right: 20.w, top: 13.w, bottom: 13.w),
+                      left: 20.w, right: 20.w, top: 13.h, bottom: 13.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -88,7 +89,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                 // 实际到账
                 Container(
                   margin: EdgeInsets.only(
-                      left: 20.w, right: 20.w, top: 13.w, bottom: 13.w),
+                      left: 20.w, right: 20.w, top: 13.h, bottom: 13.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -116,10 +117,10 @@ class _WithdrawPageState extends State<WithdrawPage> {
 
           // 提币按钮
           Container(
-              padding: EdgeInsets.only(bottom: 36.w),
+              padding: EdgeInsets.only(bottom: 36.h),
               child: SizedBox(
                   width: MediaQuery.of(context).size.width - 40.w,
-                  height: 48.w,
+                  height: 48.h,
                   child: Container(
                     //      Color(0xFFDADFED)
                     decoration: BoxDecoration(
@@ -146,9 +147,9 @@ class _WithdrawPageState extends State<WithdrawPage> {
   // !顶部UDST
   Widget balanceBuilder() {
     return Container(
-      margin: EdgeInsets.only(bottom: 18.w),
+      margin: EdgeInsets.only(bottom: 18.h),
       padding:
-          EdgeInsets.only(left: 15.w, right: 20.w, top: 13.w, bottom: 13.w),
+          EdgeInsets.only(left: 15.w, right: 20.w, top: 13.h, bottom: 13.h),
       decoration: BoxDecoration(
         color: Color(0xFFF9FAFC),
         borderRadius: BorderRadius.circular(10.w),
@@ -214,9 +215,10 @@ class _WithdrawPageState extends State<WithdrawPage> {
                   color: Color(0xFF686C77),
                 )),
             Container(
-              padding: EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 5),
+              padding:
+                  EdgeInsets.only(left: 8.w, right: 8.w, top: 5.h, bottom: 5.h),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(5.w),
                 color: Color(0xFFF1F4FF),
               ),
               child: Text(
@@ -233,7 +235,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
 
         // 发送到
         Container(
-          padding: EdgeInsets.only(top: 15),
+          padding: EdgeInsets.only(top: 15.h),
           alignment: Alignment.centerLeft, // 设置文字居中对齐
           child: Text(
             '发送到',
@@ -282,7 +284,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
 
         // 主网
         Container(
-          padding: EdgeInsets.only(top: 15.w),
+          padding: EdgeInsets.only(top: 15.h),
           alignment: Alignment.centerLeft, // 设置文字居中对齐
           child: Text(
             "主网",
@@ -292,7 +294,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
 
         //TRC20
         Padding(
-            padding: EdgeInsets.only(top: 12.w, bottom: 12.w),
+            padding: EdgeInsets.only(top: 12.h, bottom: 12.h),
             child: InkWell(
               onTap: () {
                 // // 处理点击事件
@@ -338,11 +340,11 @@ class _WithdrawPageState extends State<WithdrawPage> {
 
         Divider(
           color: Color(0xFFD8D8D8),
-          height: 0.5.w,
+          height: 0.5.h,
         ),
         //提现金额
         Padding(
-          padding: EdgeInsets.only(top: 18.w),
+          padding: EdgeInsets.only(top: 18.h),
           child: Container(
             alignment: Alignment.centerLeft, // 设置文字居中对齐
             child: Text(
@@ -407,13 +409,13 @@ class _WithdrawPageState extends State<WithdrawPage> {
         ),
 
         Padding(
-          padding: EdgeInsets.only(top: 18),
+          padding: EdgeInsets.only(top: 18.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                  padding: EdgeInsets.only(top: 3, bottom: 10),
-                  alignment: Alignment.centerLeft, // 设置文字居中对
+                  padding: EdgeInsets.only(top: 3.h, bottom: 10.h),
+                  alignment: Alignment.centerLeft, // 设置文字居中对齐
                   child: Text(
                     '可用提现: 2 UDST',
                     style: TextStyle(
@@ -448,7 +450,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              padding: EdgeInsets.only(top: 3),
+              padding: EdgeInsets.only(top: 3.h),
               alignment: Alignment.centerLeft, // 设置文字居中对
               child: Text(
                 '24小时后可提现余额: 0 USDT',
