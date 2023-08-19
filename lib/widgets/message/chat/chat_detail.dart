@@ -5,6 +5,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
@@ -111,7 +112,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         print("mi is null");
         return;
       }
-      var chatName = relation?.toNoteName == "" ? mi.nickName : relation?.toNoteName;
+      var chatName =
+          relation?.toNoteName == "" ? mi.nickName : relation?.toNoteName;
       var msg;
       if (mi.type == GMsgType.TEXT) {
         msg = types.TextMessage(
@@ -186,7 +188,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         allIndex = index;
       }
       for (int i = 0; i < allIndex; i++) {
-        showMsgKeys.insert(0, channelId.toString() + "-" + (index - i).toString());
+        showMsgKeys.insert(
+            0, channelId.toString() + "-" + (index - i).toString());
       }
       showMsgKeys.reversed;
     }
@@ -198,7 +201,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         return;
       }
       late types.Message msg;
-      var chatName = relation?.toNoteName == "" ? mi.nickName : relation?.toNoteName;
+      var chatName =
+          relation?.toNoteName == "" ? mi.nickName : relation?.toNoteName;
       if (mi.type == GMsgType.TEXT) {
         msg = types.TextMessage(
           author: types.User(
@@ -267,8 +271,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _chatAttachmentItem("photo".tr, "assets/images/chat_attachment_image.png", tapFunc: () async {
-
+              _chatAttachmentItem(
+                  "photo".tr, "assets/images/chat_attachment_image.png",
+                  tapFunc: () async {
                 ToastPrint.show("not_open_yet".tr);
 
                 // final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -277,7 +282,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 //   Get.back(result: pickedFile);
                 // }
               }),
-              _chatAttachmentItem("shoot".tr, "assets/images/chat_attachment_shoot.png", tapFunc: () async {
+              _chatAttachmentItem(
+                  "shoot".tr, "assets/images/chat_attachment_shoot.png",
+                  tapFunc: () async {
                 ToastPrint.show("not_open_yet".tr);
 
                 // final XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
@@ -286,22 +293,32 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 //   Get.back(result: pickedFile);
                 // }
               }),
-              _chatAttachmentItem("red_envelope".tr, "assets/images/chat_attachment_red.png", tapFunc: () async {
-                final result = await Get.to(() => SendRedPack(), arguments: {"consumer": consumer});
+              _chatAttachmentItem(
+                  "red_envelope".tr, "assets/images/chat_attachment_red.png",
+                  tapFunc: () async {
+                final result = await Get.to(() => SendRedPack(),
+                    arguments: {"consumer": consumer});
                 // print("红包 result = ${result}");
                 if (result == GKey.SUCCESS) {
-                  String amount = Get.find< PayPwdBottomController>().amountValue.value;
-                  String remark = Get.find<PayPwdBottomController>().remarkValue.value;
+                  String amount =
+                      Get.find<PayPwdBottomController>().amountValue.value;
+                  String remark =
+                      Get.find<PayPwdBottomController>().remarkValue.value;
                   // print("红包 amount = ${amount}");
                   // print("红包 remark = ${remark}");
                   _handleRed(num.parse(amount), remark);
                 }
               }),
-              _chatAttachmentItem("transfer".tr, "assets/images/chat_attachment_transfer.png", tapFunc: () async {
-                final result = await Get.to(() => ChatTransferPage(), arguments: {"consumer": consumer});
+              _chatAttachmentItem(
+                  "transfer".tr, "assets/images/chat_attachment_transfer.png",
+                  tapFunc: () async {
+                final result = await Get.to(() => ChatTransferPage(),
+                    arguments: {"consumer": consumer});
                 if (result == GKey.SUCCESS) {
-                  String amount = Get.find<PayPwdBottomController>().amountValue.value;
-                  String remark = Get.find<PayPwdBottomController>().remarkValue.value;
+                  String amount =
+                      Get.find<PayPwdBottomController>().amountValue.value;
+                  String remark =
+                      Get.find<PayPwdBottomController>().remarkValue.value;
                   // print("转账 amount = ${amount}");
                   // print("转账 remark = ${remark}");
                   _handleTransfer(num.parse(amount), remark);
@@ -390,7 +407,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     var resCode = await CentreApi().sendData(sp);
     if (resCode == 0) {
       final index = _messages.indexWhere((element) => element.id == msgId);
-      final updatedMessage = (_messages[index] as types.TextMessage).copyWith(status: types.Status.sent);
+      final updatedMessage = (_messages[index] as types.TextMessage)
+          .copyWith(status: types.Status.sent);
       setState(() {
         _messages[index] = updatedMessage;
       });
@@ -432,7 +450,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     var resCode = await CentreApi().sendData(sp);
     if (resCode == 0) {
       final index = _messages.indexWhere((element) => element.id == msgId);
-      final updatedMessage = (_messages[index] as types.CustomMessage).copyWith(status: types.Status.sent);
+      final updatedMessage = (_messages[index] as types.CustomMessage)
+          .copyWith(status: types.Status.sent);
       setState(() {
         _messages[index] = updatedMessage;
       });
@@ -473,7 +492,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     var resCode = await CentreApi().sendData(sp);
     if (resCode == 0) {
       final index = _messages.indexWhere((element) => element.id == msgId);
-      final updatedMessage = (_messages[index] as types.CustomMessage).copyWith(status: types.Status.sent);
+      final updatedMessage = (_messages[index] as types.CustomMessage)
+          .copyWith(status: types.Status.sent);
       setState(() {
         _messages[index] = updatedMessage;
       });
@@ -544,7 +564,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             receivedMessageBodyTextStyle: CommonStyle.text_16_primary_w500,
             attachmentButtonIcon: Icon(
               Icons.add_circle_outline,
-              size: 28,
+              size: 28.w,
               color: Color(0xFF2C2C2C),
             ),
             emptyChatPlaceholderTextStyle: CommonStyle.text_12_grey,
@@ -557,7 +577,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             sentMessageBodyTextStyle: CommonStyle.text_16_white_w500,
             userNameTextStyle: TextStyle(
               color: Colors.red,
-              fontSize: 14,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -572,7 +592,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       child: DropdownButtonHideUnderline(
         child: DropdownButton2(
           customButton: Padding(
-            padding: EdgeInsets.only(right: 16),
+            padding: EdgeInsets.only(right: 16.w),
             child: Icon(
               Icons.more_horiz,
               color: Colors.black,
@@ -596,23 +616,23 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             // }
           },
           dropdownStyleData: DropdownStyleData(
-            maxHeight: 200,
-            width: 120,
+            maxHeight: 200.h,
+            width: 120.w,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(14.w),
               color: Colors.white,
             ),
-            elevation: 6,
-            offset: const Offset(0, 10),
+            elevation: 6, // 阴影
+            offset: const Offset(0, 10), // 位置偏移
             scrollbarTheme: ScrollbarThemeData(
-              radius: const Radius.circular(40),
-              thickness: MaterialStateProperty.all<double>(6),
-              thumbVisibility: MaterialStateProperty.all<bool>(true),
+              radius: Radius.circular(40.w), // 滚动条圆角
+              thickness: MaterialStateProperty.all<double>(6.w), // 滚动条宽度
+              thumbVisibility: MaterialStateProperty.all<bool>(true), // 是否显示滚动条
             ),
           ),
-          menuItemStyleData: const MenuItemStyleData(
-            height: 40,
-            padding: EdgeInsets.only(left: 34, right: 14),
+          menuItemStyleData: MenuItemStyleData(
+            height: 40.h,
+            padding: EdgeInsets.only(left: 34.w, right: 14.w),
           ),
         ),
       ),
@@ -621,7 +641,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 }
 
 // 附件栏
-Widget _chatAttachmentItem(String message, String image, {required VoidCallback tapFunc}) {
+Widget _chatAttachmentItem(String message, String image,
+    {required VoidCallback tapFunc}) {
   return InkWell(
     onTap: () {
       tapFunc();
@@ -631,15 +652,15 @@ Widget _chatAttachmentItem(String message, String image, {required VoidCallback 
       children: [
         Container(
           color: Colors.white,
-          margin: EdgeInsets.only(bottom: 5),
+          margin: EdgeInsets.only(bottom: 5.h),
           child: Container(
-            width: 60,
-            height: 60,
-            padding: EdgeInsets.all(14),
+            width: 60.w,
+            height: 60.w,
+            padding: EdgeInsets.all(14.w),
             child: Image.asset(
               image,
-              width: 32,
-              height: 32,
+              width: 32.w,
+              height: 32.w,
             ),
           ),
         ),
@@ -650,7 +671,8 @@ Widget _chatAttachmentItem(String message, String image, {required VoidCallback 
 }
 
 // 自定义消息
-Widget customMessageBuilder(types.CustomMessage message, {required int messageWidth}) {
+Widget customMessageBuilder(types.CustomMessage message,
+    {required int messageWidth}) {
   String cid = KVBox.GetCid();
   if (message.metadata!["type"] == GMsgType.TRANS) {
     return TransferMessageBuilder(message, cid);
@@ -665,7 +687,7 @@ Widget customMessageBuilder(types.CustomMessage message, {required int messageWi
 Widget TransferMessageBuilder(types.CustomMessage message, String cid) {
   return Container(
     width: Get.width * 0.6,
-    padding: EdgeInsets.all(12),
+    padding: EdgeInsets.all(12.w),
     color: Colors.orange,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -673,33 +695,39 @@ Widget TransferMessageBuilder(types.CustomMessage message, String cid) {
         Row(
           children: [
             Icon(
-              cid == message.author.id ? Icons.check_circle_outline : Icons.currency_exchange,
+              cid == message.author.id
+                  ? Icons.check_circle_outline
+                  : Icons.currency_exchange,
               size: 32,
               color: Colors.white,
             ),
-            SizedBox(width: 10),
+            SizedBox(width: 10.w),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 RichText(
-                    text: TextSpan(text: message.metadata!["num"], style: CommonStyle.text_18_white_w700, children: [
-                  TextSpan(
-                    text: " USDT",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
-                ])),
+                    text: TextSpan(
+                        text: message.metadata!["num"],
+                        style: CommonStyle.text_18_white_w700,
+                        children: [
+                      TextSpan(
+                        text: " USDT",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.sp,
+                        ),
+                      ),
+                    ])),
                 Text(
-                  message.metadata!["remark"] == null || message.metadata!["remark"] == ""
+                  message.metadata!["remark"] == null ||
+                          message.metadata!["remark"] == ""
                       ? cid == message.author.id
                           ? "transfer_success".tr
                           : "receive_transfer".tr
                       : message.metadata!["remark"],
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 12,
+                    fontSize: 12.sp,
                   ),
                 ),
               ],
@@ -713,7 +741,7 @@ Widget TransferMessageBuilder(types.CustomMessage message, String cid) {
           "transfer".tr,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 12,
+            fontSize: 12.sp,
           ),
         ),
       ],
@@ -725,7 +753,7 @@ Widget TransferMessageBuilder(types.CustomMessage message, String cid) {
 Widget RedPacketBuilder(types.CustomMessage message, String cid) {
   return Container(
     width: Get.width * 0.6,
-    padding: EdgeInsets.all(12),
+    padding: EdgeInsets.all(12.w),
     color: Colors.orange,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -734,24 +762,25 @@ Widget RedPacketBuilder(types.CustomMessage message, String cid) {
           children: [
             Padding(
               padding: EdgeInsets.only(
-                right: 10,
+                right: 10.w,
               ),
               child: Image.asset(
                 "assets/images/red_packet.png",
-                width: 40,
-                height: 40,
+                width: 40.w,
+                height: 40.w,
               ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  message.metadata!["remark"] == null || message.metadata!["remark"] == ""
+                  message.metadata!["remark"] == null ||
+                          message.metadata!["remark"] == ""
                       ? "red_envelope_remarks_hint".tr
                       : message.metadata!["remark"],
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 12,
+                    fontSize: 12.sp,
                   ),
                 ),
               ],
@@ -774,7 +803,7 @@ Widget UpdateGroupNameMessageBuilder(types.CustomMessage message) {
   return Container(
     // width: messageWidth.toDouble(),
     // width: Get.width * 0.6,
-    padding: EdgeInsets.all(10),
+    padding: EdgeInsets.all(10.w),
     decoration: BoxDecoration(
       color: Colors.black12,
     ),
@@ -785,14 +814,14 @@ Widget UpdateGroupNameMessageBuilder(types.CustomMessage message) {
           "update_group_name".tr,
           style: TextStyle(
             color: Colors.black,
-            fontSize: 12,
+            fontSize: 12.sp,
           ),
         ),
         Text(
           message.metadata!["name"],
           style: TextStyle(
             color: Colors.black,
-            fontSize: 18,
+            fontSize: 18.sp,
           ),
         ),
       ],

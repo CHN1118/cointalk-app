@@ -356,6 +356,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                 ),
                 SizedBox(height: 10.w),
                 Container(
+                  height: 30.w,
                   padding: EdgeInsets.only(
                       left: 20.w, right: 20.w, top: 0, bottom: 0),
                   child: TextFormField(
@@ -393,7 +394,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                         ),
                       ),
                       suffixIcon: IconButton(
-                          iconSize: 30,
+                          iconSize: 25.w,
                           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           icon: Icon(
                             Icons.search_outlined,
@@ -589,7 +590,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
       ),
       child: Container(
         color: Colors.white,
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 20.w),
         child: InkWell(
           onTap: () async {
             int corner = KVBox.GetCorner(cItem.chat_id);
@@ -637,11 +638,11 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                         style: CommonStyle.text_10_white,
                       ),
                       child: Container(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: EdgeInsets.only(right: 10.w),
                         child: Image.network(
                           cItem.head_img,
-                          width: 40,
-                          height: 40,
+                          width: 40.w,
+                          height: 40.w,
                         ),
                       ),
                     ),
@@ -653,7 +654,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                           cItem.from_name,
                           style: CommonStyle.text_16_black,
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(height: 8.h),
                         Text(
                           cItem.type == GMsgType.TRANS
                               ? "[转账]" + cItem.content
@@ -685,8 +686,8 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
         child: DropdownButton2(
           customButton: Image.asset(
             "assets/images/chat_add.png",
-            width: 28,
-            height: 28,
+            width: 28.w,
+            height: 28.w,
           ),
           isExpanded: true,
           items: items
@@ -710,24 +711,24 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
             });
           },
           dropdownStyleData: DropdownStyleData(
-            maxHeight: 200,
-            width: 120,
+            maxHeight: 200.h,
+            width: 120.w,
             //padding: EdgeInsets.only(right: 10),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(14.w),
               color: Colors.white,
             ),
-            elevation: 8,
+            elevation: 8, //阴影
             offset: const Offset(0, -10),
             scrollbarTheme: ScrollbarThemeData(
-              radius: const Radius.circular(40),
-              thickness: MaterialStateProperty.all<double>(6),
+              radius: Radius.circular(40.w), //滚动条两端圆角
+              thickness: MaterialStateProperty.all<double>(6.w), //滚动条宽度
               thumbVisibility: MaterialStateProperty.all<bool>(true),
             ),
           ),
-          menuItemStyleData: const MenuItemStyleData(
-            height: 40,
-            padding: EdgeInsets.only(left: 34, right: 14),
+          menuItemStyleData: MenuItemStyleData(
+            height: 40.w,
+            padding: EdgeInsets.only(left: 34.w, right: 14.w),
           ),
         ),
       ),

@@ -573,6 +573,8 @@ class _EditorPageState extends State<EditorPage> {
     super.dispose();
   }
 
+  var _searchKeywords = ''; // 搜索关键词
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -585,8 +587,10 @@ class _EditorPageState extends State<EditorPage> {
           actions: [
             OpClick(
               onTap: () {
-                showSnackBar(msg: '编辑成功');
-                Navigator.pop(context);
+                if (_searchKeywords != '') {
+                  showSnackBar(msg: '编辑成功');
+                  Navigator.pop(context);
+                }
               },
               child: Container(
                 margin: EdgeInsets.only(right: 22.w),
@@ -632,6 +636,7 @@ class _EditorPageState extends State<EditorPage> {
             padding: EdgeInsets.only(left: 17.w),
             child: TextField(
               focusNode: _focusNode, // 将输入框与焦点关联
+
               autofocus: true, // 自动获取焦点
               cursorColor: const Color(0xff000000).withOpacity(0.5), //设置光标颜色
               strutStyle: StrutStyle.fromTextStyle(
@@ -646,10 +651,16 @@ class _EditorPageState extends State<EditorPage> {
                 border: InputBorder.none,
               ),
               // 添加 onSubmitted 回调处理用户按下键盘上的搜索按钮的事件
-              onSubmitted: (value) {},
+              onSubmitted: (value) {
+                setState(() {
+                  _searchKeywords = value.trim();
+                });
+              },
               // 添加 onChanged 回调处理用户输入的内容
               onChanged: (value) {
-                setState(() {});
+                setState(() {
+                  _searchKeywords = value.trim();
+                });
               },
             ),
           ),
