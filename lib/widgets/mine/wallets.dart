@@ -8,13 +8,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
-import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/controller/index.dart';
 import 'package:wallet/database/index.dart';
 import 'package:wallet/event/index.dart';
 import 'package:wallet/widgets/importwallet/creat_psw.dart';
-import 'package:web3dart/web3dart.dart';
 
 // ignore: must_be_immutable
 class WalletMan extends StatefulWidget {

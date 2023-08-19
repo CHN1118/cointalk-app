@@ -320,12 +320,12 @@ class _PersonalDataState extends State<PersonalData> {
           Radius.circular(10.0.w))),
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.only(top: 11.w),
+          padding: EdgeInsets.only(top: 11.h),
           decoration: BoxDecoration(
               color: const Color(0xffE8F2F2),
               borderRadius: BorderRadius.all(//圆角
                   Radius.circular(10.0.w))),
-          height: 140.h,
+          height: 142.h,
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [

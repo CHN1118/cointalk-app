@@ -38,7 +38,7 @@ class Utils {
       return text;
     } else {
       String abbreviatedText =
-          "${text.substring(0, 5)}xxx${text.substring(text.length - 6, text.length)}";
+          "${text.substring(0, 5)}***${text.substring(text.length - 6, text.length)}";
       return abbreviatedText;
     }
   }
