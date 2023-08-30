@@ -291,6 +291,7 @@ class Dapp {
       'msg': '$message$timestamp',
       "password": password
     });
+    print(res);
     if (res['code'] == 0) {
       LLogger.d('登录成功:$res');
       BusinessUser bu = BusinessUser.fromJson(res["data"]);
@@ -328,8 +329,9 @@ class Dapp {
       });
       //缓存我的通讯录
       ubox.write('relation_all', ret.relationAll);
-      // DB.box.write(
-      //     'token', {'token': res['data']['token'], 'address': CL.address.hex});
+      print('token${res['data']['token']}');
+      DB.box.write(
+          'token', {'token': res['data']['token'], 'address': CL.address.hex});
       LLogger.d('存储的token${DB.box.read('token')}');
       LLogger.d('登录后初始化成功');
     }

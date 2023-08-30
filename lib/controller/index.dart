@@ -78,16 +78,17 @@ class Controller extends GetxController {
     print('当前钱包的交易信息:$currentWalletTx');
     getPrice();
     // dapp.signMessage(); // ?定时获取签名
-    bool islogin =
-        await utils.isSameAddress(address: currentWallet.value['address']);
-    print(islogin);
-    if (islogin) {
-      print('已登录');
-      // print('当前钱包地址:${DB.box.read('token')}');
-      print('当前钱包地址:${KVBox.GetAddress()}');
-    } else {
-      dapp.signMessage();
-    }
+    // bool islogin =
+    //     await utils.isSameAddress(address: currentWallet.value['address']);
+    // print('----------------->islogin');
+    // print(islogin);
+    // if (islogin) {
+    //   print('已登录');
+    //   // print('当前钱包地址:${DB.box.read('token')}');
+    //   print('当前钱包地址:${KVBox.GetAddress()}');
+    // } else {
+    //   await dapp.signMessage();
+    // }
   }
 
   getPrice() async {

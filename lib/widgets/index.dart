@@ -41,15 +41,15 @@ class _IndexState extends State<Index> {
   }
 
   group() async {
-    var res = await AccountApi().transfer(
-        "0xf32b550067644ff0ec28b1066961948a90f7c4ee",
-        double.parse("50"),
-        "USDT",
-        "");
-    print("trans test res = $res");
-    if (res.data['code'] == 0) {
-      ToastPrint.show("转账成功");
-    }
+    // var res = await AccountApi().transfer(
+    //     "0xf32b550067644ff0ec28b1066961948a90f7c4ee",
+    //     double.parse("50"),
+    //     "USDT",
+    //     "");
+    // print("trans test res = $res");
+    // if (res.data['code'] == 0) {
+    //   ToastPrint.show("转账成功");
+    // }
   }
 
   @override

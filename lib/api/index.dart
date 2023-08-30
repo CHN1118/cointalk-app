@@ -11,7 +11,9 @@ class CustomHttpClient {
 
   CustomHttpClient({required this.baseUrl, this.defaultHeaders = const {}});
 
-  Future<dynamic> post(String endpoint, {Map<String, dynamic>? data, Map<String, String>? additionalHeaders}) async {
+  Future<dynamic> post(String endpoint,
+      {Map<String, dynamic>? data,
+      Map<String, String>? additionalHeaders}) async {
     _requestInterceptor();
 
     Map<String, String> allHeaders = {...defaultHeaders};

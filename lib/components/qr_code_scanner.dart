@@ -11,6 +11,7 @@ import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 // import 'package:redleaf/api/contact_api.dart';
 // import 'package:redleaf/centre/centre.dart';
@@ -50,10 +51,7 @@ class _MyQRScannerWidgetState extends State<MyQRScannerWidget> {
       images = File(pickedFile.path);
       final String data = await FlutterQrReader.imgScan(pickedFile.path);
       if (data != '') {
-        if (data.contains('HY')) {
-          var str = data.split(':');
-          addContactPeople(str[1]);
-        }
+        Get.back(result: data);
       } else {
         showSnackBar(msg: '请扫正确的二维码');
       }
@@ -157,17 +155,18 @@ class _MyQRScannerWidgetState extends State<MyQRScannerWidget> {
                 final Uint8List? image = capture.image;
                 for (final barcode in barcodes) {
                   if (barcode.rawValue != '') {
-                    if (barcode.rawValue!.contains('HY')) {
-                      var str = barcode.rawValue!.split(':');
-                      addContactPeople(str[1]);
-                    } else {
-                      showSnackBar(msg: '请扫正确的二维码');
-                      _controller.stop();
-                      //倒计时
-                      Future.delayed(const Duration(seconds: 1), () {
-                        _controller.start();
-                      });
-                    }
+                    Get.back(result: barcode.rawValue!);
+                    // if (barcode.rawValue!.contains('HY')) {
+                    //   var str = barcode.rawValue!.split(':');
+                    //   addContactPeople(str[1]);
+                    // } else {
+                    //   showSnackBar(msg: '请扫正确的二维码');
+                    //   _controller.stop();
+                    //   //倒计时
+                    //   Future.delayed(const Duration(seconds: 1), () {
+                    //     _controller.start();
+                    //   });
+                    // }
                   }
                 }
               },
