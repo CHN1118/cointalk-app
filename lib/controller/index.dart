@@ -80,13 +80,14 @@ class Controller extends GetxController {
     // dapp.signMessage(); // ?定时获取签名
     bool islogin =
         await utils.isSameAddress(address: currentWallet.value['address']);
+    print('----------------->islogin');
     print(islogin);
     if (islogin) {
       print('已登录');
       // print('当前钱包地址:${DB.box.read('token')}');
       print('当前钱包地址:${KVBox.GetAddress()}');
     } else {
-      dapp.signMessage();
+      await dapp.signMessage();
     }
   }
 

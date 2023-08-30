@@ -1,13 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
 import 'package:get_storage/get_storage.dart';
+import 'package:wallet/database/index.dart';
 import '../../common/global/global_url.dart';
 import '../../common/utils/loading_animation.dart';
 import '../../common/utils/log_view.dart';
 import '../../common/utils/toast_print.dart';
 import '../../event/notify_event.dart';
-
-
 
 /// 拦截器发送访问令牌
 class HttpInterceptor extends Interceptor {
@@ -26,7 +25,9 @@ class HttpInterceptor extends Interceptor {
       return handler.next(options);
     }
     // 加载令牌到 header
-    var token = box.read('token') ?? "";
+    var token = DB.box.read('token') ?? "";
+    print('------------------------>token');
+    print(token);
     options.headers.addAll({"token": token});
     var im_token = box.read('im_token') ?? "";
     options.headers.addAll({"im_token": im_token});
@@ -69,9 +70,9 @@ class HttpInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    if(err.type == DioExceptionType.connectionTimeout){
+    if (err.type == DioExceptionType.connectionTimeout) {
       return handler.next(err);
-    }else{
+    } else {
       LogView.loggerDetail.e("异常: ${err}");
       ToastPrint.show("service_exception".tr);
     }
