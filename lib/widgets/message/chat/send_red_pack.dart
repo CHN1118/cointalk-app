@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../common/global/global_key.dart';
@@ -58,7 +59,9 @@ class _SendRedPackState extends State<SendRedPack> {
               Get.back();
             },
           ),
-          title: Text('send_red_envelope'.tr, textAlign: TextAlign.center, style: CommonStyle.text_18_white_w400),
+          title: Text('send_red_envelope'.tr,
+              textAlign: TextAlign.center,
+              style: CommonStyle.text_18_white_w400),
           centerTitle: true,
           actions: [
             // GestureDetector(
@@ -110,14 +113,15 @@ class _SendRedPackState extends State<SendRedPack> {
         ),
         // Smaller red arc
         CustomPaint(
-          painter: TopOvalPainter(CommonColor.redPackColor, 60),
+          painter: TopOvalPainter(CommonColor.redPackColor, 60), // 60 为弧度
           child: Container(
             height: 0,
           ),
         ),
         Container(
           alignment: Alignment.center,
-          child: Text("${'give'.tr} ${consumer.nickname}", style: CommonStyle.text_14_white_w400),
+          child: Text("${'give'.tr} ${consumer.nickname}",
+              style: CommonStyle.text_14_white_w400),
         )
       ],
     );
@@ -127,17 +131,17 @@ class _SendRedPackState extends State<SendRedPack> {
   Widget redPackAmount() {
     return Container(
       height: 56,
-      margin: EdgeInsets.only(top: 19, left: 20, right: 20),
+      margin: EdgeInsets.only(top: 19.h, left: 20.w, right: 20.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(5.w),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // 左边
           Container(
-              margin: EdgeInsets.only(left: 20),
+              margin: EdgeInsets.only(left: 20.w),
               child: Text(
                 "amount".tr,
                 style: CommonStyle.text_16_black_w400,
@@ -146,13 +150,13 @@ class _SendRedPackState extends State<SendRedPack> {
           // 右边
           Flexible(
             child: Container(
-                margin: EdgeInsets.only(right: 5),
+                margin: EdgeInsets.only(right: 5.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Flexible(
                         child: Container(
-                      padding: EdgeInsets.only(right: 11.5),
+                      padding: EdgeInsets.only(right: 11.5.w),
                       child: TextField(
                         textAlign: TextAlign.right,
                         // 文本从右边开始输入
@@ -178,7 +182,8 @@ class _SendRedPackState extends State<SendRedPack> {
                         },
                         decoration: InputDecoration(
                           hintText: "0",
-                          hintStyle: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+                          hintStyle: TextStyle(
+                              fontSize: 28.sp, fontWeight: FontWeight.w500),
                           border: InputBorder.none,
                           counterText: "",
                         ),
@@ -186,29 +191,31 @@ class _SendRedPackState extends State<SendRedPack> {
                       ),
                     )),
                     Container(
-                      padding: EdgeInsets.only(right: 5, left: 11.5, top: 5),
+                      padding:
+                          EdgeInsets.only(right: 5.w, left: 11.5.w, top: 5.h),
                       decoration: BoxDecoration(
                         border: Border(
                           left: BorderSide(
                             color: Color(0xFFBFC0C7),
-                            width: 0.5,
+                            width: 0.5.w,
                           ),
                         ),
                       ),
-                      child: Image.asset(CoinList[coinIndex].image, width: 26, height: 26),
+                      child: Image.asset(CoinList[coinIndex].image,
+                          width: 26.w, height: 26.w),
                     ),
 
                     SizedBox(
-                      height: 1,
+                      height: 1.h,
                     ),
                     // 选择框 选择币种
                     Container(
-                        padding: EdgeInsets.only(top: 1),
+                        padding: EdgeInsets.only(top: 1.h),
                         child: CoinSelectWidget(
                           items: CoinList,
                           value: coinValue,
                           valueChanged: coinSelectChange,
-                          currentValueSize: 16,
+                          currentValueSize: 16, // 当前选中的币种的字体大小
                         ))
                   ],
                 )),
@@ -221,14 +228,14 @@ class _SendRedPackState extends State<SendRedPack> {
   //  红包封面
   Widget redPackCover() {
     return Container(
-      height: 56,
-      margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+      height: 56.h,
+      margin: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(5.w),
       ),
       child: Container(
-          margin: EdgeInsets.only(left: 15),
+          margin: EdgeInsets.only(left: 15.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -255,13 +262,13 @@ class _SendRedPackState extends State<SendRedPack> {
   Widget redPackDesc() {
     return Container(
       height: 56,
-      margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+      margin: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(5.w),
       ),
       child: Container(
-          margin: EdgeInsets.only(left: 15),
+          margin: EdgeInsets.only(left: 15.w),
           child: Row(
             children: [
               Flexible(
@@ -299,20 +306,22 @@ class _SendRedPackState extends State<SendRedPack> {
     return Column(
       children: [
         Container(
-          height: 56,
+          height: 56.h,
           margin: EdgeInsets.only(top: Get.height * 0.15),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(5.w),
           ),
           child: Container(
-              margin: EdgeInsets.only(left: 15),
+              margin: EdgeInsets.only(left: 15.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(right: 5),
+                    padding: EdgeInsets.only(right: 5.w),
                     child: Text(
-                      amountController.text.isEmpty ? '0' : amountController.text,
+                      amountController.text.isEmpty
+                          ? '0'
+                          : amountController.text,
                       style: CommonStyle.text_32_black_w500,
                     ),
                   ),
@@ -332,7 +341,7 @@ class _SendRedPackState extends State<SendRedPack> {
               children: [
                 SizedBox(
                   width: Get.width * 0.9,
-                  height: 48,
+                  height: 48.h,
                   child: TextButton(
                     onPressed: () {
                       if (amountController.text.isEmpty) {
@@ -353,7 +362,9 @@ class _SendRedPackState extends State<SendRedPack> {
                       );
                       // Get.back(result: amountController.text);
                     },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(CommonColor.redPackColor)),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            CommonColor.redPackColor)),
                     child: Text(
                       "stuff_money_into_red_envelope".tr,
                       style: CommonStyle.text_16_white_w400,
@@ -369,12 +380,13 @@ class _SendRedPackState extends State<SendRedPack> {
   }
 
   // 自定义键盘
-  void showCustomKeyboard(BuildContext context, TextEditingController _textEditingController) {
+  void showCustomKeyboard(
+      BuildContext context, TextEditingController _textEditingController) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return Container(
-            height: 256, // 设置底部菜单的高度
+            height: 256.h, // 设置底部菜单的高度
             child: NumberKeyboard(
               confirmText: 'confirm'.tr,
               confirmColor: Color(0xFFE6E6E6),
@@ -406,8 +418,8 @@ class _SendRedPackState extends State<SendRedPack> {
                 // 处理删除按键的逻辑
                 if (_textEditingController.text.isNotEmpty) {
                   setState(() {
-                    _textEditingController.text =
-                        _textEditingController.text.substring(0, _textEditingController.text.length - 1);
+                    _textEditingController.text = _textEditingController.text
+                        .substring(0, _textEditingController.text.length - 1);
                   });
                 }
               },
@@ -432,7 +444,8 @@ class TopOvalPainter extends CustomPainter {
     final path = Path();
     path.moveTo(0, 0);
     path.lineTo(0, arcHeight);
-    path.quadraticBezierTo(size.width / 2, arcHeight + 50, size.width, arcHeight);
+    path.quadraticBezierTo(
+        size.width / 2, arcHeight + 50, size.width, arcHeight);
     path.lineTo(size.width, 0);
     path.close();
 

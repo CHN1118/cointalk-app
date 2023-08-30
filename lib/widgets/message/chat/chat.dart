@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -138,7 +139,8 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
         print("channelDetail=============${channelDetail}");
         // ChannelDetail cd = ChannelDetail.fromJson(channelDetail);
         MsgInfo mi = MsgInfo.fromJson(channelDetail);
-        var date = DateFormat('MM-dd HH:ss').format(DateTime.fromMillisecondsSinceEpoch(mi.time));
+        var date = DateFormat('MM-dd HH:ss')
+            .format(DateTime.fromMillisecondsSinceEpoch(mi.time));
         var channelInfo = ChannelDB.GetChannelToConsumer(ubox, channelId);
         //单聊
         if (channelInfo.state == 0) {
@@ -148,7 +150,8 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
           if (rv == null) {
             channelInfo.name = toConsumer.account;
           } else {
-            channelInfo.name = rv.toNoteName == "" ? toConsumer.account : rv.toNoteName;
+            channelInfo.name =
+                rv.toNoteName == "" ? toConsumer.account : rv.toNoteName;
           }
           channelInfo.avatar = toConsumer.avatar;
         }
@@ -160,7 +163,8 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
               from: mi.fromId,
               from_name: channelInfo.name ?? "",
               time: date.toString(),
-              content: mi.type == "transfer" ? "[转账]:" + mi.content : mi.content,
+              content:
+                  mi.type == "transfer" ? "[转账]:" + mi.content : mi.content,
               type: mi.type,
               head_img: channelInfo.avatar ?? "",
               corner: corner,
@@ -176,7 +180,8 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
               from: mi.fromId,
               from_name: channelInfo.name ?? "",
               time: date.toString(),
-              content: mi.type == "transfer" ? "[转账]:" + mi.content : mi.content,
+              content:
+                  mi.type == "transfer" ? "[转账]:" + mi.content : mi.content,
               type: mi.type,
               head_img: channelInfo.avatar ?? "",
               corner: corner,
@@ -220,8 +225,10 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
       var channelDetail = ubox.read(dataId);
       print("refreshSupport channelDetail=============${channelDetail}");
       MsgInfo mi = MsgInfo.fromJson(channelDetail);
-      var date = DateFormat('MM-dd HH:ss').format(DateTime.fromMillisecondsSinceEpoch(mi.time));
-      var channelInfo = ChannelDB.GetChannelToConsumer(ubox, sChannelId.toString());
+      var date = DateFormat('MM-dd HH:ss')
+          .format(DateTime.fromMillisecondsSinceEpoch(mi.time));
+      var channelInfo =
+          ChannelDB.GetChannelToConsumer(ubox, sChannelId.toString());
       print("客服信息-----${channelInfo.name} ----${channelInfo.avatar}");
       supportItem = ChatListItem(
         chat_id: mi.channelId,
@@ -246,8 +253,9 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
     final String searchText = fieldTextController.text;
     final List<ChatListItem> originalList = chat_list;
     if (searchText.isNotEmpty) {
-      final List<ChatListItem> filteredList =
-          originalList.where((element) => element.from_name.contains(searchText)).toList();
+      final List<ChatListItem> filteredList = originalList
+          .where((element) => element.from_name.contains(searchText))
+          .toList();
       // 更新你的列表并刷新UI
       setState(() {
         chat_list = filteredList;
@@ -300,7 +308,8 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 0),
+                  padding: EdgeInsets.only(
+                      left: 20.w, right: 20.w, top: 0, bottom: 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -308,7 +317,9 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                         children: [
                           Container(
                             child: Text(
-                              tCorner == 0 ? "message".tr : "message".tr + "(${tCorner.toString()})",
+                              tCorner == 0
+                                  ? "message".tr
+                                  : "message".tr + "(${tCorner.toString()})",
                               style: CommonStyle.text_18_black,
                             ),
                           ),
@@ -320,7 +331,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                             child: Row(
                               children: [
                                 Container(
-                                  margin: EdgeInsets.only(left: 10),
+                                  margin: EdgeInsets.only(left: 10.w),
                                   child: IconButton(
                                     onPressed: () {
                                       // 通讯录页面
@@ -328,8 +339,8 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                                     },
                                     icon: Image.asset(
                                       "assets/images/chat_address_book.png",
-                                      width: 28,
-                                      height: 28,
+                                      width: 28.w,
+                                      height: 28.w,
                                     ),
                                   ),
                                 ),
@@ -343,9 +354,11 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 10.w),
                 Container(
-                  padding: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 0),
+                  height: 30.w,
+                  padding: EdgeInsets.only(
+                      left: 20.w, right: 20.w, top: 0, bottom: 0),
                   child: TextFormField(
                     onChanged: (value) {
                       // setState(() {});
@@ -365,20 +378,23 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                       hintText: "search_friends".tr,
                       hintStyle: TextStyle(
                         color: Color(0xFF7E7E7E),
-                        fontSize: 14,
+                        fontSize: 14.sp,
                       ),
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20.w), //设置内边距  horizontal为水平方向
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.w),
+                          borderSide: BorderSide.none),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.all(
-                          Radius.circular(25), //边角为30
+                          Radius.circular(25.w), //边角为30
                         ),
                       ),
                       suffixIcon: IconButton(
-                          iconSize: 30,
+                          iconSize: 25.w,
                           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           icon: Icon(
                             Icons.search_outlined,
@@ -392,7 +408,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                     autofocus: false,
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 10.w),
                 // 登录用户为客服自己时，隐藏客服对话框
                 // cid == sCid ? Offstage() : _supportChat(),
                 Expanded(
@@ -406,17 +422,20 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                             ),
                           )
                         : ListView.separated(
-                            padding: EdgeInsets.symmetric(vertical: 12),
+                            padding: EdgeInsets.symmetric(
+                                vertical:
+                                    12.h), //垂直方向内边距 vertical :垂直 horizontal:水平
                             itemCount: chat_list.length,
                             itemBuilder: (BuildContext context, int index) {
                               return getRow(index);
                             },
-                            separatorBuilder: (BuildContext context, int index) {
+                            separatorBuilder:
+                                (BuildContext context, int index) {
                               return Container(
                                 color: Colors.white,
                                 child: Divider(
                                   color: Color(0xFFEAEAEA),
-                                  height: 5,
+                                  height: 5.w,
                                 ),
                               );
                             },
@@ -469,7 +488,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
         });
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 17, horizontal: 20),
+        padding: EdgeInsets.symmetric(vertical: 17.h, horizontal: 20.w),
         color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -477,8 +496,9 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
             Row(
               children: [
                 badges.Badge(
-                  position: badges.BadgePosition.topEnd(top: -10, end: 0),
-                  showBadge: supportItem == null ? false : supportItem!.corner > 0,
+                  position: badges.BadgePosition.topEnd(top: -10.w, end: 0),
+                  showBadge:
+                      supportItem == null ? false : supportItem!.corner > 0,
                   badgeContent: Text(
                     supportItem == null
                         ? "0"
@@ -488,11 +508,12 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                     style: CommonStyle.text_10_white,
                   ),
                   child: Container(
-                    padding: EdgeInsets.only(right: 10),
+                    padding: EdgeInsets.only(right: 10.w),
                     child: Image.network(
-                      supportItem?.head_img ?? "https://ispay-app.oss-cn-beijing.aliyuncs.com/chat_def_head.png",
-                      width: 40,
-                      height: 40,
+                      supportItem?.head_img ??
+                          "https://ispay-app.oss-cn-beijing.aliyuncs.com/chat_def_head.png",
+                      width: 40.w,
+                      height: 40.w,
                     ),
                   ),
                 ),
@@ -504,7 +525,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                       "customer_service".tr,
                       style: CommonStyle.text_16_black,
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 8.h),
                     Text(
                       supportItem?.content ?? "",
                       style: CommonStyle.text_12_grey,
@@ -569,7 +590,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
       ),
       child: Container(
         color: Colors.white,
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 20.w),
         child: InkWell(
           onTap: () async {
             int corner = KVBox.GetCorner(cItem.chat_id);
@@ -583,7 +604,8 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
               refreshDataList();
             });
             // 跳转聊天详情
-            var res = await Get.to(() => ChatDetailPage(), arguments: {'channelId': cItem.chat_id});
+            var res = await Get.to(() => ChatDetailPage(),
+                arguments: {'channelId': cItem.chat_id});
             if (res != null) {
               // print("res route ==============$res");
               setState(() {
@@ -616,11 +638,11 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                         style: CommonStyle.text_10_white,
                       ),
                       child: Container(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: EdgeInsets.only(right: 10.w),
                         child: Image.network(
                           cItem.head_img,
-                          width: 40,
-                          height: 40,
+                          width: 40.w,
+                          height: 40.w,
                         ),
                       ),
                     ),
@@ -632,7 +654,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                           cItem.from_name,
                           style: CommonStyle.text_16_black,
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(height: 8.h),
                         Text(
                           cItem.type == GMsgType.TRANS
                               ? "[转账]" + cItem.content
@@ -664,8 +686,8 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
         child: DropdownButton2(
           customButton: Image.asset(
             "assets/images/chat_add.png",
-            width: 28,
-            height: 28,
+            width: 28.w,
+            height: 28.w,
           ),
           isExpanded: true,
           items: items
@@ -689,24 +711,24 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
             });
           },
           dropdownStyleData: DropdownStyleData(
-            maxHeight: 200,
-            width: 120,
+            maxHeight: 200.h,
+            width: 120.w,
             //padding: EdgeInsets.only(right: 10),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(14.w),
               color: Colors.white,
             ),
-            elevation: 8,
+            elevation: 8, //阴影
             offset: const Offset(0, -10),
             scrollbarTheme: ScrollbarThemeData(
-              radius: const Radius.circular(40),
-              thickness: MaterialStateProperty.all<double>(6),
+              radius: Radius.circular(40.w), //滚动条两端圆角
+              thickness: MaterialStateProperty.all<double>(6.w), //滚动条宽度
               thumbVisibility: MaterialStateProperty.all<bool>(true),
             ),
           ),
-          menuItemStyleData: const MenuItemStyleData(
-            height: 40,
-            padding: EdgeInsets.only(left: 34, right: 14),
+          menuItemStyleData: MenuItemStyleData(
+            height: 40.w,
+            padding: EdgeInsets.only(left: 34.w, right: 14.w),
           ),
         ),
       ),

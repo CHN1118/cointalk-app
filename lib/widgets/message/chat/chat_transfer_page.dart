@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../common/global/global_key.dart';
@@ -59,7 +60,10 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
         title: Text(
           'transfer'.tr,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Color(0xff000000)),
+          style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w400,
+              color: Color(0xff000000)),
         ),
         actions: [
           GestureDetector(
@@ -68,7 +72,7 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
             },
             child: Container(
               alignment: Alignment.center,
-              padding: EdgeInsets.only(right: 15),
+              padding: EdgeInsets.only(right: 15.w),
               child: TextButton(
                 onPressed: () {
                   Get.to(() => TransferRecord());
@@ -88,33 +92,40 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
           // 用户信息
           initUser(consumer),
           Container(
-              margin: EdgeInsets.only(top: 15),
-              child:
-                  Text("transfer_amount".tr, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Color(0xff828895))),
+              margin: EdgeInsets.only(top: 15.h),
+              child: Text("transfer_amount".tr,
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff828895))),
               width: double.infinity,
-              padding: EdgeInsets.only(left: 20, bottom: 5)),
+              padding: EdgeInsets.only(left: 20.w, bottom: 5.h)),
           // 转账金额
           initTransfer(),
           Padding(
-            padding: EdgeInsets.only(top: 5, left: 20, right: 20), // 从左侧50.0处开始
+            padding: EdgeInsets.only(
+                top: 5.h, left: 20.w, right: 20.w), // 从左侧50.0处开始
             child: Divider(
               color: Color(0xFFEAEAEA),
-              height: 0.5,
+              height: 0.5.h,
             ),
           ),
           //转账说明
           Container(
               alignment: Alignment.topLeft,
-              margin: EdgeInsets.only(top: 20, left: 20),
+              margin: EdgeInsets.only(top: 20.h, left: 20.h),
               child: InkWell(
                 onTap: () {
                   // 处理添加转账说明按钮的点击事件
-                  showCustomKeyboard(context, _transferAmountController, _remarkController);
+                  showCustomKeyboard(
+                      context, _transferAmountController, _remarkController);
                 },
                 child: Text(
-                  _remarkController.text == "" ? "add_transfer_info".tr : _remarkController.text,
+                  _remarkController.text == ""
+                      ? "add_transfer_info".tr
+                      : _remarkController.text,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff0563B6),
                   ),
@@ -128,16 +139,16 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
   //  用户信息
   Widget initUser(Consumer consumer) {
     return Container(
-      height: 70,
+      height: 70.h,
       child: Center(
         child: Row(
           children: [
             Container(
-              width: 40,
-              height: 40,
-              margin: EdgeInsets.only(left: 20),
+              width: 40.w,
+              height: 40.w,
+              margin: EdgeInsets.only(left: 20.w),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(5.w),
                 image: DecorationImage(
                   image: NetworkImage(
                     consumer.avatar,
@@ -147,21 +158,27 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(left: 10),
+              margin: EdgeInsets.only(left: 10.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(bottom: 5),
+                    padding: EdgeInsets.only(bottom: 5.w),
                     child: Text(
                       '${consumer.nickname}',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Color(0xff000000)),
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff000000)),
                     ),
                   ),
                   Text(
                     '${consumer.account}',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Color(0xff828895)),
+                    style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff828895)),
                   ),
                 ],
               ),
@@ -184,7 +201,7 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
               child:
                   // 左边
                   Container(
-                margin: EdgeInsets.only(left: 20),
+                margin: EdgeInsets.only(left: 20.w),
                 child: TextField(
                   controller: _transferAmountController,
                   autofocus: true,
@@ -192,7 +209,8 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
                   readOnly: true,
                   onTap: () {
                     // 弹出自定义键盘
-                    showCustomKeyboard(context, _transferAmountController, _remarkController);
+                    showCustomKeyboard(
+                        context, _transferAmountController, _remarkController);
                     print("onTap");
                   },
                   onChanged: (value) {
@@ -201,29 +219,32 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
                   //关联focusNode1
                   decoration: InputDecoration(
                     hintText: "0.00",
-                    hintStyle: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+                    hintStyle:
+                        TextStyle(fontSize: 28.sp, fontWeight: FontWeight.w500),
                     border: InputBorder.none,
                   ),
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  style:
+                      TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
                 ),
               ),
             ),
             // 右边
             Container(
-                margin: EdgeInsets.only(right: 20, top: 10),
+                margin: EdgeInsets.only(right: 20.w, top: 10.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(right: 5),
-                      child: Image.asset(CoinList[coinIndex].image, width: 26, height: 26),
+                      padding: EdgeInsets.only(right: 5.w),
+                      child: Image.asset(CoinList[coinIndex].image,
+                          width: 26.w, height: 26.w),
                     ),
                     SizedBox(
-                      height: 1,
+                      height: 1.h,
                     ),
                     // 选择框 选择币种
                     Container(
-                        padding: EdgeInsets.only(top: 1),
+                        padding: EdgeInsets.only(top: 1.h),
                         child: CoinSelectWidget(
                           items: CoinList,
                           value: coinValue,
@@ -239,7 +260,9 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
 
   // 自定义键盘
   void showCustomKeyboard(
-      BuildContext context, TextEditingController _textEditingController, TextEditingController _remarkController) {
+      BuildContext context,
+      TextEditingController _textEditingController,
+      TextEditingController _remarkController) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -254,15 +277,17 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               AnimatedPadding(
-                padding: MediaQuery.of(context).viewInsets, // 我们可以根据这个获取需要的padding
-                duration: Duration(milliseconds: 100),
+                padding:
+                    MediaQuery.of(context).viewInsets, // 我们可以根据这个获取需要的padding
+                duration: Duration(milliseconds: 100), // 设置动画的时长
                 child: Container(
                   child: TextField(
                     controller: _remarkController,
                     keyboardType: TextInputType.text,
                     focusNode: remarkFocusNode,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 10.w), // 设置内容内边距
                       hintText: '转账说明...',
                     ),
                     onSubmitted: (value) {
@@ -275,7 +300,9 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
                         _remarkController.value = TextEditingValue(
                           text: value,
                           selection: TextSelection.fromPosition(
-                            TextPosition(affinity: TextAffinity.downstream, offset: value.length),
+                            TextPosition(
+                                affinity: TextAffinity.downstream,
+                                offset: value.length),
                           ),
                         );
                       });
@@ -332,7 +359,8 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
                     if (_textEditingController.text.isNotEmpty) {
                       setState(() {
                         _textEditingController.text =
-                            _textEditingController.text.substring(0, _textEditingController.text.length - 1);
+                            _textEditingController.text.substring(
+                                0, _textEditingController.text.length - 1);
                       });
                     }
                   },

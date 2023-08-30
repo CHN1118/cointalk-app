@@ -12,7 +12,6 @@ import 'package:wallet/common/utils/dapp.dart';
 import 'package:wallet/components/custom_dialog.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/controller/index.dart';
-import 'package:wallet/database/index.dart';
 import 'package:wallet/widgets/importwallet/reset_password.dart';
 
 // LogBackIn

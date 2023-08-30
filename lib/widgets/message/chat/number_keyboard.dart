@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class NumberKeyboard extends StatefulWidget {
@@ -98,29 +99,31 @@ class _NumberKeyboardState extends State<NumberKeyboard> {
                       Column(
                         children: [
                           SizedBox(
-                            width: 75,
+                            width: 75.w,
                             height: itemHeight,
                             child: Container(
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey, width: 0.25),
+                                border: Border.all(
+                                    color: Colors.grey, width: 0.25.w),
                               ),
                               child: MaterialButton(
                                 color: Color(0xFFE6E6E6),
                                 onPressed: widget.onDel,
                                 child: Image.asset(
                                   "assets/images/keyboard_delete.png",
-                                  width: 29,
-                                  height: 19,
+                                  width: 29.w,
+                                  height: 19.w,
                                 ),
                               ),
                             ),
                           ),
                           SizedBox(
-                            width: 75,
+                            width: 75.w,
                             height: itemHeight * 3,
                             child: Container(
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey, width: 0.25),
+                                border: Border.all(
+                                    color: Colors.grey, width: 0.25.w),
                               ),
                               child: MaterialButton(
                                 onPressed: widget.onCommit,
@@ -169,15 +172,15 @@ class NumberButton extends StatelessWidget {
             onTap: () => onTap(value),
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 0.25),
+                border: Border.all(color: Colors.grey, width: 0.25.w),
               ),
               alignment: Alignment.center,
               height: Get.height * 0.08,
-              width: (MediaQuery.of(context).size.width - 75) / 1.5,
+              width: (MediaQuery.of(context).size.width - 75.w) / 1.5,
               child: Text(
                 value,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -193,15 +196,15 @@ class NumberButton extends StatelessWidget {
             onTap: () => onTap(value),
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 0.25),
+                border: Border.all(color: Colors.grey, width: 0.25.w),
               ),
               alignment: Alignment.center,
               height: Get.height * 0.08,
-              width: (MediaQuery.of(context).size.width - 75) / 3,
+              width: (MediaQuery.of(context).size.width - 75.w) / 3,
               child: Text(
                 value,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),

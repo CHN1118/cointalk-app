@@ -76,7 +76,7 @@ class _ChatTransferState extends State<ChatTransfer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 30.w, bottom: 39.w),
+                  margin: EdgeInsets.only(top: 30.h, bottom: 39.h),
                   color: Colors.white,
                   child: Row(
                     children: [
