@@ -44,12 +44,6 @@ class ILogBackInState extends State<LogBackIn> {
         isFocus = _walletNameFocus.hasFocus; //是否聚焦
       });
     });
-    print('C.currentWallet  ${C.currentWallet['isEBV']}');
-    // DB.box.remove('WalletList');
-    // DB.box.remove('isAgree');
-    // DB.box.remove('token');
-    // DB.box.remove('im_token');
-    // DB.box.remove('userId');
     Biometric(); //检测生物识别
   }
 
