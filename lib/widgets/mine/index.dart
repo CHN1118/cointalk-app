@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/database/index.dart';
 import 'package:wallet/widgets/browser/index.dart';
@@ -178,9 +177,6 @@ class _PersonalDataState extends State<PersonalData> {
   @override
   void initState() {
     super.initState();
-    _image = File(box.read('image'));
-    // print(_image);
-    print(box.read('image'));
   }
 
   @override
@@ -218,29 +214,11 @@ class _PersonalDataState extends State<PersonalData> {
                       height: 45.w,
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(4.w),
-                          child: // 如果_image不为null，则显示图片，否则显示提示文字
-                              _image == null // 如果_image为null，则显示默认图片，否则显示_image
-                                  ? const Image(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                        'https://wx2.sinaimg.cn/mw690/007TYxG2ly1hbwxeuuambj328k3m0u12.jpg',
-                                      ))
-                                  : Image.file(
-                                      _image!,
-                                      fit: BoxFit.cover,
-                                      errorBuilder: (BuildContext context,
-                                          Object exception,
-                                          StackTrace? stackTrace) {
-                                        // 当发生错误时，设置 _image 为 null 并重新构建小部件
-                                        WidgetsBinding.instance
-                                            .addPostFrameCallback((_) {
-                                          setState(() {
-                                            _image = null;
-                                          });
-                                        });
-                                        return Text('Some error occurred!');
-                                      },
-                                    ))),
+                          child: const Image(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                'https://wx2.sinaimg.cn/mw690/007TYxG2ly1hbwxeuuambj328k3m0u12.jpg',
+                              )))),
                 ),
               ],
             ),
@@ -318,36 +296,8 @@ class _PersonalDataState extends State<PersonalData> {
   }
 
 //&打开相册选择图片
-
-  static final box = GetStorage();
-  File? _image;
-
   // 从相册中选择图片
-  Future<void> getImage() async {
-    // 使用image_picker插件选择图片
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    final cropper = ImageCropper();
-    if (pickedFile != null) {
-      // 使用image_cropper插件裁剪图片
-      final croppedFile = await cropper.cropImage(
-        sourcePath: pickedFile.path,
-        // ... 其他配置选项，例如 maxWidth, aspectRatio 等
-      );
-
-      if (croppedFile != null) {
-        setState(() {
-          // 更新状态以显示裁剪后的图片
-          _image = File(croppedFile.path); // 使用CroppedFile的path属性创建File实例
-          box.write('image', croppedFile.path); // 将图片保存到本地
-          print('_image: $_image');
-        });
-      }
-    } else {
-      print('No image selected.');
-      return null;
-    }
-  }
+  Future<void> getImage() async {}
 
   //&底部弹窗--------------------------------------------------------------------------------
   void _showBottomSheet(BuildContext context) {
