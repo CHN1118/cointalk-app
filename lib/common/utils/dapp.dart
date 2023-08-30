@@ -34,8 +34,7 @@ class Dapp {
   Timer? _timer;
 
   /// *助记词 生成钱包
-  Future<dynamic> importMnemonic(
-      String mnemonic, String walletname, String password, bool isEBV,
+  Future<dynamic> importMnemonic(String mnemonic, String walletname, String password, bool isEBV,
       {bool active = false}) async {
     // ... （之前的代码生成助记词的部分）
 
@@ -75,8 +74,7 @@ class Dapp {
   }
 
   /// *keystore 生成钱包
-  Future<dynamic> importKetystore(
-      String keystore, String walletname, String password, bool isEBV,
+  Future<dynamic> importKetystore(String keystore, String walletname, String password, bool isEBV,
       {bool active = false}) async {
     try {
       Wallet wallet = Wallet.fromJson(keystore, password);
@@ -105,8 +103,7 @@ class Dapp {
   }
 
   ///*导入私钥 生成钱包
-  Future<dynamic> importPrivate(
-      String mprivate, String walletname, String password, bool isEBV,
+  Future<dynamic> importPrivate(String mprivate, String walletname, String password, bool isEBV,
       {bool active = false}) async {
     EthPrivateKey credentials = EthPrivateKey.fromHex(mprivate);
     EthereumAddress address = await credentials.extractAddress();
@@ -178,25 +175,20 @@ class Dapp {
   /// *获取余额
   connect({EthereumAddress? address}) async {
     // *切换钱包的时候需要重新赋值钱包地址
-    CL.address = EthereumAddress.fromHex(DB.box
-        .read('WalletList')
-        .firstWhere((e) => e['active'] == true)['address']);
+    CL.address = EthereumAddress.fromHex(DB.box.read('WalletList').firstWhere((e) => e['active'] == true)['address']);
     EtherAmount balance = await CL.client.getBalance(address ?? CL.address);
     return balance.getValueInUnit(EtherUnit.ether);
   }
 
   /// *转账
   Future<dynamic> transfer(String to, var amount,
-      {int gasPrice = 2000000000000,
-      int gasL = 21000,
-      String? password}) async {
+      {int gasPrice = 2000000000000, int gasL = 21000, String? password}) async {
     //* 1.通过密码解密keystore
     var keystore = decryptString(C.currentWallet['keystore'], password!);
     //* 2.通过keystore获取钱包的实例
     Wallet wallet = Wallet.fromJson(keystore, password);
     //* 3.通过钱包实例的私钥获取钱包的凭证
-    Credentials credentials =
-        EthPrivateKey.fromHex(HEX.encode(wallet.privateKey.privateKey));
+    Credentials credentials = EthPrivateKey.fromHex(HEX.encode(wallet.privateKey.privateKey));
     //* 4.计算转账金额
     amount = BigInt.from(amount) * BigInt.from(10).pow(18); //*转换成wei
     //* 5.创建交易
@@ -204,14 +196,12 @@ class Dapp {
       to: EthereumAddress.fromHex(to), //* 转账地址
       gasPrice: EtherAmount.inWei(BigInt.from(gasPrice)), //* 燃料价格
       maxGas: gasL, //* 燃料限制
-      value:
-          EtherAmount.inWei(BigInt.from(num.parse(amount.toString()))), //* 转账金额
+      value: EtherAmount.inWei(BigInt.from(num.parse(amount.toString()))), //* 转账金额
     );
 
     try {
       //* 6.签名交易
-      var signedTransaction = await CL.client
-          .signTransaction(credentials, transaction, chainId: 1337);
+      var signedTransaction = await CL.client.signTransaction(credentials, transaction, chainId: 1337);
       print(signedTransaction);
       //* 7.发送交易
       var thash = await CL.client.sendRawTransaction(signedTransaction);
@@ -234,16 +224,14 @@ class Dapp {
   }
 
   /// *扫链，传入起始块和结束块，扫描指定地址的交易
-  void scanBlocksForAddress(
-      int startBlock, int endBlock, String address) async {
+  void scanBlocksForAddress(int startBlock, int endBlock, String address) async {
     for (int i = startBlock; i <= endBlock; i++) {
       final block = await getBlockByNumber(i);
       print('Scanning block $i');
       for (var transaction in block['transactions']) {
         var from = transaction['from'] ?? '0x';
         var to = transaction['to'] ?? '0x';
-        if (from.toLowerCase() == address.toLowerCase() ||
-            to.toLowerCase() == address.toLowerCase()) {
+        if (from.toLowerCase() == address.toLowerCase() || to.toLowerCase() == address.toLowerCase()) {
           final confirmationTimestamp = block['timestamp'];
           transaction['confirmationTimestamp'] = confirmationTimestamp;
           swi.addTransaction(transaction);
@@ -260,9 +248,8 @@ class Dapp {
       'params': ['0x${blockNumber.toRadixString(16)}', true],
       'id': 1,
     };
-    var rpcUrl = blockchainInfo
-        .where((element) => element['active'] == true)
-        .toList()[0]['rpcUrl'][0]; // Ganache 默认 RPC 地址
+    var rpcUrl =
+        blockchainInfo.where((element) => element['active'] == true).toList()[0]['rpcUrl'][0]; // Ganache 默认 RPC 地址
     final response = await http.post(
       Uri.parse(rpcUrl),
       headers: {'Content-Type': 'application/json'},
@@ -277,24 +264,20 @@ class Dapp {
   }
 
   /// *签名消息 并且登录
-  Future<dynamic> signMessage(
-      {String? message = 'login', String? password = 'Chn1023.'}) async {
+  Future<dynamic> signMessage({String? message = 'login', String? password = 'yyh123123'}) async {
     //* 1.通过密码解密keystore
-    var keystore = decryptString(
-        DB.box
-            .read('WalletList')
-            .firstWhere((e) => e['active'] == true)['keystore'],
-        password!);
-
+    var keystore =
+        decryptString(DB.box.read('WalletList').firstWhere((e) => e['active'] == true)['keystore'], password!);
+    if (keystore == '') {
+      return null;
+    }
     //* 2.通过keystore获取钱包的实例
     Wallet wallet = Wallet.fromJson(keystore, password);
     //* 3.通过钱包实例的私钥获取钱包的凭证
-    Credentials credentials =
-        EthPrivateKey.fromHex(HEX.encode(wallet.privateKey.privateKey));
+    Credentials credentials = EthPrivateKey.fromHex(HEX.encode(wallet.privateKey.privateKey));
     //* 4.签名消息
     var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    var signedMessage = credentials.signPersonalMessageToUint8List(
-        utf8.encode('${message!}$timestamp') as Uint8List,
+    var signedMessage = credentials.signPersonalMessageToUint8List(utf8.encode('${message!}$timestamp') as Uint8List,
         chainId: 1); //* 签名消息
     //* 5.验证签名
     print('签名哈希0x${HEX.encode(signedMessage)}');
@@ -351,11 +334,7 @@ class Dapp {
       LLogger.d('登录后初始化成功');
     }
 
-    return {
-      'sign': '0x${HEX.encode(signedMessage)}',
-      'name': CL.address,
-      'msg': '$message$timestamp'
-    };
+    // return {'sign': '0x${HEX.encode(signedMessage)}', 'name': CL.address, 'msg': '$message$timestamp'};
   }
 
   /// *定时获取区块高度16秒
@@ -363,8 +342,7 @@ class Dapp {
     _timer = Timer.periodic(const Duration(seconds: 16), (timer) async {
       var blockNumber = await CL.client.getBlockNumber();
       // *扫描上一个区块
-      scanBlocksForAddress(
-          blockNumber - 1, blockNumber - 1, CL.address.toString());
+      scanBlocksForAddress(blockNumber - 1, blockNumber - 1, CL.address.toString());
     });
   }
 
@@ -379,8 +357,7 @@ var dapp = Dapp();
 /// *存储钱包信息的构造函数
 class StoreWalletInformation {
   /// *加密后 存储钱包信息
-  Future<dynamic> addWalletInfo(material.BuildContext context,
-      Map<String, dynamic> walletInformation) async {
+  Future<dynamic> addWalletInfo(material.BuildContext context, Map<String, dynamic> walletInformation) async {
     // *获取钱包信息数组
     var walletList = DB.box.read('WalletList') ?? [];
     // *判断钱包信息数组是已经存在该钱包
@@ -405,15 +382,13 @@ class StoreWalletInformation {
     //* 如果助记词不为空，则使用密码加密助记词
     if (walletInformation['mnemonic'] != '') {
       //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 使用密码加密助记词
-      String encryptmnemonic = dapp.encryptString(
-          walletInformation['mnemonic'], walletInformation['password']);
+      String encryptmnemonic = dapp.encryptString(walletInformation['mnemonic'], walletInformation['password']);
       //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 存储加密后的助记词
       walletInformation['mnemonic'] = encryptmnemonic;
     }
     //* 不论如何都要使用密码加密keystore
     //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 使用密码加密keystore
-    String encryptkeystore = dapp.encryptString(
-        walletInformation['keystore'], walletInformation['password']);
+    String encryptkeystore = dapp.encryptString(walletInformation['keystore'], walletInformation['password']);
     //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 存储加密后的keystore
     walletInformation['keystore'] = encryptkeystore;
     //* 判断是否开启生物识别
@@ -421,14 +396,11 @@ class StoreWalletInformation {
       //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 获取当前时间戳
       var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
       //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 使用时间戳加密钱包地址用来加密密码
-      String encryptaddress =
-          dapp.encryptString(walletInformation['address'], timestamp);
+      String encryptaddress = dapp.encryptString(walletInformation['address'], timestamp);
       //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 存储加密后的钱包地址
-      await storage.write(
-          key: walletInformation['address'], value: encryptaddress);
+      await storage.write(key: walletInformation['address'], value: encryptaddress);
       //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 使用加密后的钱包地址加密密码
-      String encryptpassword =
-          dapp.encryptString(walletInformation['password'], encryptaddress);
+      String encryptpassword = dapp.encryptString(walletInformation['password'], encryptaddress);
       //&->>>>>>>>>>>>>>>>>>>>>>>>>>>> 存储加密后的密码
       walletInformation['password'] = encryptpassword;
     } else {
@@ -451,8 +423,7 @@ class StoreWalletInformation {
       walletList.add(walletInformation);
     }
     await DB.box.write('WalletList', walletList); // *存储钱包信息数组
-    var walletkey =
-        await storage.read(key: walletInformation['address']); // *获取钱包地址
+    var walletkey = await storage.read(key: walletInformation['address']); // *获取钱包地址
     var walletInfo = await DB.box.read('WalletList'); // *获取钱包信息数组
     print('加密后的钱包信息：$walletInformation\n');
     LLogger.d('存储到普通缓存的数据：$walletInfo\n');
@@ -472,8 +443,7 @@ class StoreWalletInformation {
   /// *钱包相关的交易存储
   Future<dynamic> addTransaction(Map<String, dynamic> transaction) async {
     // *获取交易数组
-    List<dynamic> transactionList =
-        DB.box.read(CL.address.hex.toLowerCase()) ?? [];
+    List<dynamic> transactionList = DB.box.read(CL.address.hex.toLowerCase()) ?? [];
     // *判断交易数组是已经存在该交易
     var isExist = false;
     for (var i = 0; i < transactionList.length; i++) {
@@ -494,10 +464,8 @@ class StoreWalletInformation {
       transactionList.sort((a, b) => utils
           .formatTimestamp(b['confirmationTimestamp'])
           .compareTo(utils.formatTimestamp(a['confirmationTimestamp'])));
-      await DB.box
-          .write(CL.address.hex.toLowerCase(), transactionList); // *存储交易信息数组
-      var transactionInfo =
-          await DB.box.read(CL.address.hex.toLowerCase()); // *获取交易信息数组
+      await DB.box.write(CL.address.hex.toLowerCase(), transactionList); // *存储交易信息数组
+      var transactionInfo = await DB.box.read(CL.address.hex.toLowerCase()); // *获取交易信息数组
       LLogger.d('存储到普通缓存的数据：$transactionInfo\n');
       C.getWL(); // *更新交易列表
       bus.emit('updateTransactionList'); // *更新交易列表

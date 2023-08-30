@@ -272,7 +272,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _chatAttachmentItem(
-                  "photo".tr, "assets/images/chat_attachment_image.png",
+                  "照片", "assets/images/chat_attachment_image.png",
                   tapFunc: () async {
                 ToastPrint.show("not_open_yet".tr);
 
@@ -283,7 +283,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 // }
               }),
               _chatAttachmentItem(
-                  "shoot".tr, "assets/images/chat_attachment_shoot.png",
+                  "拍摄", "assets/images/chat_attachment_shoot.png",
                   tapFunc: () async {
                 ToastPrint.show("not_open_yet".tr);
 
@@ -294,7 +294,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 // }
               }),
               _chatAttachmentItem(
-                  "red_envelope".tr, "assets/images/chat_attachment_red.png",
+                  "红包", "assets/images/chat_attachment_red.png",
                   tapFunc: () async {
                 final result = await Get.to(() => SendRedPack(),
                     arguments: {"consumer": consumer});
@@ -310,7 +310,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 }
               }),
               _chatAttachmentItem(
-                  "transfer".tr, "assets/images/chat_attachment_transfer.png",
+                  "转账", "assets/images/chat_attachment_transfer.png",
                   tapFunc: () async {
                 final result = await Get.to(() => ChatTransferPage(),
                     arguments: {"consumer": consumer});
@@ -527,9 +527,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           },
         ),
         elevation: 0,
-        actions: [
-          fromRouteName == "客服" ? Offstage() : getPopView(),
-        ],
+        // actions: [
+        //   fromRouteName == "客服" ? Offstage() : getPopView(),
+        // ],
       ),
       body: RefreshIndicator(
         color: CommonColor.primary,
@@ -556,7 +556,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           showUserNames: true,
           timeFormat: DateFormat('MM月dd日 HH:MM'),
           listBottomWidget: Container(),
-          l10n: ChatL10nZhCN(inputPlaceholder: "${'enter_message'.tr}..."),
+          l10n: ChatL10nZhCN(inputPlaceholder: "${'请输入新消息'}..."),
           theme: DefaultChatTheme(
             backgroundColor: Color(0xFFF1F1F1),
             primaryColor: CommonColor.primary,

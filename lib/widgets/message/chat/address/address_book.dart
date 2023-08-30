@@ -149,7 +149,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   centerTitle: true,
                   toolbarHeight: 48.w,
                   title: Text(
-                    "index_Contacts".tr,
+                    "通讯录",
                     style: CommonStyle.text_18_black_w500,
                   ),
                   // 设置 toolbar 控件的高度

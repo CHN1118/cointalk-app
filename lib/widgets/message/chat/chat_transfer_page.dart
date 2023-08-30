@@ -65,26 +65,26 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
               fontWeight: FontWeight.w400,
               color: Color(0xff000000)),
         ),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              // 处理转账按钮的点击事件
-            },
-            child: Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.only(right: 15.w),
-              child: TextButton(
-                onPressed: () {
-                  Get.to(() => TransferRecord());
-                },
-                child: Text(
-                  'transfer_record'.tr,
-                  style: CommonStyle.text_15_color6B6B6B_w400,
-                ),
-              ),
-            ),
-          ),
-        ],
+        // actions: [
+        //   GestureDetector(
+        //     onTap: () {
+        //       // 处理转账按钮的点击事件
+        //     },
+        //     child: Container(
+        //       alignment: Alignment.center,
+        //       padding: EdgeInsets.only(right: 15.w),
+        //       child: TextButton(
+        //         onPressed: () {
+        //           Get.to(() => TransferRecord());
+        //         },
+        //         child: Text(
+        //           'transfer_record'.tr,
+        //           style: CommonStyle.text_15_color6B6B6B_w400,
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ],
       ),
       backgroundColor: Colors.white,
       body: Column(
@@ -167,18 +167,24 @@ class _ChatTransferPageState extends State<ChatTransferPage> {
                     padding: EdgeInsets.only(bottom: 5.w),
                     child: Text(
                       '${consumer.nickname}',
+
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           color: Color(0xff000000)),
                     ),
                   ),
-                  Text(
-                    '${consumer.account}',
-                    style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff828895)),
+                  Container(
+                    width: Get.width*0.7,
+                    child: Text(
+                      '${consumer.account}',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff828895)),
+                    ),
                   ),
                 ],
               ),
