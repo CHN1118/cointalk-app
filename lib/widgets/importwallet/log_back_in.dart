@@ -9,9 +9,11 @@ import 'package:get/get.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/biometricauthentication.dart';
 import 'package:wallet/common/utils/dapp.dart';
+import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/components/custom_dialog.dart';
 import 'package:wallet/components/op_click.dart';
 import 'package:wallet/controller/index.dart';
+import 'package:wallet/db/kv_box.dart';
 import 'package:wallet/widgets/importwallet/reset_password.dart';
 
 // LogBackIn
@@ -42,6 +44,7 @@ class ILogBackInState extends State<LogBackIn> {
         isFocus = _walletNameFocus.hasFocus; //是否聚焦
       });
     });
+    print('C.currentWallet  ${C.currentWallet['isEBV']}');
     // DB.box.remove('WalletList');
     // DB.box.remove('isAgree');
     // DB.box.remove('token');
@@ -54,16 +57,30 @@ class ILogBackInState extends State<LogBackIn> {
     await C.getWL();
     print('C.currentWallet  ${C.currentWallet['isEBV']}');
     if (C.currentWallet['isEBV'] == true) {
-      await Bio.authenticate(); //生物识别
+      bool isYes = await Bio.authenticate(); //生物识别
       //生物识别成功
-      if (Bio.authorized == 'Authorized') {
+      if (isYes) {
         //! 开启加载
         await EasyLoading.show(
           status: 'loading...',
           maskType: EasyLoadingMaskType.black,
         );
-        Get.offAllNamed('/');
-        await EasyLoading.dismiss();
+        bool islogin =
+            await utils.isSameAddress(address: C.currentWallet['address']);
+        print('----------------->islogin');
+        print(islogin);
+        if (islogin) {
+          print('已登录');
+          // print('当前钱包地址:${DB.box.read('token')}');
+          print('当前钱包地址:${KVBox.GetAddress()}');
+          await EasyLoading.dismiss();
+          Get.offAllNamed('/');
+          return;
+        } else {
+          await dapp.signMessage();
+          await EasyLoading.dismiss();
+          return;
+        }
       }
       await EasyLoading.dismiss();
     }
