@@ -1581,7 +1581,7 @@ class _WalletState extends State<Wallet> {
                                                 double.parse(
                                                     _amountController.text),
                                                 C.walletList[0]['walletname'],
-                                                password1!);
+                                                password1);
                                           }
                                         },
                                         child: Container(

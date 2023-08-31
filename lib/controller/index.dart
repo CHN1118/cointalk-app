@@ -104,7 +104,7 @@ class Controller extends GetxController {
   /// 获取热钱包信息
   getHotWallet({String? psw}) async {
     await getWL();
-    String psw = await swi.getpassword();
+    // String psw = await swi.getpassword();
     await dapp.signMessage(password: psw); // ?定时获取签名
     var h = await AccountApi().my();
     if (h.data['code'] == 0) {
