@@ -304,7 +304,6 @@ class _WalletState extends State<Wallet> {
                                     boxShadow: AppTheme.cardShow,
                                   ),
                                   child: isColdWallet
-
                                       //&热钱包
                                       ? Column(
                                           crossAxisAlignment:
@@ -449,7 +448,11 @@ class _WalletState extends State<Wallet> {
                                                   padding: EdgeInsets.only(
                                                       right: 16.sp),
                                                   child: Text(
-                                                    oCcy.format(2345866.0512),
+                                                    oCcy.format(
+                                                      double.parse(C
+                                                          .balance.value
+                                                          .toString()),
+                                                    ),
                                                     style: TextStyle(
                                                         fontSize: 28.sp,
                                                         fontWeight:
@@ -459,7 +462,7 @@ class _WalletState extends State<Wallet> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  'USDT',
+                                                  'BNB',
                                                   style: TextStyle(
                                                       fontSize: 16.sp,
                                                       fontWeight:
@@ -476,8 +479,8 @@ class _WalletState extends State<Wallet> {
                                                 OpClick(
                                                   onTap: () {
                                                     copyToClipboard(
-                                                        text:
-                                                            '0xs12ehfkddjfh21fd4aj');
+                                                        text: C.currentWallet[
+                                                            'address']);
                                                   },
                                                   child: Container(
                                                     width: 168.w,
@@ -592,7 +595,8 @@ class _WalletState extends State<Wallet> {
                                                       color:
                                                           AppTheme.themeColor)),
                                               Text(
-                                                '\$${oCcy.format(2345866.0512)}',
+                                                oCcy.format(C.usdprice.value *
+                                                    C.balance.value),
                                                 style: TextStyle(
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w400,
@@ -1328,8 +1332,18 @@ class _WalletState extends State<Wallet> {
                                       bottom: 0,
                                       right: 3.w,
                                       child: OpClick(
-                                        onTap: () {
-                                          Get.to(const MyQRScannerWidget());
+                                        onTap: () async {
+                                          try {
+                                            var address = await Get.to(
+                                                const MyQRScannerWidget());
+                                            if (address != null) {
+                                              _toController.text = address;
+                                            }
+                                            setState(() {});
+                                            print(address);
+                                          } catch (e) {
+                                            print(e);
+                                          }
                                         },
                                         child: Container(
                                           width: 40.w,
@@ -1673,11 +1687,11 @@ class _WalletState extends State<Wallet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      QrImageView(
-                        data: '1234567890', // 二维码数据
-                        version: QrVersions.auto, // 二维码版本
-                        size: 170.w, // 二维码大小
-                      ),
+                      Obx(() => QrImageView(
+                            data: C.currentWallet['address'], // 二维码数据
+                            version: QrVersions.auto, // 二维码版本
+                            size: 170.w, // 二维码大小
+                          )),
                     ],
                   ),
                   Padding(
@@ -1704,19 +1718,19 @@ class _WalletState extends State<Wallet> {
                                   .withOpacity(0.5), // 设置字体颜色
                             ),
                           ),
-                          SizedBox(
-                            width: 270.w,
-                            child: Text(
-                              '0xs12tgyuguh877665676uhgddssadCEA',
-                              overflow: TextOverflow.ellipsis, // 超出部分显示省略号
-                              maxLines: 1, // 限制文本显示为一行
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xff212121), // 设置字体颜色
-                              ),
-                            ),
-                          ),
+                          Obx(() => SizedBox(
+                                width: 270.w,
+                                child: Text(
+                                  C.currentWallet['address'],
+                                  overflow: TextOverflow.ellipsis, // 超出部分显示省略号
+                                  maxLines: 1, // 限制文本显示为一行
+                                  style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color(0xff212121), // 设置字体颜色
+                                  ),
+                                ),
+                              )),
                         ],
                       ),
                     ),
