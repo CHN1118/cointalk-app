@@ -271,7 +271,6 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
   Future<int?> createSupportChannel() async {
     // ubox.write('consumer_' + consumerObject[i]['cid'].toString(), consumerObject[i]);
     // var addRes = await contactApi().addChannelChat(consumerObject[i]['cid']);
-    // TODO 临时定一个客服cid为26
     var addRes = await contactApi().addChannelChat(sCid);
     if (addRes.data['data'] != null && addRes.data['data'].isNotEmpty) {
       var channelInfo = addRes.data['data']['channel'];
@@ -624,6 +623,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
             });
           },
           child: Container(
+
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -650,9 +650,14 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          cItem.from_name,
-                          style: CommonStyle.text_16_black,
+                        Container(
+                          width: Get.width*0.5,
+                          child:Text(
+                            cItem.from_name,
+                            style: CommonStyle.text_16_black,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
                         ),
                         SizedBox(height: 8.h),
                         Text(
@@ -662,6 +667,7 @@ class _ChatPageState extends State<ChatPage> with RouteAware {
                                   ? "[红包]"
                                   : cItem.content,
                           style: CommonStyle.text_12_grey,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),

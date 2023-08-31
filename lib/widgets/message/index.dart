@@ -248,7 +248,6 @@ class _MessagePageState extends State<MessagePage> {
                               GestureDetector(
                                 onTap: () {
                                   //跳转到  ChatPage 页面
-
                                   Get.to(ChatTransfer());
                                 },
                                 child: Container(

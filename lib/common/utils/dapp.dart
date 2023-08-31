@@ -285,7 +285,9 @@ class Dapp {
             .read('WalletList')
             .firstWhere((e) => e['active'] == true)['keystore'],
         password!);
-
+    if (keystore == '') {
+      return null;
+    }
     //* 2.通过keystore获取钱包的实例
     Wallet wallet = Wallet.fromJson(keystore, password);
     //* 3.通过钱包实例的私钥获取钱包的凭证
@@ -353,11 +355,7 @@ class Dapp {
       LLogger.d('登录后初始化成功');
     }
 
-    return {
-      'sign': '0x${HEX.encode(signedMessage)}',
-      'name': CL.address,
-      'msg': '$message$timestamp'
-    };
+    // return {'sign': '0x${HEX.encode(signedMessage)}', 'name': CL.address, 'msg': '$message$timestamp'};
   }
 
   /// *定时获取区块高度16秒
