@@ -296,8 +296,15 @@ class _PersonalDataState extends State<PersonalData> {
   }
 
 //&打开相册选择图片
+
+  File? _image;
+
   // 从相册中选择图片
-  Future<void> getImage() async {}
+  Future<void> getImage() async {
+    // 使用image_picker插件选择图片
+
+    await ImagePicker().pickImage(source: ImageSource.gallery);
+  }
 
   //&底部弹窗--------------------------------------------------------------------------------
   void _showBottomSheet(BuildContext context) {
