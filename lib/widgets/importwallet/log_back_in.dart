@@ -259,11 +259,12 @@ class ILogBackInState extends State<LogBackIn> {
               //文字下划线
               OpClick(
                 onTap: () {
-                  Get.to(() => const ResetPassword());
+                  ErrorShow(msg: '功能内测中');
+                  // Get.to(() => const ResetPassword());
                   //取消焦点
-                  FocusScope.of(context).requestFocus(FocusNode());
+                  // FocusScope.of(context).requestFocus(FocusNode());
                   //清空输入框
-                  _walletNametext.clear();
+                  // _walletNametext.clear();
                 },
                 child: Text(
                   '忘记密码',
@@ -325,5 +326,17 @@ class ILogBackInState extends State<LogBackIn> {
       Get.offAllNamed('/');
       await EasyLoading.dismiss();
     }
+  }
+
+  //*错误提示
+  Future<bool?> ErrorShow({String? msg = '助记词顺序错误'}) {
+    return Fluttertoast.showToast(
+        msg: msg!,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 14.0.sp);
   }
 }
