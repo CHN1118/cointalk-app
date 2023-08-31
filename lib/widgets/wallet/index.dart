@@ -1548,6 +1548,7 @@ class _WalletState extends State<Wallet> {
                                           // if (_amountController.text.isEmpty) {
                                           //   return;
                                           // }
+                                          print(244);
                                           if (!isColdWallet) {
                                             String? password;
                                             if (CL.isEBV) {

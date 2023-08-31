@@ -465,8 +465,10 @@ class StoreWalletInformation {
     if (hot) {
       // * 获取加密后的钱包地址
       var address = await storage.read(key: C.walletList[0]['address']);
+      print(address);
       // * 使用加密后的钱包地址解密密码
-      String password = dapp.decryptString(C.walletList[0], address!);
+      String password =
+          dapp.decryptString(C.walletList[0]['password'], address!);
       return password;
     }
     // * 获取加密后的钱包地址
