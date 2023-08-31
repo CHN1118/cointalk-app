@@ -341,7 +341,8 @@ class _WalletState extends State<Wallet> {
                                                               1, // 限制文本显示为一行
                                                           oCcy.format(
                                                             double.parse(C
-                                                                .balance.value
+                                                                .hotWalletList[
+                                                                    'availableBalance']
                                                                 .toString()),
                                                           ),
                                                           style: TextStyle(
@@ -383,9 +384,8 @@ class _WalletState extends State<Wallet> {
                                                         color: Colors.white
                                                             .withOpacity(0.5))),
                                                 Obx(() => Text(
-                                                    oCcy.format(
-                                                        C.usdprice.value *
-                                                            C.balance.value),
+                                                    oCcy.format(C.hotWalletList[
+                                                        'usdBalance']),
                                                     style: TextStyle(
                                                         fontSize: 20.sp,
                                                         fontWeight:

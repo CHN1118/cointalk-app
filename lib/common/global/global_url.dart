@@ -3,7 +3,8 @@ class Global {
   static Global instance = Global();
 
   // static String serviceUrl = "https://api.entysquare.io";
-  static String serviceUrl = "http://192.168.1.90:3010";
+  // static String serviceUrl = "http://192.168.1.90:3010";
+  static String serviceUrl = "http://192.168.1.81:3010";
   // static String serviceUrl = "http://192.168.1.73:3010";
 
   static String serviceIMUrl = "http://192.168.1.81:3300";

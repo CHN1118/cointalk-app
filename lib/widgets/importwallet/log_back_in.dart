@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:wallet/api/account_api.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/biometricauthentication.dart';
 import 'package:wallet/common/utils/dapp.dart';
@@ -49,8 +50,8 @@ class ILogBackInState extends State<LogBackIn> {
 
   Biometric() async {
     await C.getWL();
-    print('C.currentWallet  ${C.currentWallet['isEBV']}');
-    if (C.currentWallet['isEBV'] == true) {
+    print('C.walletList[0]  ${C.walletList[0]['isEBV']}');
+    if (C.walletList[0]['isEBV'] == true) {
       bool isYes = await Bio.authenticate(); //生物识别
       //生物识别成功
       if (isYes) {
@@ -59,23 +60,28 @@ class ILogBackInState extends State<LogBackIn> {
           status: 'loading...',
           maskType: EasyLoadingMaskType.black,
         );
-        String psw = await swi.getpassword();
         bool islogin =
-            await utils.isSameAddress(address: C.currentWallet['address']);
+            await utils.isSameAddress(address: C.walletList[0]['address']);
         print('----------------->islogin');
         print(islogin);
         if (islogin) {
           print('已登录');
           // print('当前钱包地址:${DB.box.read('token')}');
           print('当前钱包地址:${KVBox.GetAddress()}');
+          await C.getHotWallet();
+          print(C.hotWalletList);
           await EasyLoading.dismiss();
           Get.offAllNamed('/');
         } else {
-          await dapp.signMessage(password: psw);
+          await C.getHotWallet();
+          print(C.hotWalletList);
           await EasyLoading.dismiss();
+          Get.offAllNamed('/');
         }
       }
       await EasyLoading.dismiss();
+    } else {
+      _walletNameFocus.requestFocus();
     }
   }
 
@@ -302,27 +308,22 @@ class ILogBackInState extends State<LogBackIn> {
       await EasyLoading.dismiss();
       await Cdog.show(context, '请输入密码');
       return;
-    }
-    if (C.currentWallet['isEBV'] == true) {
-      String password = await swi.getpassword();
-      if (password != _walletNametext.text) {
-        await EasyLoading.dismiss();
-        await Cdog.show(context, '密码错误');
-        return;
-      }
-      Get.offAllNamed('/');
-      await EasyLoading.dismiss();
-      return;
     } else {
-      String password1 =
-          dapp.decryptString(C.currentWallet['keystore'], _walletNametext.text);
-      if (password1 == '') {
+      bool islogin =
+          await utils.isSameAddress(address: C.walletList[0]['address']);
+      print('----------------->islogin');
+      print(islogin);
+      if (islogin) {
+        print('已登录');
+        // print('当前钱包地址:${DB.box.read('token')}');
+        print('当前钱包地址:${KVBox.GetAddress()}');
         await EasyLoading.dismiss();
-        await Cdog.show(context, '密码错误');
-        return;
+        Get.offAllNamed('/');
+      } else {
+        await dapp.signMessage(password: _walletNametext.text);
+        await EasyLoading.dismiss();
+        Get.offAllNamed('/');
       }
-      Get.offAllNamed('/');
-      await EasyLoading.dismiss();
     }
   }
 }

@@ -28,7 +28,7 @@ class HttpInterceptor extends Interceptor {
     var token = DB.box.read('token') ?? "";
     print('------------------------>token');
     print(token);
-    options.headers.addAll({"token": token});
+    options.headers.addAll({"token": token['token']});
     var im_token = box.read('im_token') ?? "";
     options.headers.addAll({"im_token": im_token});
     //宇航

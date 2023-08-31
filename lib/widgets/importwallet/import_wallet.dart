@@ -33,7 +33,7 @@ class WImportWState extends State<ImportW> {
   bool isEBV = Get.arguments['isEBV'];
   final TextEditingController _walletNametext = TextEditingController();
   final FocusNode _walletNameFocus = FocusNode();
-  var walletList = DB.box.read('WalletList') ?? []; 
+  var walletList = DB.box.read('WalletList') ?? [];
 
   @override
   void initState() {
@@ -339,7 +339,6 @@ class WImportWState extends State<ImportW> {
               wallet_text.text, walletName, password, isEBV,
               active: true);
           var res = await swi.addWalletInfo(context, walletInfo);
-          dapp.signMessage(); // ?定时获取签名
           if (res != null) {
             showSnackBar(msg: '导入成功');
             if (Get.arguments['import'] == true) {
@@ -350,10 +349,14 @@ class WImportWState extends State<ImportW> {
             } else {
               var isAgree = DB.box.read('isAgree');
               if (isAgree == null || isAgree == false) {
+                await C.getHotWallet();
+                print(C.hotWalletList);
                 Get.offAll(() => const Success(),
                     transition: Transition.topLevel);
                 return;
               } else {
+                await C.getHotWallet();
+                print(C.hotWalletList);
                 Get.offAllNamed('/');
               }
             }
@@ -386,14 +389,17 @@ class WImportWState extends State<ImportW> {
             } else {
               var isAgree = DB.box.read('isAgree');
               if (isAgree == null || isAgree == false) {
+                await C.getHotWallet();
+                print(C.hotWalletList);
                 Get.offAll(() => const Success(),
                     transition: Transition.topLevel);
                 return;
               } else {
+                await C.getHotWallet();
+                print(C.hotWalletList);
                 Get.offAllNamed('/');
               }
             }
-            dapp.signMessage(); // ?定时获取签名
           }
         } else {
           await EasyLoading.dismiss();

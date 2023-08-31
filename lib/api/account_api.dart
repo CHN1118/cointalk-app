@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:wallet/database/index.dart';
 
 import 'dio_util.dart';
 
@@ -7,6 +8,8 @@ class AccountApi {
 
   // 获取钱包信息
   Future<Response> my() async {
+    //添加请求头
+    var token = await DB.box.read('token');
     Response res = await dio.post('/app/account/my');
     return Future(() => res);
   }
@@ -21,11 +24,8 @@ class AccountApi {
   // 转账
   Future<Response> transfer(
       String account, double amount, String currentName, String payPwd) async {
-    Response res = await dio.post('/app/account/transfer', data: {
-      "account": account,
-      "amount": amount,
-      "payPwd": payPwd
-    });
+    Response res = await dio.post('/app/account/transfer',
+        data: {"account": account, "amount": amount, "payPwd": payPwd});
     return Future(() => res);
   }
 
@@ -37,24 +37,24 @@ class AccountApi {
   }
 
   // 添加提现地址
-  Future<Response> addWithdrawAddress(String name,String address) async {
+  Future<Response> addWithdrawAddress(String name, String address) async {
     Response res = await dio.post('/app/withdrawAddress/add',
         data: {"name": name, "address": address});
     return Future(() => res);
   }
 
   // 修改提现地址
-  Future<Response> updateWithdrawAddress( int id,String name,String address) async {
+  Future<Response> updateWithdrawAddress(
+      int id, String name, String address) async {
     Response res = await dio.post('/app/withdrawAddress/update',
-        data: {"name": name, "address": address,"id":id});
+        data: {"name": name, "address": address, "id": id});
     return Future(() => res);
   }
 
   // 删除提现地址
-  Future<Response> deleteWithdrawAddress( int id) async {
-    Response res = await dio.post('/app/withdrawAddress/delete',
-        data: {"id":id});
+  Future<Response> deleteWithdrawAddress(int id) async {
+    Response res =
+        await dio.post('/app/withdrawAddress/delete', data: {"id": id});
     return Future(() => res);
   }
-
 }
