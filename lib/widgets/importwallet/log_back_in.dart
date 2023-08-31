@@ -314,17 +314,31 @@ class ILogBackInState extends State<LogBackIn> {
           await utils.isSameAddress(address: C.walletList[0]['address']);
       print('----------------->islogin');
       print(islogin);
-      if (islogin) {
+      if (C.currentWallet['isEBV'] == true) {
+        String password = await swi.getpassword();
+        if (password != _walletNametext.text) {
+          await EasyLoading.dismiss();
+          await Cdog.show(context, '密码错误');
+          return;
+        }
         print('已登录');
-        // print('当前钱包地址:${DB.box.read('token')}');
         print('当前钱包地址:${KVBox.GetAddress()}');
         await C.getHotWallet(psw: _walletNametext.text);
-        await EasyLoading.dismiss();
         Get.offAllNamed('/');
+        await EasyLoading.dismiss();
+        return;
       } else {
+        String password1 = dapp.decryptString(
+            C.currentWallet['keystore'], _walletNametext.text);
+        if (password1 == '') {
+          await EasyLoading.dismiss();
+          await Cdog.show(context, '密码错误');
+          return;
+        }
+        print('当前钱包地址:${KVBox.GetAddress()}');
         await C.getHotWallet(psw: _walletNametext.text);
-        await EasyLoading.dismiss();
         Get.offAllNamed('/');
+        await EasyLoading.dismiss();
       }
     }
   }
