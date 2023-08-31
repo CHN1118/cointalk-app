@@ -179,7 +179,7 @@ class MMnemonicState extends State<Mnemonic> {
     String walletPassword = Get.arguments['walletPassword']; // 钱包密码
     bool isEBV = Get.arguments['isEBV'];
     await EasyLoading.dismiss();
-    Get.off(() => const BackupMnemonic(),
+    Get.to(() => const BackupMnemonic(),
         arguments: {
           'mnemonic': mnemonic,
           'walletName': walletName,

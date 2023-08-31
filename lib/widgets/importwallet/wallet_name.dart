@@ -23,6 +23,8 @@ class WwalletnameState extends State<Walletname> {
   @override
   void initState() {
     super.initState();
+    // 聚焦
+    _walletNameFocus.requestFocus();
     _walletNameFocus.addListener(() {
       setState(() {
         isFocus = _walletNameFocus.hasFocus;

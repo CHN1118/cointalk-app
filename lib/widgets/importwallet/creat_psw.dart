@@ -48,6 +48,7 @@ class ICreatPswState extends State<CreatPsw> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _setPswFocus.requestFocus();
     _setPswFocus.addListener(() {
       isFocus1 = _setPswFocus.hasFocus;
       setState(() {});

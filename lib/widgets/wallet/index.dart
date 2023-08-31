@@ -341,7 +341,8 @@ class _WalletState extends State<Wallet> {
                                                               1, // 限制文本显示为一行
                                                           oCcy.format(
                                                             double.parse(C
-                                                                .balance.value
+                                                                .hotWalletList[
+                                                                    'availableBalance']
                                                                 .toString()),
                                                           ),
                                                           style: TextStyle(
@@ -383,9 +384,8 @@ class _WalletState extends State<Wallet> {
                                                         color: Colors.white
                                                             .withOpacity(0.5))),
                                                 Obx(() => Text(
-                                                    oCcy.format(
-                                                        C.usdprice.value *
-                                                            C.balance.value),
+                                                    oCcy.format(C.hotWalletList[
+                                                        'usdBalance']),
                                                     style: TextStyle(
                                                         fontSize: 20.sp,
                                                         fontWeight:
@@ -447,19 +447,19 @@ class _WalletState extends State<Wallet> {
                                                 Padding(
                                                   padding: EdgeInsets.only(
                                                       right: 16.sp),
-                                                  child: Text(
-                                                    oCcy.format(
-                                                      double.parse(C
-                                                          .balance.value
-                                                          .toString()),
-                                                    ),
-                                                    style: TextStyle(
-                                                        fontSize: 28.sp,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: const Color(
-                                                            0xffEDEFF5)),
-                                                  ),
+                                                  child: Obx(() => Text(
+                                                        oCcy.format(
+                                                          double.parse(C
+                                                              .balance.value
+                                                              .toString()),
+                                                        ),
+                                                        style: TextStyle(
+                                                            fontSize: 28.sp,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: const Color(
+                                                                0xffEDEFF5)),
+                                                      )),
                                                 ),
                                                 Text(
                                                   'BNB',

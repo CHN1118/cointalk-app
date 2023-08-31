@@ -2,15 +2,11 @@
 
 import 'dart:ui';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:wallet/api/account_api.dart';
 import 'package:wallet/api/getcurrencyrate.dart';
-import 'package:wallet/common/utils/client.dart';
 import 'package:wallet/common/utils/dapp.dart';
-import 'package:wallet/common/utils/index.dart';
 import 'package:wallet/database/index.dart';
 import 'package:web3dart/web3dart.dart';
-
-import '../db/kv_box.dart';
 
 class Controller extends GetxController {
   bool isLogin = false;
@@ -38,6 +34,9 @@ class Controller extends GetxController {
     }
     setLanguage();
   }
+
+  /// 热钱包信息数组
+  var hotWalletList = {}.obs;
 
   /// 钱包信息数组
   var walletList = [].obs;
@@ -91,6 +90,7 @@ class Controller extends GetxController {
     // }
   }
 
+  /// 获取当前价格
   getPrice() async {
     var price = await getCoinPrice();
     if (price != null) {
@@ -98,6 +98,19 @@ class Controller extends GetxController {
       usdprice.value = double.parse(price['USD'].toString());
       print('当前价格：$usdprice');
       await getUSDTPrice();
+    }
+  }
+
+  /// 获取热钱包信息
+  getHotWallet() async {
+    await getWL();
+    String psw = await swi.getpassword();
+    await dapp.signMessage(password: psw); // ?定时获取签名
+    var h = await AccountApi().my();
+    if (h.data['code'] == 0) {
+      hotWalletList.value = h.data['data'];
+    } else {
+      hotWalletList.value = {};
     }
   }
 }

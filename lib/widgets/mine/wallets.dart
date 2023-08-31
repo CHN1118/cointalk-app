@@ -64,7 +64,11 @@ class _WalletBodyState extends State<WalletBody> {
   void initState() {
     super.initState();
     bus.on('updateWalletList', (arg) {
-      setState(() {});
+      // setState(() {});
+      //1秒后刷新
+      Future.delayed(Duration(milliseconds: 500), () {
+        setState(() {});
+      });
     });
   }
 
@@ -651,21 +655,22 @@ class _WalletBodyState extends State<WalletBody> {
                                                   ],
                                                 ),
                                               ),
-                                              Text(
-                                                C.walletList[index]
-                                                            ['balance'] ==
-                                                        null
-                                                    ? '0 BNB'
-                                                    : C.walletList[index]
-                                                                ['balance']
-                                                            .toStringAsFixed(
-                                                                3) +
-                                                        ' BNB',
-                                                style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
+                                              Obx(() => Text(
+                                                    C.walletList[index]
+                                                                ['balance'] ==
+                                                            null
+                                                        ? '0 BNB'
+                                                        : C.walletList[index]
+                                                                    ['balance']
+                                                                .toStringAsFixed(
+                                                                    3) +
+                                                            ' BNB',
+                                                    style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  )),
                                             ])
                                       ],
                                     )),
