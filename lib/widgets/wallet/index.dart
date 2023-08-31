@@ -932,31 +932,54 @@ class _WalletState extends State<Wallet> {
                                       ),
                                     ),
                                     //* 账单列表
-                                    for (int i = 0;
-                                        i < C.currentWalletTx.length;
-                                        i++)
-                                      Column(
-                                        children: [
-                                          if (C.currentWalletTx[i]['from']
-                                                  .toLowerCase() !=
-                                              CL.address.hex.toLowerCase())
-                                            OpClick(
-                                              onTap: () {
-                                                showCustomDialog(
-                                                    context,
-                                                    '您收到一笔新的转账',
-                                                    utils
-                                                        .formatBalance(
-                                                            C.currentWalletTx[i]
-                                                                ['value'])
-                                                        .toString(),
-                                                    C.currentWalletTx[i]
-                                                        ['from']);
-                                              },
-                                              child: Items(
-                                                title: '接收',
+                                    if (!isColdWallet)
+                                      for (int i = 0;
+                                          i < C.currentWalletTx.length;
+                                          i++)
+                                        Column(
+                                          children: [
+                                            if (C.currentWalletTx[i]['from']
+                                                    .toLowerCase() !=
+                                                CL.address.hex.toLowerCase())
+                                              OpClick(
+                                                onTap: () {
+                                                  showCustomDialog(
+                                                      context,
+                                                      '您收到一笔新的转账',
+                                                      utils
+                                                          .formatBalance(
+                                                              C.currentWalletTx[
+                                                                  i]['value'])
+                                                          .toString(),
+                                                      C.currentWalletTx[i]
+                                                          ['from']);
+                                                },
+                                                child: Items(
+                                                  title: '接收',
+                                                  iconurl:
+                                                      'assets/svgs/upload.svg',
+                                                  walletAddress:
+                                                      utils.formatText(
+                                                          text:
+                                                              C.currentWalletTx[
+                                                                  i]['from']),
+                                                  price: utils.formatBalance(
+                                                      C.currentWalletTx[i]
+                                                          ['value']),
+                                                  time: utils.formatTimestamp(C
+                                                          .currentWalletTx[i][
+                                                      'confirmationTimestamp']),
+                                                  oCcy: oCcy,
+                                                  color:
+                                                      const Color(0xFF45AAAF),
+                                                  oCcy2: oCcy2,
+                                                ),
+                                              )
+                                            else
+                                              Items(
+                                                title: '转账',
                                                 iconurl:
-                                                    'assets/svgs/upload.svg',
+                                                    'assets/svgs/shuffle.svg',
                                                 walletAddress: utils.formatText(
                                                     text: C.currentWalletTx[i]
                                                         ['from']),
@@ -967,29 +990,76 @@ class _WalletState extends State<Wallet> {
                                                         .currentWalletTx[i]
                                                     ['confirmationTimestamp']),
                                                 oCcy: oCcy,
-                                                color: const Color(0xFF45AAAF),
+                                                color: const Color(0xFF0563B6),
                                                 oCcy2: oCcy2,
                                               ),
-                                            )
-                                          else
-                                            Items(
-                                              title: '转账',
-                                              iconurl:
-                                                  'assets/svgs/shuffle.svg',
-                                              walletAddress: utils.formatText(
-                                                  text: C.currentWalletTx[i]
-                                                      ['from']),
-                                              price: utils.formatBalance(C
-                                                  .currentWalletTx[i]['value']),
-                                              time: utils.formatTimestamp(C
-                                                      .currentWalletTx[i]
-                                                  ['confirmationTimestamp']),
-                                              oCcy: oCcy,
-                                              color: const Color(0xFF0563B6),
-                                              oCcy2: oCcy2,
-                                            ),
-                                        ],
-                                      )
+                                          ],
+                                        )
+                                    else
+                                      for (int i = 0;
+                                          i <
+                                              C.hotWalletList['order_list']
+                                                  .length;
+                                          i++)
+                                        Column(
+                                          children: [
+                                            if (C.currentWalletTx[i]['from']
+                                                    .toLowerCase() !=
+                                                CL.address.hex.toLowerCase())
+                                              OpClick(
+                                                onTap: () {
+                                                  showCustomDialog(
+                                                      context,
+                                                      '您收到一笔新的转账',
+                                                      utils
+                                                          .formatBalance(
+                                                              C.currentWalletTx[
+                                                                  i]['value'])
+                                                          .toString(),
+                                                      C.currentWalletTx[i]
+                                                          ['from']);
+                                                },
+                                                child: Items(
+                                                  title: '接收',
+                                                  iconurl:
+                                                      'assets/svgs/upload.svg',
+                                                  walletAddress:
+                                                      utils.formatText(
+                                                          text:
+                                                              C.currentWalletTx[
+                                                                  i]['from']),
+                                                  price: utils.formatBalance(
+                                                      C.currentWalletTx[i]
+                                                          ['value']),
+                                                  time: utils.formatTimestamp(C
+                                                          .currentWalletTx[i][
+                                                      'confirmationTimestamp']),
+                                                  oCcy: oCcy,
+                                                  color:
+                                                      const Color(0xFF45AAAF),
+                                                  oCcy2: oCcy2,
+                                                ),
+                                              )
+                                            else
+                                              Items(
+                                                title: '转账',
+                                                iconurl:
+                                                    'assets/svgs/shuffle.svg',
+                                                walletAddress: utils.formatText(
+                                                    text: C.currentWalletTx[i]
+                                                        ['from']),
+                                                price: utils.formatBalance(
+                                                    C.currentWalletTx[i]
+                                                        ['value']),
+                                                time: utils.formatTimestamp(C
+                                                        .currentWalletTx[i]
+                                                    ['confirmationTimestamp']),
+                                                oCcy: oCcy,
+                                                color: const Color(0xFF0563B6),
+                                                oCcy2: oCcy2,
+                                              ),
+                                          ],
+                                        )
                                   ],
                                 )),
                           ),
@@ -1545,9 +1615,9 @@ class _WalletState extends State<Wallet> {
                                     children: [
                                       OpClick(
                                         onTap: () async {
-                                          // if (_amountController.text.isEmpty) {
-                                          //   return;
-                                          // }
+                                          if (_amountController.text.isEmpty) {
+                                            return;
+                                          }
                                           print(244);
                                           if (!isColdWallet) {
                                             String? password;
@@ -1577,12 +1647,13 @@ class _WalletState extends State<Wallet> {
                                             } else {
                                               password1 = '';
                                             }
-                                            AccountApi().transfer(
+                                            await AccountApi().transfer(
                                                 _toController.text,
                                                 double.parse(
                                                     _amountController.text),
                                                 C.walletList[0]['walletname'],
                                                 password1);
+                                            await C.getHosW();
                                           }
                                         },
                                         child: Container(

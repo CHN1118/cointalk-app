@@ -109,6 +109,10 @@ class Controller extends GetxController {
       pswi = await swi.getpassword();
     }
     await dapp.signMessage(password: psw == null ? pswi : psw); // ?定时获取签名
+    getHosW();
+  }
+
+  getHosW() async {
     var h = await AccountApi().my();
     if (h.data['code'] == 0) {
       hotWalletList.value = h.data['data'];
