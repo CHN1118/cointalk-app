@@ -17,129 +17,134 @@ class _WithdrawPageState extends State<WithdrawPage> {
   FocusNode addressFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text("提币",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18.sp,
-            )),
-        leading: GestureDetector(
-          onTap: () => Get.back(),
-          child: Padding(
-            padding: EdgeInsets.only(),
-            child: Icon(
-              Icons.arrow_back_ios_sharp,
-              color: Colors.black,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text("提币",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18.sp,
+              )),
+          leading: GestureDetector(
+            onTap: () => Get.back(),
+            child: Padding(
+              padding: EdgeInsets.only(),
+              child: Icon(
+                Icons.arrow_back_ios_sharp,
+                color: Colors.black,
+              ),
             ),
           ),
+          elevation: 0,
+          centerTitle: true,
+          // 标题居中
+          backgroundColor: Colors.white,
         ),
-        elevation: 0,
-        centerTitle: true,
-        // 标题居中
         backgroundColor: Colors.white,
-      ),
-      backgroundColor: Colors.white,
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                // 充值 手续费
-                Container(
-                  margin:
-                      EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
-                  child: rechargeViewBuilder(),
-                ),
-
-                Container(
-                  color: Color(0xFFF9FAFC),
-                  height: 10.h,
-                ),
-                // 手续费
-                Container(
-                  margin: EdgeInsets.only(
-                      left: 20.w, right: 20.w, top: 13.h, bottom: 13.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "手续费",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                      Text(
-                        "0 USDT",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
-                    ],
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: [
+                  // 充值 手续费
+                  Container(
+                    margin:
+                        EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
+                    child: rechargeViewBuilder(),
                   ),
-                ),
-                // 实际到账
-                Container(
-                  margin: EdgeInsets.only(
-                      left: 20.w, right: 20.w, top: 13.h, bottom: 13.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '实际到账',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                      Text(
-                        "0 USDT",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
-                    ],
+
+                  Container(
+                    color: Color(0xFFF9FAFC),
+                    height: 10.h,
                   ),
-                ),
-              ],
-            ),
-          ),
-
-          // 提币按钮
-          Container(
-              padding: EdgeInsets.only(bottom: 36.h),
-              child: SizedBox(
-                  width: MediaQuery.of(context).size.width - 40.w,
-                  height: 48.h,
-                  child: Container(
-                    //      Color(0xFFDADFED)
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4.w),
-                      color: Color(0xff0563B6),
-                    ),
-
-                    child: Center(
-                      child: Text(
-                        "提币",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
+                  // 手续费
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 20.w, right: 20.w, top: 13.h, bottom: 13.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "手续费",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        Text(
+                          "0 USDT",
+                          style: TextStyle(
+                            color: Colors.black,
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      ),
+                          ),
+                        )
+                      ],
                     ),
-                  ))),
-        ],
+                  ),
+                  // 实际到账
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 20.w, right: 20.w, top: 13.h, bottom: 13.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '实际到账',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        Text(
+                          "0 USDT",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // 提币按钮
+            Container(
+                padding: EdgeInsets.only(bottom: 36.h),
+                child: SizedBox(
+                    width: MediaQuery.of(context).size.width - 40.w,
+                    height: 48.h,
+                    child: Container(
+                      //      Color(0xFFDADFED)
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4.w),
+                        color: Color(0xff0563B6),
+                      ),
+
+                      child: Center(
+                        child: Text(
+                          "提币",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ))),
+          ],
+        ),
       ),
     );
   }
