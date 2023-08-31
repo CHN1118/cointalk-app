@@ -113,13 +113,27 @@ class MMnemonicState extends State<Mnemonic> {
                         color: Colors.black)),
                 SizedBox(height: 14.h),
                 SizedBox(
-                  width: 232.w,
-                  child: Text('使用纸和笔，按正确的顺序记录助记词将助记词保存在安全的地方不可将助记词进行网络存储与传输',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black.withOpacity(.5))),
-                ),
+                    width: 250.w,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('使用纸和笔，按正确的顺序记录助记词',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(.5))),
+                        Text('将助记词保存在安全的地方',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(.5))),
+                        Text('不可将助记词进行网络存储与传输',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(.5))),
+                      ],
+                    )),
                 const Expanded(child: SizedBox()),
                 Center(
                   child: OpClick(

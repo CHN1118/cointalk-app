@@ -1493,13 +1493,23 @@ class _WalletState extends State<Wallet> {
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w400,
                                               color: const Color(0xFF333333))),
-                                      Text(
-                                        gasFee.toString(),
-                                        style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: const Color.fromARGB(
-                                                255, 55, 129, 44)),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            gasFee.toString(),
+                                            style: TextStyle(
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: const Color.fromARGB(
+                                                    255, 55, 129, 44)),
+                                          ),
+                                          Text('\tUDST',
+                                              style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color:
+                                                      const Color(0xFF333333))),
+                                        ],
                                       )
                                     ],
                                   ),

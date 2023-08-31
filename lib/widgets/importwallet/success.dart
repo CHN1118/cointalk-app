@@ -97,7 +97,7 @@ class ISuccessState extends State<Success> {
                     ),
                   ),
                 ),
-                Text('我已阅读并同意',
+                Text('我已阅读并同意 ',
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,

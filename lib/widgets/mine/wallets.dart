@@ -226,20 +226,25 @@ class _WalletBodyState extends State<WalletBody> {
                           setState(() {
                             //&删除钱包
                             //todo 删除钱包
-                            //删除C.walletList的数据
-                            C.walletList.removeAt(index);
-                            DB.box.write(
-                                'WalletList', C.walletList.value); // *存储钱包信息数组
-                            C.getWL();
-                            showSnackBar(msg: '删除成功');
-                            Navigator.pop(context); // 关闭底部弹框
-                            if (C.walletList.isEmpty) {
-                              //跳转到创建钱包页面
-                              setState(() {
-                                Get.offNamed(
-                                  '/importwallet',
-                                );
-                              });
+                            if (index != 0) {
+                              //删除C.walletList的数据
+                              C.walletList.removeAt(index);
+                              DB.box.write('WalletList',
+                                  C.walletList.value); // *存储钱包信息数组
+                              C.getWL();
+                              showSnackBar(msg: '删除成功');
+                              Navigator.pop(context); // 关闭底部弹框
+                              if (C.walletList.isEmpty) {
+                                //跳转到创建钱包页面
+                                setState(() {
+                                  Get.offNamed(
+                                    '/importwallet',
+                                  );
+                                });
+                              }
+                            } else {
+                              showSnackBar(msg: '不能删除默认钱包', color: 0XFF0000);
+                              Navigator.pop(context); // 关闭底部弹框
                             }
                           });
                         },
@@ -453,13 +458,13 @@ class _WalletBodyState extends State<WalletBody> {
   }
 
   //~提示弹框
-  Future<bool?> showSnackBar({String? msg}) {
+  Future<bool?> showSnackBar({String? msg, color = 0xffF2F8F5}) {
     return Fluttertoast.showToast(
         msg: msg!,
         toastLength: Toast.LENGTH_SHORT, // 消息框持续的时间
         gravity: ToastGravity.TOP, // 消息框弹出的位置
         timeInSecForIosWeb: 1, // ios
-        backgroundColor: const Color(0xffF2F8F5).withOpacity(1),
+        backgroundColor: Color(color!).withOpacity(1),
         textColor: const Color(0xff000000),
         fontSize: 14.sp);
   }
@@ -554,7 +559,10 @@ class _WalletBodyState extends State<WalletBody> {
                               child: Slidable(
                                 key: Key(index.toString()),
                                 endActionPane: ActionPane(
-                                  extentRatio: 0.35, // 控制滑动项widget的大小
+                                  extentRatio: C.walletList[index]['active'] ||
+                                          index == 0
+                                      ? 0.00001
+                                      : 0.35, // 控制滑动项widget的大小
                                   motion: const ScrollMotion(), //滑动动画
                                   dragDismissible: false, //是否可以通过拖动将操作取消
                                   children: [
