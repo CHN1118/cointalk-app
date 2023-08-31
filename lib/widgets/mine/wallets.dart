@@ -64,7 +64,11 @@ class _WalletBodyState extends State<WalletBody> {
   void initState() {
     super.initState();
     bus.on('updateWalletList', (arg) {
-      setState(() {});
+      // setState(() {});
+      //1秒后刷新
+      Future.delayed(Duration(milliseconds: 500), () {
+        setState(() {});
+      });
     });
   }
 
