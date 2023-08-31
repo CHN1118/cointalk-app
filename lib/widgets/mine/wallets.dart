@@ -643,21 +643,22 @@ class _WalletBodyState extends State<WalletBody> {
                                                   ],
                                                 ),
                                               ),
-                                              Text(
-                                                C.walletList[index]
-                                                            ['balance'] ==
-                                                        null
-                                                    ? '0 BNB'
-                                                    : C.walletList[index]
-                                                                ['balance']
-                                                            .toStringAsFixed(
-                                                                3) +
-                                                        ' BNB',
-                                                style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
+                                              Obx(() => Text(
+                                                    C.walletList[index]
+                                                                ['balance'] ==
+                                                            null
+                                                        ? '0 BNB'
+                                                        : C.walletList[index]
+                                                                    ['balance']
+                                                                .toStringAsFixed(
+                                                                    3) +
+                                                            ' BNB',
+                                                    style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  )),
                                             ])
                                       ],
                                     )),

@@ -59,6 +59,7 @@ class ILogBackInState extends State<LogBackIn> {
           status: 'loading...',
           maskType: EasyLoadingMaskType.black,
         );
+        String psw = await swi.getpassword();
         bool islogin =
             await utils.isSameAddress(address: C.currentWallet['address']);
         print('----------------->islogin');
@@ -69,11 +70,9 @@ class ILogBackInState extends State<LogBackIn> {
           print('当前钱包地址:${KVBox.GetAddress()}');
           await EasyLoading.dismiss();
           Get.offAllNamed('/');
-          return;
         } else {
-          await dapp.signMessage();
+          await dapp.signMessage(password: psw);
           await EasyLoading.dismiss();
-          return;
         }
       }
       await EasyLoading.dismiss();

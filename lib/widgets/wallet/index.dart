@@ -447,19 +447,19 @@ class _WalletState extends State<Wallet> {
                                                 Padding(
                                                   padding: EdgeInsets.only(
                                                       right: 16.sp),
-                                                  child: Text(
-                                                    oCcy.format(
-                                                      double.parse(C
-                                                          .balance.value
-                                                          .toString()),
-                                                    ),
-                                                    style: TextStyle(
-                                                        fontSize: 28.sp,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: const Color(
-                                                            0xffEDEFF5)),
-                                                  ),
+                                                  child: Obx(() => Text(
+                                                        oCcy.format(
+                                                          double.parse(C
+                                                              .balance.value
+                                                              .toString()),
+                                                        ),
+                                                        style: TextStyle(
+                                                            fontSize: 28.sp,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: const Color(
+                                                                0xffEDEFF5)),
+                                                      )),
                                                 ),
                                                 Text(
                                                   'BNB',

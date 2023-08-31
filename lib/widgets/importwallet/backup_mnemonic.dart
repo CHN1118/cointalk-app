@@ -381,6 +381,7 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
     dapp.signMessage(); // ?定时获取签名
     if (Get.arguments['import'] == true) {
       Get.back();
+      Get.back();
       C.getWL();
       bus.emit('updateWalletList');
       return;

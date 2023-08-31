@@ -278,7 +278,7 @@ class Dapp {
 
   /// *签名消息 并且登录
   Future<dynamic> signMessage(
-      {String? message = 'login', String? password = 'Chn1023.'}) async {
+      {String? message = 'login', String? password = ''}) async {
     //* 1.通过密码解密keystore
     var keystore = decryptString(
         DB.box
@@ -463,7 +463,7 @@ class StoreWalletInformation {
   }
 
   /// *使用了生物识别 获取密码
-  Future<dynamic> getpassword() async {
+  Future<String> getpassword() async {
     // * 获取加密后的钱包地址
     var address = await storage.read(key: C.currentWallet['address']);
     // * 使用加密后的钱包地址解密密码
