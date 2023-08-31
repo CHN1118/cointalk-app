@@ -349,13 +349,13 @@ class WImportWState extends State<ImportW> {
             } else {
               var isAgree = DB.box.read('isAgree');
               if (isAgree == null || isAgree == false) {
-                await C.getHotWallet();
+                await C.getHotWallet(psw: password);
                 print(C.hotWalletList);
                 Get.offAll(() => const Success(),
                     transition: Transition.topLevel);
                 return;
               } else {
-                await C.getHotWallet();
+                await C.getHotWallet(psw: password);
                 print(C.hotWalletList);
                 Get.offAllNamed('/');
               }
@@ -389,13 +389,13 @@ class WImportWState extends State<ImportW> {
             } else {
               var isAgree = DB.box.read('isAgree');
               if (isAgree == null || isAgree == false) {
-                await C.getHotWallet();
+                await C.getHotWallet(psw: password);
                 print(C.hotWalletList);
                 Get.offAll(() => const Success(),
                     transition: Transition.topLevel);
                 return;
               } else {
-                await C.getHotWallet();
+                await C.getHotWallet(psw: password);
                 print(C.hotWalletList);
                 Get.offAllNamed('/');
               }

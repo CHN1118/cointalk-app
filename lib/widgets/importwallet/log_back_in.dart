@@ -317,10 +317,11 @@ class ILogBackInState extends State<LogBackIn> {
         print('已登录');
         // print('当前钱包地址:${DB.box.read('token')}');
         print('当前钱包地址:${KVBox.GetAddress()}');
+        await C.getHotWallet(psw: _walletNametext.text);
         await EasyLoading.dismiss();
         Get.offAllNamed('/');
       } else {
-        await dapp.signMessage(password: _walletNametext.text);
+        await C.getHotWallet(psw: _walletNametext.text);
         await EasyLoading.dismiss();
         Get.offAllNamed('/');
       }

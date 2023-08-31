@@ -388,13 +388,13 @@ class WBackupMnemonicState extends State<BackupMnemonic> {
     } else {
       showSnackBar(msg: '验证成功');
       var isAgree = DB.box.read('isAgree');
-      await C.getHotWallet();
+      await C.getHotWallet(psw: walletPassword);
       print(C.hotWalletList);
       if (isAgree == null || isAgree == false) {
         Get.offAll(() => const Success(), transition: Transition.topLevel);
         return;
       } else {
-        await C.getHotWallet();
+        await C.getHotWallet(psw: walletPassword);
         print(C.hotWalletList);
         Get.offAllNamed('/');
       }

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:wallet/api/account_api.dart';
 import 'package:wallet/common/style/app_theme.dart';
 import 'package:wallet/common/utils/client.dart';
 import 'package:wallet/common/utils/dapp.dart';
@@ -548,32 +549,32 @@ class _WalletState extends State<Wallet> {
                                             children: [
                                               Row(
                                                 children: [
-                                                  Text(
-                                                      '${oCcy2.format(712.34888)}\u00A0USDT',
-                                                      style: TextStyle(
-                                                          fontSize: 16.sp,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: const Color(
-                                                              0xFF111111))),
-                                                  Text(
-                                                      '\u00A0\u00A0\u2248\$${oCcy2.format(34623.65)}', //\u00A0添加非断行空格
+                                                  // Text(
+                                                  //     '${oCcy2.format(712.34888)}\u00A0USDT',
+                                                  //     style: TextStyle(
+                                                  //         fontSize: 16.sp,
+                                                  //         fontWeight:
+                                                  //             FontWeight.w500,
+                                                  //         color: const Color(
+                                                  //             0xFF111111))),
+                                                  // Text(
+                                                  //     '\u00A0\u00A0\u2248\$${oCcy2.format(34623.65)}', //\u00A0添加非断行空格
 
-                                                      style: TextStyle(
-                                                          fontSize: 12.sp,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: const Color(
-                                                              0xFF828895))),
+                                                  //     style: TextStyle(
+                                                  //         fontSize: 12.sp,
+                                                  //         fontWeight:
+                                                  //             FontWeight.w500,
+                                                  //         color: const Color(
+                                                  //             0xFF828895))),
                                                 ],
                                               ),
-                                              Text('+${oCcy3.format(0.1234)}%',
-                                                  style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color:
-                                                          AppTheme.themeColor)),
+                                              // Text('+${oCcy3.format(0.1234)}%',
+                                              //     style: TextStyle(
+                                              //         fontSize: 12.sp,
+                                              //         fontWeight:
+                                              //             FontWeight.w500,
+                                              //         color:
+                                              //             AppTheme.themeColor)),
                                             ],
                                           ),
                                         ),
@@ -1534,25 +1535,44 @@ class _WalletState extends State<Wallet> {
                                     children: [
                                       OpClick(
                                         onTap: () async {
-                                          if (_amountController.text.isEmpty) {
-                                            return;
-                                          }
-                                          String? password;
-                                          if (CL.isEBV) {
-                                            password = await swi.getpassword();
+                                          // if (_amountController.text.isEmpty) {
+                                          //   return;
+                                          // }
+                                          if (!isColdWallet) {
+                                            String? password;
+                                            if (CL.isEBV) {
+                                              password =
+                                                  await swi.getpassword();
+                                            } else {
+                                              password = '';
+                                            }
+                                            bool res = await dapp.transfer(
+                                                _toController.text,
+                                                num.parse(
+                                                    _amountController.text),
+                                                password: password);
+                                            if (res) {
+                                              Navigator.pop(context);
+                                              _amountController.clear();
+                                              _toController.clear();
+                                            }
+                                            setState(() {});
                                           } else {
-                                            password = '';
+                                            String? password1;
+                                            if (C.walletList[0]['isEBV'] ==
+                                                true) {
+                                              password1 = await swi.getpassword(
+                                                  hot: true);
+                                            } else {
+                                              password1 = '';
+                                            }
+                                            AccountApi().transfer(
+                                                _toController.text,
+                                                double.parse(
+                                                    _amountController.text),
+                                                C.walletList[0]['walletname'],
+                                                password1!);
                                           }
-                                          bool res = await dapp.transfer(
-                                              _toController.text,
-                                              num.parse(_amountController.text),
-                                              password: password);
-                                          if (res) {
-                                            Navigator.pop(context);
-                                            _amountController.clear();
-                                            _toController.clear();
-                                          }
-                                          setState(() {});
                                         },
                                         child: Container(
                                           width: 146.w,

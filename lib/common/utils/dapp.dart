@@ -461,7 +461,14 @@ class StoreWalletInformation {
   }
 
   /// *使用了生物识别 获取密码
-  Future<String> getpassword() async {
+  Future<String> getpassword({bool hot = false}) async {
+    if (hot) {
+      // * 获取加密后的钱包地址
+      var address = await storage.read(key: C.walletList[0]['address']);
+      // * 使用加密后的钱包地址解密密码
+      String password = dapp.decryptString(C.walletList[0], address!);
+      return password;
+    }
     // * 获取加密后的钱包地址
     var address = await storage.read(key: C.currentWallet['address']);
     // * 使用加密后的钱包地址解密密码
